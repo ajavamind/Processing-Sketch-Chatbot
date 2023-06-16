@@ -1,0 +1,47 @@
+Here's the code for the Processing sketch:
+
+```java
+import java.util.List;
+
+List<String> lines;
+
+void setup() {
+  size(1024, 1024);
+  textAlign(LEFT, TOP);
+  textSize(16);
+  lines = loadStrings("data/input.txt");
+}
+
+void draw() {
+  background(255);
+  float y = 0;
+  for (String line : lines) {
+    String[] words = line.split(" ");
+    String currentLine = "";
+    for (String word : words) {
+      if (textWidth(currentLine + " " + word) > width) {
+        text(currentLine, 0, y);
+        y += textAscent() + textDescent();
+        currentLine = word;
+      } else {
+        currentLine += " " + word;
+      }
+    }
+    text(currentLine, 0, y);
+    y += textAscent() + textDescent();
+    y += textAscent() + textDescent(); // add blank line
+  }
+}
+```
+
+Explanation:
+
+- We start by loading the lines from the input file in the `setup()` function.
+- In the `draw()` function, we first clear the background and set the text alignment and size.
+- We then loop through each line and split it into words using the `split()` method.
+- We initialize a `currentLine` variable to an empty string and loop through each word.
+- If adding the current word to the current line would make it too long to fit on the screen, we draw the current line at the current y position and start a new line with the current word.
+- Otherwise, we add the current word to the current line.
+- After we've looped through all the words in the line, we draw the current line at the current y position and add a blank line by incrementing y by the text ascent and descent twice.
+in the java programming language, does back single quote in a string, change how a string displays 
+No, back single quote (`) does not change how a string displays in Java. It is used to represent a character literal in Java. To represent a string literal in Java, double quotes ("") are used.
