@@ -244,34 +244,7 @@ boolean updateKey() {
     //println("CHAT_MODE Pizza restaurant automated ordering service");
     //context.clear();
     //ChatMessage sampleMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), """
-    //You are OrderBot, an automated service to collect orders for a pizza restaurant.
-    //You first greet the customer, then collect the order,
-    //  and then ask if it's a pickup or delivery.
-    //You wait to collect the entire order, then summarize it and check for a final
-    //  time if the customer wants to add anything else.
-    //  If it's a delivery, you ask for an address.
-    //Finally you collect the payment.
-    //  Make sure to clarify all options, extras and sizes to uniquely
-    //  identify the item from the menu.
-    //  You respond in a short, very conversational friendly style.
-    //  The menu includes
-    //  pepperoni pizza  12.95, 10.00, 7.00
-    //  cheese pizza   10.95, 9.25, 6.50
-    //  eggplant pizza   11.95, 9.75, 6.75
-    //  fries 4.50, 3.50
-    //  greek salad 7.25
-    //Toppings:
-    //extra cheese 2.00,
-    //  mushrooms 1.50
-    //  sausage 3.00
-    //  canadian bacon 3.50
-    //  AI sauce 1.50
-    //  peppers 1.00
-    //Drinks:
-    //coke 3.00, 2.00, 1.00
-    //  sprite 3.00, 2.00, 1.00
-    //  bottled water 5.00
-    //  """);
+    //You are ...Bot, 
     //context.add(sampleMsg);
     //prompt = "";
     //ChatMessage user0Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -302,7 +275,7 @@ boolean updateKey() {
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
-    println("CHAT_MODE Programming.org stereo sketch coder, java programming language assistant");
+    println("CHAT_MODE Programming.org stereoscopic 3D vision sketch coder, java programming language assistant");
     context.clear();
     ChatMessage system2Message = new ChatMessage(ChatMessageRole.SYSTEM.value(), """You are a processing.org java programming language assistant.
     Your respond with name 'Sketch 3D'.
@@ -349,11 +322,8 @@ boolean updateKey() {
       }
     }
     break;
-  //case KEYCODE_F11:
-  //  execJFn = saveJavaSketch(lastResponseFilename);
-  //  String folder = saveFolderPath;
-  //  if (execJFn != null) execJava(folder, execJFn);
-  //  break;
+  case KEYCODE_F11:
+    break;
   case KEYCODE_F12:
     if (DEBUG) println("F12 screenshot command");
     screenshot = true;
@@ -370,7 +340,7 @@ boolean updateKey() {
   return status;
 }
 
-// TODO reference in case app wants to launch sketch window
+// TODO reference code in case app wants to launch a companion sketch window
 //String[] args ={this.toString()};  //Need to attach current name which is stripped by the new sketch
 //String[] newArgs = {name, str(handle)};
 //SecondApplet sa = new SecondApplet();

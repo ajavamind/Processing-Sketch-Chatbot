@@ -1,4 +1,4 @@
-boolean keyboard = false;
+boolean keyboard = false;  // for Android pop-up keyboard
 
 void mousePressed() {
   //System.out.println("mouseX="+mouseX+" mouseY="+mouseY);

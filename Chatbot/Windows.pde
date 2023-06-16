@@ -8,15 +8,16 @@ String saveFolder = "output"; // default output folder location relative to sket
 String saveFolderPath; // full path to save folder
 
 // request focus on main window
-// needed so user does not have to press mouse button or keyboard key
-// over the window to get focus
-// fixes a quirk with processing sketches in Java on Windows
 
 void setOrientation() {
   orientation(PORTRAIT);
 }
 
 
+/** getFocus is called so user does not have to press mouse button or keyboard key
+ over the window to get focus.
+ This fixes a quirk/bug/problem with processing sketches in Java on Windows
+ */
 void getFocus() {
   try {
     if (RENDERER.equals(P2D)) {
@@ -59,7 +60,7 @@ void selectSaveFolder() {
 //  }
 }
 
-// callback from selectOutputFolder()
+// callback from selectSaveFolder()
 void folderSelected(File selection) {
   if (selection == null) {
     if (DEBUG) println("Window closed or canceled for Save Folder.");

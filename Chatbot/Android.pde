@@ -32,7 +32,7 @@
 //ClipData clipData;
 
 //String getToken() {
-//  return "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";
+//  return "";
 //}
 
 //void setOrientation() {

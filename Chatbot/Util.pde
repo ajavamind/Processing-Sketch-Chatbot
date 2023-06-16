@@ -4,6 +4,8 @@
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // save prompt and response lines in a text or html file
 String saveText(String[] prompts, String[] responses, String filenamePath) {
@@ -232,36 +234,6 @@ boolean isJavaApp(String[] lines) {
   return found;
 }
 
-//String saveJavaSketch(String filenamePath) {
-//  println("saveJavaSketch "+filenamePath);
-//  if (filenamePath == null) return "";
-//  String name = null;
-//  String[] lines = loadStrings(filenamePath);
-//  int leng = lines.length;
-//  if (leng > 0) {
-//    boolean comment = true;
-//    for (int i=0; i<leng; i++) {
-//      if (lines[i].startsWith("```java")) {
-//        lines[i] = "// " + lines[i];
-//        comment = !comment;
-//      } else if (lines[i].startsWith("```")) {
-//        lines[i] = "// " + lines[i];
-//        comment = true;
-//      } else if (comment) {
-//        lines[i] = "// " + lines[i];
-//      }
-//    }
-//  }
-
-//  // get filename
-//  name = findClassNameRegex(lines);
-//  if (name == null) return null;
-//  String folder = saveFolderPath + File.separator ;
-//  String fnName = folder  + name + ".java";
-//  saveStrings(fnName, lines);
-//  return name;
-//}
-
 public static String findClassName(String[] lines) {
   for (String line : lines) {
     if (line.contains("class") && line.contains("extends")) {
@@ -275,9 +247,6 @@ public static String findClassName(String[] lines) {
   }
   return null; // no class name found
 }
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public static String findClassNameRegex(String[] lines) {
   Pattern pattern = Pattern.compile("^(public\\s+)?(abstract\\s+)?class\\s+(\\w+)\\s*(extends\\s+\\w+)?\\s*\\{");

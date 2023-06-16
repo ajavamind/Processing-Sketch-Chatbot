@@ -186,17 +186,9 @@ void setup() {
   setOrientation();
   getFocus();
 
-  // prompt text area can display 3 lines
-  // only one line used
-  //promptHeight = height-2*fontHeight-4; // top line
-  //promptHeight = height-1*fontHeight-4; // middle line
-  //promptHeight = height-0*fontHeight-4; // bottom line
-
-  //promptEntry = new StringBuilder(400);
-  //promptIndex = 0;
-
   saveFolderPath = sketchPath() + File.separator + saveFolder; // default on start
   if (DEBUG) println("saveFolderPath="+saveFolderPath);
+  
   // create the OPENAI API service
   // OPENAI_TOKEN is your paid account token stored in the environment variables for Windows 10/11
   String token = getToken();
@@ -209,8 +201,6 @@ void setup() {
   openFileSystem();
 
   // initial prompt text setup
-  //promptPrefix = "";
-  //promptSuffix = "";
   prompt = INITIAL_PROMPT;
   prompts = new ArrayList<String[]>();
   responses = new ArrayList<String[]>();
@@ -431,7 +421,7 @@ void draw() {
 
 public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
   /* code */
-  //println(event.toString());
+  //if (DEBUG) println(event.toString());
   if (event.toString().equals("LOST_FOCUS")) {
   }
 }
@@ -466,15 +456,6 @@ public void handleButtonEvents(GButton button, GEvent event) {
       lastKey = 0;
       lastKeyCode = KEYCODE_F9;
   }  
-  
-  //else if (button == btnMdialog)
-  //  handleMessageDialog();
-  //// Option dialog
-  //else if (button == btnOdialog)
-  //  handleOptionDialog();
-  //// Color chooser
-  //else if (button == btnColor)
-  //  handleColorChooser();
 }
 
 // animation section

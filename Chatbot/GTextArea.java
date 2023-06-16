@@ -20,7 +20,10 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
  */
-
+/* 
+  Modified by Andy Modla to fix a few bugs
+  */
+  
 package g4p_controls;
 
 import g4p_controls.HotSpot.HSrect;
