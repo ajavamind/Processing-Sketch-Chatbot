@@ -321,7 +321,8 @@ void sendOpenAiRequest() {
   }
   catch(Exception rex) {
     errorText = "Service problem "+ rex;
-    println("Service problem "+ rex);
+    rex.printStackTrace();
+    System.out.println(errorText);
     lastKeyCode = KEYCODE_ERROR;
   }
   animation = NO_ANIMATION;
@@ -336,7 +337,7 @@ void sendOpenAiChatRequest() {
   }
   catch(Exception rex) {
     errorText = "Service problem "+ rex;
-    println("Service problem "+ rex);
+    println("Service problem "+ rex + " "+ rex.toString());
     lastKeyCode = KEYCODE_ERROR;
   }
   animation = NO_ANIMATION;
