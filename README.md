@@ -5,7 +5,7 @@ A Processing Chatbot Assistant for sketch code generation using the SDK
 The Processing Chatbot is an application tool to assist users of the Processing.org SDK (Software Development Kit) 
 in generating and running code from responses to
 prompts sent to the OpenAI ChatGpt service using Java based API (Application Program Interface). 
-This respository is work in progress and it only implements essential features to implement the chat
+This respository is work in progress and it only implements essential features to implement a chat prompt request
 and run the response code. Many improvements are possible but time limitations prevent more enhancements for now.
 
 The application is written in the Processing Java language and currently only runs on Windows OS platform. 
@@ -13,9 +13,14 @@ It requires an OpenAI API key subscription from OpenAI.org.
 
 Chat responses cause an instance of the sketch to be run with the SDK when a "Run" key is pressed.
 
-## Usage
+## Background
 I'm a Processing user since 2010 and software engineer since 1966 when I starting working part-time in college.
-I believe a code assistant is helpful learning about programming and avoiding some tedium during program development.
+To learn more about the AI and machine learning revolution going on now, I created here a code assistant chatbot using Java API calls to 
+OpenAI.org. My chatbot application could be modified for other chatbot application uses, but I chose code generation specifically.
+Only a small number of the API calls are invoked.
+
+## Usage
+I believe a code assistant is helpful to learn about programming and to avoid some tedium and mistakes during program development process.
 You cannot trust the output and have to read and understand the generated code.
 
 I find specific prompts are best to get good generated sketch code. And after a few prompts for requesting changes, I find it easier
@@ -28,10 +33,10 @@ instructing the Chatbot to use a specific class or technique and it worked.
 The advantage of this application is that you can run the generated code directly with the SDK, rather than copying and pasting.
 
 ## Setup
-The application runs on Windows 11 and Processing 4.2. 
+The chatbot application runs on Windows 11 and Processing 4.2. 
 Earlier versions of Processing SDK fail to build the application for unknown reasons.
 
-The OpenAI model is set by default in the code to "gpt-4" and 
+The OpenAI model used in the application by default is "gpt-4" and 
 randomness in responses is limited by a temperature variable set to 0.
 
 ### Requirements
