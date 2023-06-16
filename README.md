@@ -20,8 +20,8 @@ OpenAI.org. My chatbot application could be modified for other chatbot applicati
 Only a small number of the API calls are invoked.
 
 ## Usage
-I believe a code assistant is helpful to learn about programming and to avoid some tedium and mistakes during program development process.
-You cannot trust the output and have to read and understand the generated code.
+I found that a code assistant is helpful to learn about programming and to avoid some tedium and mistakes during the program development process.
+You cannot trust the output response from a chatbot and have to read and understand the generated code. (Although it is often correct)
 
 I find specific prompts are best to get good generated sketch code. And after a few prompts for requesting changes, I find it easier
 to just make code changes myself. Or start a new chat to assist with another section of the code I am trying to build and
@@ -37,7 +37,7 @@ The chatbot application runs on Windows 11 and Processing 4.2.
 Earlier versions of Processing SDK fail to build the application for unknown reasons.
 
 The OpenAI model used in the application by default is "gpt-4" and 
-randomness in responses is limited by a temperature variable set to 0.
+randomness in responses is limited by the temperature variable set to 0.
 
 ### Requirements
 Install Processing SDK 4.2 Windows 64 bit. Note the location of the SDK processing.exe.
@@ -45,7 +45,8 @@ Add processing.exe to the Path in the Windows environment settings.
 
 ### OpenAI Key
 OPENAI_TOKEN is your paid OpenAI API account token stored in the environment variables for Windows 10/11.
-Define your OpenAI API Key with name "OPENAI_TOKEN" in the Windows environment settings.
+Define your OpenAI API Key with name "OPENAI_TOKEN" in the Windows environment settings (search for environment).
+Restart the SDK after adding your environment variable.
 
 ### SDK Modes
 Code can be run in the SDK for the following modes: Java, P5.js, and Python.
