@@ -94,6 +94,7 @@ String[] saveSketch(String filenamePath) {
   println("saveSketch "+filenamePath);
   if (filenamePath == null) return null;
   boolean pdeType = true;
+  boolean androidMode = false;
   String[] info = new String[3];
   String name = null;
   String codeType = ".pde";
@@ -106,6 +107,8 @@ String[] saveSketch(String filenamePath) {
     if (name != null ) {
       pdeType = false;
     }
+  } else if (isAndroidApp(lines)) {
+    androidMode = true;
   }
   int leng = lines.length;
   if (leng > 0) {
@@ -164,7 +167,11 @@ String[] saveSketch(String filenamePath) {
     } else if (codeType.equals(".pyde")) {
       copyFiles("pythonMode", folder);
     } else if (codeType.equals(".pde")) {
-      copyFiles("javaMode", folder);
+      if (androidMode) {
+        copyFiles("androidMode", folder);
+      } else {
+        copyFiles("javaMode", folder);
+      }
     } else {
     }
   } else {  // java application runs from command line and uses processing core.jar
@@ -225,6 +232,23 @@ boolean isJavaApp(String[] lines) {
         if (lines[j].startsWith("```")) {
           return found;
         } else if (lines[j].contains("public static void main(String[] args) {")) {
+          return true;
+        }
+      }
+      break;
+    }
+  }
+  return found;
+}
+
+boolean isAndroidApp(String[] lines) {
+  boolean found = false;
+  for (int i = 0; i< lines.length; i++) {
+    if (lines[i].startsWith("```java")) {
+      for (int j=i+1; j<lines.length; j++) {
+        if (lines[j].startsWith("```")) {
+          return found;
+        } else if (lines[j].contains("public class MainActivity extends PApplet")) {
           return true;
         }
       }

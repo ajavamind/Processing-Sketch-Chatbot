@@ -3,7 +3,7 @@
 //// Accounts for code differences between Android and Java sketch builds
 
 
-//private final static int buildMode = ANDROID_MODE;  // change manually for the build
+//private final static int buildMode = ANDROID_BUILD_MODE;  // change manually for the build
 
 //// Android Platform Build Mode
 //import android.content.SharedPreferences;

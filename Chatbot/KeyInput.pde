@@ -116,6 +116,7 @@ String errorText = null;
 // save exec refactor needed
 String execFn[];
 String execJFn;
+boolean forceExecJFn = false;
 
 static final int FILENAME_LENGTH = 60;
 // store for key presses when it is time for draw() to process input key commands
@@ -126,17 +127,17 @@ void keyPressed() {
   //if (DEBUG) println("key="+ key + " key10=" + int(key) + " keyCode="+keyCode);
   if (lastKeyCode == KEYCODE_ERROR) {
     return;
-  } else if (buildMode == ANDROID_MODE && key == KEYCODE_LF) {
+  } else if (buildMode == ANDROID_BUILD_MODE && key == KEYCODE_LF) {
     keyCode = KEYCODE_LF;
-  } else if (buildMode == ANDROID_MODE && keyCode == 67) {
+  } else if (buildMode == ANDROID_BUILD_MODE && keyCode == 67) {
     keyCode = KEYCODE_BACKSPACE;
-  } else if (buildMode == ANDROID_MODE && key >= ' ' && key < '~'
+  } else if (buildMode == ANDROID_BUILD_MODE && key >= ' ' && key < '~'
     || key == '\'' || key == '`') {
     keyCode = KEYCODE_KEYBOARD; // these keys for prompt text entry
-  } else if (buildMode == ANDROID_MODE && key == '~') {
+  } else if (buildMode == ANDROID_BUILD_MODE && key == '~') {
     key = KEY_CTRL_V;   // paste
     keyCode = 0;
-  } else if (buildMode == JAVA_MODE && key >= ' ' && key <= '~'
+  } else if (buildMode == JAVA_BUILD_MODE && key >= ' ' && key <= '~'
     || key == '\'' || key == '`') {
     keyCode = KEYCODE_KEYBOARD; // these keys for prompt text entry
   } else if (key==ESC) {  // prevent worker sketch exit
@@ -244,7 +245,7 @@ boolean updateKey() {
     //println("CHAT_MODE Pizza restaurant automated ordering service");
     //context.clear();
     //ChatMessage sampleMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), """
-    //You are ...Bot, 
+    //You are ...Bot,
     //context.add(sampleMsg);
     //prompt = "";
     //ChatMessage user0Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -267,10 +268,14 @@ boolean updateKey() {
     prompt = "";
     ChatMessage user1Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
     context.add(user1Msg);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
+    if (!first) {
+      if (!start) {
+        errorText = null;
+        ready = false;
+        start = true;
+      }
+    } else {
+      first = false;
     }
     break;
   case KEYCODE_F5:
@@ -306,8 +311,10 @@ boolean updateKey() {
   case KEYCODE_F9:
     selectSaveFolder();
     break;
-  case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in SDK
-    println("extract and save embedded code as a processing sketch file and run in SDK");
+  case KEYCODE_F11:
+    forceExecJFn = true;
+  case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
+    println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
 
     execFn = saveSketch(lastResponseFilename);
@@ -315,14 +322,17 @@ boolean updateKey() {
       println("using file: "+execFn[i]);
     }
     if (execFn != null) {
-      if (execFn[2].equals(".java")) {
+      if (forceExecJFn) {
+        forceExecJFn = false;
         execJava(execFn[0], execFn[1]);
       } else {
-        execSketch(execFn);
+        if (execFn[2].equals(".java")) {
+          execJava(execFn[0], execFn[1]);
+        } else {
+          execSketch(execFn);
+        }
       }
     }
-    break;
-  case KEYCODE_F11:
     break;
   case KEYCODE_F12:
     if (DEBUG) println("F12 screenshot command");

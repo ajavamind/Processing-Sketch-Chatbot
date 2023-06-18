@@ -1,6 +1,7 @@
 /**
- * Use OpenAI-Java API
- * https://github.com/TheoKanning/openai-java
+ * Processing Sketch Chatbot
+ * Calls OpenAI-Java API with prompt for coding help
+ * OpenAI java library in code folder is from https://github.com/TheoKanning/openai-java
  */
 
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
@@ -25,12 +26,12 @@ import java.util.Locale;
 
 private static final boolean DEBUG = true;
 private static final boolean DEBUG_TEST = false;
-private static final int JAVA_MODE = 0;
-private static final int ANDROID_MODE = 1;
+private static final int JAVA_BUILD_MODE = 0;
+private static final int ANDROID_BUILD_MODE = 1;
 
 private static final Duration CHAT_TIMEOUT = Duration.ofSeconds(120);
 OpenAiService service;
-//String model = "gpt-3.5-turbo"; 
+//String model = "gpt-3.5-turbo";
 //String model = "gpt-3.5-turbo-16k";  // allows larger context prompt/response
 //String model = "gpt-3.5-turbo-0613"; // function calling, system message steering better
 String model = "gpt-4";
@@ -39,7 +40,7 @@ String model = "gpt-4";
 double temperature = 0.0; // expect no randomness from the model
 double topP = 1.0;
 
-float appFrameRate = 30; // draw frames per second, used for animation 
+float appFrameRate = 30; // draw frames per second, used for animation
 String RENDERER = JAVA2D; // default for setup size()
 
 int WIDTH;
@@ -84,9 +85,11 @@ int CHAT_SKETCH_BUTTON_HEIGHT;
 boolean screenshot = false;
 int screenshotCounter = 1;
 static final String TITLE = "Processing Chatbot Using OpenAI API - Java";
-static final String INITIAL_PROMPT = "Enter prompt here. Use ESC key to exit";
+static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch (default). Use ESC key to exit. ";
 volatile boolean start = false;
 volatile boolean ready = false;
+volatile boolean first = true;
+
 int statusHeight;
 //int promptHeight;
 int errorMessageHeight;
@@ -123,11 +126,13 @@ ChatMessage systemMessage;
 
 private static final int DEFAULT_MODE = 0; // single prompt, single response, no chat no context
 private static final int CHAT_MODE = 1; // multiple prompts, chat remembers prompt/responses, saves context
-int mode = DEFAULT_MODE;
+int mode = CHAT_MODE;
 
-private static final int SAMPLE_MODE = 2; // example OrderBot from ChatGPT pizza restaurant, DeepLearningAI prompt engineering for developers course
-private static final int JAVACODE_MODE = 3; // Processing.org SDK, create Java sketch code and run
-private static final int P5CODE_MODE = 4; // Processing.org SDK, create P5 Javascript sketch code and run in browser
+// Processing IDE modes
+private static final int JAVA_CODE_MODE = 3; // Processing.org IDE, create Java sketch code and run
+private static final int P5_CODE_MODE = 4; // Processing.org IDE, create P5 Javascript sketch code and run in browser
+private static final int PYTHON_CODE_MODE = 4; // Processing.org IDE, create P5 Javascript sketch code and run in browser
+private static final int ANDROID_CODE_MODE = 5; // Processing.org IDE, create PDE Java sketch code and load into Android device to run
 
 void setup() {
   size(1920, 1080, RENDERER);
@@ -188,7 +193,7 @@ void setup() {
 
   saveFolderPath = sketchPath() + File.separator + saveFolder; // default on start
   if (DEBUG) println("saveFolderPath="+saveFolderPath);
-  
+
   // create the OPENAI API service
   // OPENAI_TOKEN is your paid account token stored in the environment variables for Windows 10/11
   String token = getToken();
@@ -218,21 +223,21 @@ void setup() {
   generateButton = new GButton(this, GENERATE_BUTTON_X, GENERATE_BUTTON_Y, GENERATE_BUTTON_WIDTH, GENERATE_BUTTON_HEIGHT, "Generate");
   generateButton.tag = "Button:  Generate";
   generateButton.setOpaque(true);
-  
+
   Font buttonFont = new Font("Arial", Font.BOLD, 2*fontHeight);
   generateButton.setFont(buttonFont);
   clearButton = new GButton(this, CLEAR_BUTTON_X, CLEAR_BUTTON_Y, CLEAR_BUTTON_WIDTH, CLEAR_BUTTON_HEIGHT, "Clear");
   clearButton.tag = "Button:  Clear";
   clearButton.setOpaque(true);
   clearButton.setFont(buttonFont);
-  runButton = new GButton(this, RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, RUN_BUTTON_HEIGHT, "Run SDK\nSketch");
+  runButton = new GButton(this, RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, RUN_BUTTON_HEIGHT, "Run IDE\nSketch");
   runButton.tag = "Button:  Run";
   runButton.setOpaque(true);
   runButton.setFont(buttonFont);
-  //runJButton = new GButton(this, RUNJ_BUTTON_X, RUNJ_BUTTON_Y, RUNJ_BUTTON_WIDTH, RUNJ_BUTTON_HEIGHT, "Run Java\nSketch");
-  //runJButton.tag = "Button:  Run Java";
-  //runJButton.setOpaque(true);
-  //runJButton.setFont(buttonFont);
+  runJButton = new GButton(this, RUNJ_BUTTON_X, RUNJ_BUTTON_Y, RUNJ_BUTTON_WIDTH, RUNJ_BUTTON_HEIGHT, "Run\nSketch");
+  runJButton.tag = "Button:  Run Sketch";
+  runJButton.setOpaque(true);
+  runJButton.setFont(buttonFont);
   saveFolderButton = new GButton(this, SAVE_FOLDER_BUTTON_X, SAVE_FOLDER_BUTTON_Y, SAVE_FOLDER_BUTTON_WIDTH, SAVE_FOLDER_BUTTON_HEIGHT, "Save\nFolder");
   saveFolderButton.tag = "Button:  Save Folder";
   saveFolderButton.setOpaque(true);
@@ -245,11 +250,14 @@ void setup() {
   chatSketchButton.tag = "Button:  Sketch Chat";
   chatSketchButton.setOpaque(true);
   chatSketchButton.setFont(buttonFont);
-  
+
   //if (DEBUG_TEST) {
   //  lines1 = loadStrings("input1.txt");
   //  lines2 = loadStrings("input2.txt");
   //}
+
+  lastKeyCode = KEYCODE_F4;
+  lastKey = 0;
 }
 
 public String getCompletion(String promptStr) {
@@ -427,36 +435,36 @@ public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
   }
 }
 
-public void handleButtonEvents(GButton button, GEvent event) { 
+public void handleButtonEvents(GButton button, GEvent event) {
   // Folder selection
   if (button == generateButton) {
     println("Button Generate pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_ENTER;
   } else if (button == runButton) {
-      println("Button Run pressed");
+    println("Button Run pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F10;
-  //} else if (button == runJButton) {
-  //    println("Button Run pressed");
-  //  lastKey = 0;
-  //  lastKeyCode = KEYCODE_F11;
+  } else if (button == runJButton) {
+    println("Button Run pressed");
+    lastKey = 0;
+    lastKeyCode = KEYCODE_F11;
   } else if (button == chatButton) {
-      println("Button Chat pressed");
+    println("Button Chat pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F2;
   } else if (button == chatSketchButton) {
-      println("Button Chat Sketch pressed");
+    println("Button Chat Sketch pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F4;
   } else if (button == clearButton) {
-      println("Button Clear pressed");
-      promptArea.setText("");  
-  }  else if (button == saveFolderButton) {
-      println("saveFolder selection pressed");
-      lastKey = 0;
-      lastKeyCode = KEYCODE_F9;
-  }  
+    println("Button Clear pressed");
+    promptArea.setText("");
+  } else if (button == saveFolderButton) {
+    println("saveFolder selection pressed");
+    lastKey = 0;
+    lastKeyCode = KEYCODE_F9;
+  }
 }
 
 // animation section

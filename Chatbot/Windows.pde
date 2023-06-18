@@ -1,7 +1,7 @@
-// Uncomment this file to build Windows application, comment Android.pde file
+// Uncomment this file to build Windows application, comment out Android.pde file
 // Build for windows with Java mode
-// Accounts for code differences between Android and Java sketch builds
-private final static int buildMode = JAVA_MODE; 
+// Accounts for code differences between Android and Java chatbot sketch builds
+private final static int buildMode = JAVA_BUILD_MODE; 
 
 
 String saveFolder = "output"; // default output folder location relative to sketch path
