@@ -2,7 +2,7 @@
 A Processing Sketch Chatbot Assistant for sketch code generation using the Processing IDE
 
 ## Introduction
-The Processing Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
+The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
 in generating and running code from responses to
 prompts sent to the OpenAI ChatGpt service using Java based API (Application Program Interface). 
 This respository is work in progress and it only implements essential features to implement a chat prompt request
