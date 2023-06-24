@@ -14,9 +14,9 @@ It requires an OpenAI API key subscription from OpenAI.org.
 Chat responses cause an instance of the sketch to be run with the IDE when a "Run" key is pressed.
 
 ## Background
-I'm a Processing user since 2010 and software engineer since 1966 when I starting working part-time in college.
-To learn more about the AI and machine learning revolution going on now, I created here a code assistant chatbot using Java API calls to 
-OpenAI.org. My chatbot application could be modified for other chatbot application uses, but I chose code generation specifically.
+I'm a Processing user since 2010 and retired software engineer who likes to code.
+To learn more about the AI and machine learning revolution going on now, I created here a Processing sketch code assistant chatbot using Java API calls to OpenAI.org. 
+My chatbot application could be modified for other chatbot application uses.
 Only a small number of the API calls are invoked.
 
 ## Usage
