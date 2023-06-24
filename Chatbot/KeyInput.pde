@@ -304,15 +304,16 @@ boolean updateKey() {
     break;
   case KEYCODE_F7:
     break;
-  case KEYCODE_F8:
+  case KEYCODE_F11:
     println("F8 executing file: "+execFn);
     if (execFn != null) execSketch(execFn);
     break;
   case KEYCODE_F9:
     selectSaveFolder();
     break;
-  case KEYCODE_F11:
+  case KEYCODE_F8:
     forceExecJFn = true;
+    // fall through
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
     println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
@@ -329,7 +330,7 @@ boolean updateKey() {
         if (execFn[2].equals(".java")) {
           execJava(execFn[0], execFn[1]);
         } else {
-          execSketch(execFn);
+          execPSketch(execFn);
         }
       }
     }

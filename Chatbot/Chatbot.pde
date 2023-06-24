@@ -84,8 +84,8 @@ int CHAT_SKETCH_BUTTON_HEIGHT;
 
 boolean screenshot = false;
 int screenshotCounter = 1;
-static final String TITLE = "Processing Chatbot Using OpenAI API - Java";
-static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch (default). Use ESC key to exit. ";
+static final String TITLE = "Processing Sketch Chatbot Using OpenAI API - Java";
+static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
 volatile boolean start = false;
 volatile boolean ready = false;
 volatile boolean first = true;

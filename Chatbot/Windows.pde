@@ -34,7 +34,7 @@ void getFocus() {
 }
 
 String getToken() {
-  return System.getenv("OPENAI_TOKEN");
+  return System.getenv("OPENAI_API_KEY");
 }
 
 void openFileSystem() {

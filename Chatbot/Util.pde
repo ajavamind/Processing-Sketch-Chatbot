@@ -65,6 +65,25 @@ void execSketch(String[] info) {
   println("execSketch "+filenamePath);
   if (filenamePath == null) return;
   try {
+    if (DEBUG) println("processing-java.exe --sketch="+ filenamePath 
+      + " --output=" + filenamePath + "test" + " --force --run");
+
+    Process process = Runtime.getRuntime().exec("processing-java.exe --sketch="+ filenamePath 
+      + " --output=" + filenamePath + "test" + " --force --run");
+    //process.waitFor();
+  }
+  catch (Exception ex) {
+  }
+}
+
+// calls Processing SDK exe
+void execPSketch(String[] info) {
+  String filenamePath = info[0];
+  String name = info[1];
+  String codeType = info[2];
+  println("execSketch "+filenamePath);
+  if (filenamePath == null) return;
+  try {
     if (DEBUG) println("processing.exe "+ filenamePath + File.separator + name + codeType);
 
     Process process = Runtime.getRuntime().exec("processing.exe "+ filenamePath + File.separator + name + codeType);
