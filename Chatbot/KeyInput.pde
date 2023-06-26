@@ -230,7 +230,8 @@ boolean updateKey() {
     println("CHAT_MODE");
     context.clear();
     prompt = "";
-    ChatMessage chatMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), "You are a friendly assistant.");
+    String gmsg = combineStrings(loadStrings("preprompt" + File.separator + "generalPrompt.txt"));
+    ChatMessage chatMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), gmsg);
     context.add(chatMsg);
     ChatMessage userMsg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
     context.add(userMsg);
@@ -242,28 +243,26 @@ boolean updateKey() {
     break;
   case KEYCODE_F3:
     mode = CHAT_MODE;
-    //println("CHAT_MODE Pizza restaurant automated ordering service");
-    //context.clear();
-    //ChatMessage sampleMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), """
-    //You are ...Bot,
-    //context.add(sampleMsg);
-    //prompt = "";
-    //ChatMessage user0Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    //context.add(user0Msg);
-    //if (!start) {
-    //  errorText = null;
-    //  ready = false;
-    //  start = true;
-    //}
+    println("CHAT_MODE");
+    context.clear();
+    prompt = "";
+    String msg = combineStrings(loadStrings("preprompt" + File.separator + "systemPrompt.txt"));
+    ChatMessage chat0Msg = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+    context.add(chat0Msg);
+    ChatMessage user0Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+    context.add(user0Msg);
+    if (!start) {
+      errorText = null;
+      ready = false;
+      start = true;
+    }
     break;
-  case KEYCODE_F4:
+ case KEYCODE_F4:
     mode = CHAT_MODE;
     println("CHAT_MODE Programming.org sketch coder, java programming language assistant");
     context.clear();
-    ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), """You are a processing.org java programming language assistant.
-    Your respond with name 'Sketch Chatbot'.
-      When you generate code, output a processing java sketch and in setup use a gray background with black fill.
-      """);
+    String smsg = combineStrings(loadStrings("preprompt" + File.separator + "processingPrompt.txt"));
+    ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), smsg);
     context.add(systemMessage);
     prompt = "";
     ChatMessage user1Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);

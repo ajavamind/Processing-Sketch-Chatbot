@@ -9,3 +9,5 @@ application.windows64
 application.macosx
 out
 Chatbot/output
+Chatbot/test
+

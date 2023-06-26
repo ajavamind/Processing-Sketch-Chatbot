@@ -33,6 +33,9 @@ void getFocus() {
   }
 }
 
+/**
+ * get OPEN AI token from Windows environment variable
+ */
 String getToken() {
   return System.getenv("OPENAI_API_KEY");
 }
@@ -40,8 +43,9 @@ String getToken() {
 void openFileSystem() {
 }
 
+// on screen keyboard
 void checkKeyboard() {
-  // do nothing
+  // do nothing for Windows
 }
 
 void setTitle(String str) {

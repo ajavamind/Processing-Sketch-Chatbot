@@ -1,0 +1,8 @@
+generate a pde that runs in the IDE.  the following tokens must be replaced such that
+
+FILENAME is the sketch file name including the file extension,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```       

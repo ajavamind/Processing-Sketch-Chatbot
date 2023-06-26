@@ -37,6 +37,14 @@ public static String[] parseString(String input) {
   return lines;
 }
 
+public static String combineStrings(String[] strings) {
+    StringBuilder result = new StringBuilder();
+    for (String s : strings) {
+        result.append(s);
+    }
+    return result.toString();
+}
+
 String getDateTime() {
   Date current_date = new Date();
   String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(current_date);
@@ -57,7 +65,7 @@ String number(int index) {
   return String.valueOf(index);
 }
 
-// calls Processing SDK exe
+// calls Processing IDE exe
 void execSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
@@ -76,7 +84,7 @@ void execSketch(String[] info) {
   }
 }
 
-// calls Processing SDK exe
+// calls Processing IDE exe
 void execPSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
@@ -313,4 +321,9 @@ void setEXIFtool(String filename) {
   }
   catch (Exception ex) {
   }
+}
+
+String getPrompt(String filename) {
+  String[] lines = loadStrings("preprompt" + File.separator + filename);
+  return combineStrings(lines);
 }
