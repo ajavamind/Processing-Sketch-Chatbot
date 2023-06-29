@@ -1,6 +1,6 @@
 /**
  * Processing Sketch Chatbot
- * Calls OpenAI-Java API with prompt 
+ * Calls OpenAI-Java API with prompt
  */
 
 import java.time.Duration;
@@ -17,10 +17,8 @@ private static final boolean DEBUG_TEST = false;
 private static final int JAVA_BUILD_MODE = 0;
 private static final int ANDROID_BUILD_MODE = 1;
 
-
 float appFrameRate = 30; // draw frames per second, used for animation
 String RENDERER = JAVA2D; // default for setup size()
-
 
 boolean screenshot = false;
 int screenshotCounter = 1;
@@ -28,7 +26,7 @@ static final String TITLE = "Processing Sketch Chatbot Using OpenAI API - Java";
 static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
 volatile boolean start = false;
 volatile boolean ready = false;
-volatile boolean first = true;
+//volatile boolean first = true;
 
 int statusHeight;
 int errorMessageHeight;
@@ -42,7 +40,8 @@ List<String[]> responses;
 String response;
 
 String sessionDateTime;
-int fileCounter = 1;
+int fileCounter = 0;
+int chatCounter = 0;
 String lastResponseFilename;
 
 //// debug test lines for formatting
@@ -67,7 +66,7 @@ void setup() {
   setTitle(TITLE);
   sessionDateTime = getDateTime();
   initGUI();
-  
+
   setOrientation();
   getFocus();
 
@@ -75,8 +74,8 @@ void setup() {
   if (DEBUG) println("saveFolderPath="+saveFolderPath);
 
   initAI();
-  
-  // set start flag to begin generation in the draw() animation loop
+
+  // set start flag false to wait for generation in the draw() animation loop
   start = false;
   ready = false;
 
@@ -89,14 +88,14 @@ void setup() {
   response = null;
 
   //if (DEBUG_TEST) {
-    //lines1 = loadStrings("debug" + File.separator + "input1.txt");
-    //printArray(lines1);
-    //lines2 = loadStrings("debug" + File.separator + "input2.txt");
-    //printArray(lines2);
+  //lines1 = loadStrings("debug" + File.separator + "input1.txt");
+  //printArray(lines1);
+  //lines2 = loadStrings("debug" + File.separator + "input2.txt");
+  //printArray(lines2);
   //}
 
   // set initial action using keyCode with updateKey() in draw()
-  lastKeyCode = KEYCODE_F4;
+  lastKeyCode = 0;  // none
   lastKey = 0;
 }
 
@@ -105,10 +104,12 @@ void draw() {
   background(224); // off white background
   fill(0); // black text
 
-  checkKeyboard();
+  checkKeyboard();  // should we display soft on screen keyboard?
+
   // check for key or mouse input and process on this draw thread
   boolean update = updateKey();
   if (update) {
+    // place holder for possible changes to draw
     if (DEBUG) println("updateKey = true");
   }
 
@@ -147,14 +148,22 @@ void draw() {
     String[] responseLines = parseString(response);
     responses.add(responseLines);
 
-    int n = prompt.length();
-    if (n > 16 ) n = 16;
-    String prefix = prompt.substring(0, n);
-    prefix.replaceAll(" ", "_");
-    //String fn = "ChatGPT_" + sessionDateTime + "_" + "PromptResponse_"+number(fileCounter++);
-    String fn = prefix+ "_" + sessionDateTime + "_" + number(fileCounter++);
-    lastResponseFilename = saveText(promptLines, responseLines, fn);
-    if (DEBUG) println("save prompt and responses in a file "+ lastResponseFilename);
+    //int n = prompt.length();
+    //if (n > 16 ) n = 16;
+    //String prefix = prompt.substring(0, n);
+    //prefix.replaceAll(" ", "_");
+    String prefix = "SketchChatbot";
+    //String fn = prefix + sessionDateTime + "_" + number(chatCounter);
+    // make folder with chatcounter
+    String folder = prefix+ "_" + sessionDateTime + "_" + number(chatCounter);
+    File theDir = new File(saveFolderPath + File.separator + folder);
+    if (!theDir.exists()) {
+      theDir.mkdirs();
+      println("make folder " + saveFolderPath + File.separator +folder);
+    }
+    String fileName = "ChatSketches" + "_" + sessionDateTime + "_" + number(chatCounter);
+    lastResponseFilename = saveLogText(promptLines, responseLines, folder, fileName);
+    if (DEBUG) println("save prompt and responses in a log file in folder: "+ lastResponseFilename);
 
     switch(mode) {
     case DEFAULT_MODE:
@@ -168,11 +177,12 @@ void draw() {
     response = null;
   }
 
+  // Update animation if active
   doAnimation(animation);
 
   // show any errors from the request
   showError(errorText);
 
-  // Drawing finished, check for screenshot command request
+  // Drawing finished, check for screenshot request
   saveScreenshot();
 } // draw

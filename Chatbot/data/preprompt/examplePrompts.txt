@@ -1,0 +1,61 @@
+Code a sketch that plays a complete snake game. Name the sketch SnakeGame. The game is written in java for the Processing IDE. 
+Code all needed methods, not placeholders. 
+Use Keyboard control. 
+When the snake is outside the boundaries of the screen, reverse direction.  
+Use green for food and red for the snake.
+use a screen size of 800 by 800. make the food and snake sizes to be 40 pixels. 
+set the framerate to a moderate speed.
+make the snake larger by one square after it eats food. 
+
+Generate a pde that runs in the IDE.  the following tokens must be replaced such that
+FILENAME is the sketch file name including the file extension with whitespace separation, no quotes,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```   
+
+
+Code a sketch that plays a complete snake game. Name the sketch SnakeGame. The game is written in java for the Processing IDE. MVC components split in separate files. Code all needed methods for MVC. Use Keyboard control. When the snake is outside the boundaries of the screen, reverse direction.  Use green for food and red for the snake.
+use a screen size of 800 by 800. make the food and snake sizes to be 40 pixels. set the framerate to 30.
+make the snake larger by one square after it eats food. 
+
+Generate a pde that runs in the IDE.  the following tokens must be replaced such that
+FILENAME is the sketch file name including the file extension with whitespace separation, no quotes,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```   
+
+
+Code a sketch that plays a complete snake game. Name the sketch SnakeGame. 
+The game is written in p5.js javascript for the Processing IDE. 
+Use model, view, controller design. 
+Code all needed methods for MVC. 
+Use Keyboard control. 
+When the snake is outside the boundaries of the screen, reverse direction.  
+Use green for food and red for the snake.
+use a screen size of 800 by 800. make the food and snake sizes to be 40 pixels. set the framerate to 30.
+make the snake larger by one square after it eats food. 
+
+Generate a pde that runs in the IDE.  the following tokens must be replaced such that
+FILENAME is the sketch file name including the file extension with whitespace separation, no quotes,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```   
+
+
+Code a sketch named SnakeGame in python. use MVC components . Code all needed methods for MVC. Use Keyboard control. When the snake is outside the boundaries of the screen, reverse direction.  Use green for food and red for the snake.
+use a screen size of 800 by 800. make the food and snake sizes to be 40 pixel. set the framerate to 30.
+make the snake snake larger after it eats food. detect collision of snake and food with half the size of the food.
+
+Generate code that runs in the IDE.  the following tokens must be replaced such that
+FILENAME is the sketch file name including the file extension with whitespace separation, no quotes, no special characters,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```   

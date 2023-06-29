@@ -1,6 +1,8 @@
-/** OpenAI API interface
+/** 
+ * OpenAI API interface
  * OpenAI java library in code folder is from https://github.com/TheoKanning/openai-java
  */
+
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
@@ -30,6 +32,13 @@ void initAI() {
   String token = getToken();
   // create the OPENAI API service
   service = new OpenAiService(token, CHAT_TIMEOUT);
+}
+
+// initialize for new chat
+void initChat() {
+  chatCounter++;
+  fileCounter = 0;
+  mode = CHAT_MODE;
 }
 
 void addUserMessage(String promptStr) {

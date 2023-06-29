@@ -6,9 +6,52 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
-// save prompt and response lines in a text or html file
-String saveText(String[] prompts, String[] responses, String filenamePath) {
+void newOrAppend(String fileName, String[] lines) {
+  File file;
+
+  try {
+    println(fileName);
+    file = new File(fileName);
+    if (!file.exists()) {
+      createNewFile(fileName, lines);
+    } else {
+      appendToFile(fileName, lines);
+    }
+  }
+  catch (FileNotFoundException e) {
+    e.printStackTrace();
+  }
+  catch (IOException e) {
+    e.printStackTrace();
+  }
+}
+
+void createNewFile(String fileName, String[] lines) throws IOException {
+  FileWriter writer = new FileWriter(fileName);
+  for (String line : lines) {
+    writer.write(line + System.lineSeparator());
+  }
+  writer.close();
+}
+
+void appendToFile(String fileName, String[] lines) throws IOException {
+  for (String line : lines) {
+    Files.write(Paths.get(fileName), (line + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+  }
+}
+
+// save prompt and response lines in a text or html file and
+// generate Processing sketch folder and store all files extracted into the folder
+String saveLogText(String[] prompts, String[] responses, String folderPath, String name) {
+  String fileLogType = ".log";
   String fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
   if (DEBUG) println("saveText number of lines: "+len);
@@ -26,8 +69,9 @@ String saveText(String[] prompts, String[] responses, String filenamePath) {
   if (responses[0].startsWith("<!DOCTYPE html")) {
     fileType = ".html";
   }
-  String filename = saveFolderPath + File.separator + filenamePath + fileType;
-  saveStrings(filename, list );
+  String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
+  saveStrings(filename + fileType, list);
+  newOrAppend(filename + fileLogType, list);
   return filename;
 }
 
@@ -38,11 +82,11 @@ public static String[] parseString(String input) {
 }
 
 public static String combineStrings(String[] strings) {
-    StringBuilder result = new StringBuilder();
-    for (String s : strings) {
-        result.append(s);
-    }
-    return result.toString();
+  StringBuilder result = new StringBuilder();
+  for (String s : strings) {
+    result.append(s);
+  }
+  return result.toString();
 }
 
 String getDateTime() {
@@ -73,10 +117,10 @@ void execSketch(String[] info) {
   println("execSketch "+filenamePath);
   if (filenamePath == null) return;
   try {
-    if (DEBUG) println("processing-java.exe --sketch="+ filenamePath 
+    if (DEBUG) println("processing-java.exe --sketch="+ filenamePath
       + " --output=" + filenamePath + "test" + " --force --run");
 
-    Process process = Runtime.getRuntime().exec("processing-java.exe --sketch="+ filenamePath 
+    Process process = Runtime.getRuntime().exec("processing-java.exe --sketch="+ filenamePath
       + " --output=" + filenamePath + "test" + " --force --run");
     //process.waitFor();
   }
@@ -117,8 +161,12 @@ void execJava(String filenamePath, String name) {
 int sketchCounter = 0;
 String sketchNamePrefix = "sketch";
 
+/**
+ * filenamePath is chat folder
+ * now create sketch folder in chatfolder
+ */
 String[] saveSketch(String filenamePath) {
-  println("saveSketch "+filenamePath);
+  println("saveSketch folder: "+filenamePath);
   if (filenamePath == null) return null;
   boolean pdeType = true;
   boolean androidMode = false;
@@ -126,7 +174,9 @@ String[] saveSketch(String filenamePath) {
   String name = null;
   String codeType = ".pde";
   String commentPrefix = "// ";
-  String[] lines = loadStrings(filenamePath);
+  String[] lines = loadStrings(filenamePath+ ".txt");
+  String[] sketchPrefix = getSketchName(lines);
+
   if (isPython(lines)) {
     commentPrefix = "# ";
   } else if (isJavaApp(lines)) {
@@ -171,19 +221,24 @@ String[] saveSketch(String filenamePath) {
     }
   }
   sketchCounter++;
+  if (sketchPrefix == null) {
+    name = sketchNamePrefix + number(sketchCounter);
+  } else {
+    name = sketchPrefix[0];
+  }
   String folder = null;
   if (pdeType) {
     // make folder
-    String pre = "P";
-    folder = saveFolderPath + File.separator + pre + sessionDateTime + "_" + sketchNamePrefix + number(sketchCounter);
-    println(folder);
+    folder = filenamePath + File.separator +  name;
+    if (DEBUG) println("create folder: "+folder);
     File theDir = new File(folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
     }
-    name = pre + sessionDateTime + "_" + sketchNamePrefix + number(sketchCounter);
+
     String fnName = folder + File.separator + name + codeType;
     saveStrings(fnName, lines);
+    if (DEBUG) println("saveStrings at: "+fnName);
 
     // copy mode type information
     if (codeType.equals(".pde")) {
@@ -205,7 +260,7 @@ String[] saveSketch(String filenamePath) {
     // get filename
     //name = findClassNameRegex(lines);
     //if (name == null) return null;
-    folder = saveFolderPath + File.separator ;
+    folder = saveFolderPath + File.separator;
     String fnName = folder  + name + codeType;
     saveStrings(fnName, lines);
   }
@@ -213,6 +268,43 @@ String[] saveSketch(String filenamePath) {
   info[1] = name;
   info[2] = codeType;
   return info;
+}
+
+// get sketch name which is line before first line starting with 3 backticks java
+String[] getSketchName(String[] lines) {
+  String[] result = new String[10];
+  int len = 0;
+
+  for (int i=0; i<lines.length; i++) {
+    if (lines[i].startsWith("```java")) {
+      if (lines[i-1] == null) {
+        lines[i-1] = "";
+        println("NuLL line????");
+      } else {
+        result[len] = lines[i-1];
+      }
+      // break line into tokens and pick token that ends in .pde
+      if (result[len].contains(".pde")) {
+        String[] split = splitTokens(result[len]);
+        for (String s : split) {
+          if (s.contains(".pde")) {
+            result[len] = result[len].substring(0, result[len].lastIndexOf(".pde"));
+            // check for valid folder name
+            len++;
+            break;
+          } else {
+            result[len] = null;
+          }
+        }
+      }
+    }
+  }
+  //if (DEBUG) {
+  //  println("getSketchName=");
+  //  printArray(result);
+  //}
+  if (len == 0 || result[0]==null) result = null;
+  return result;
 }
 
 void copyFiles(String mode, String folder) {

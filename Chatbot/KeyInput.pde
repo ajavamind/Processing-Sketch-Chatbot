@@ -222,11 +222,13 @@ boolean updateKey() {
     //  }
     //  break;
   case KEYCODE_F1:
+    initChat();
     mode = DEFAULT_MODE;
     println("DEFAULT_MODE");
     break;
   case KEYCODE_F2:
     mode = CHAT_MODE;
+    initChat();
     println("CHAT_MODE");
     context.clear();
     prompt = "";
@@ -243,6 +245,7 @@ boolean updateKey() {
     break;
   case KEYCODE_F3:
     mode = CHAT_MODE;
+    initChat();
     println("CHAT_MODE");
     context.clear();
     prompt = "";
@@ -257,9 +260,10 @@ boolean updateKey() {
       start = true;
     }
     break;
- case KEYCODE_F4:
+  case KEYCODE_F4:
     mode = CHAT_MODE;
-    println("CHAT_MODE Programming.org sketch coder, java programming language assistant");
+    initChat();
+    println("CHAT_MODE F4");
     context.clear();
     String smsg = combineStrings(loadStrings("preprompt" + File.separator + "processingPrompt.txt"));
     ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), smsg);
@@ -267,18 +271,15 @@ boolean updateKey() {
     prompt = "";
     ChatMessage user1Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
     context.add(user1Msg);
-    if (!first) {
-      if (!start) {
-        errorText = null;
-        ready = false;
-        start = true;
-      }
-    } else {
-      first = false;
+    if (!start) {
+      errorText = null;
+      ready = false;
+      start = true;
     }
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
+    initChat();
     println("CHAT_MODE Programming.org stereoscopic 3D vision sketch coder, java programming language assistant");
     context.clear();
     ChatMessage system2Message = new ChatMessage(ChatMessageRole.SYSTEM.value(), """You are a processing.org java programming language assistant.
@@ -316,7 +317,7 @@ boolean updateKey() {
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
     println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
-
+    println("lastResponseFilename="+lastResponseFilename);
     execFn = saveSketch(lastResponseFilename);
     for (int i=0; i<execFn.length; i++) {
       println("using file: "+execFn[i]);

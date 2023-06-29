@@ -866,7 +866,9 @@ public class GTextArea extends GEditableTextControl {
 		// Do we have to move cursor to start of next line
 		if(newline) {
 			if(pos >= stext.length()){
-				stext.insertCharacters(" ", pos);
+        //System.out.println("changeText pos="+pos + " stext.length()="+stext.length());
+        //stext.insertCharacters(" ", pos);   // StringIndexOutOfBoundsException: begin 0, end 1313, length 1302 bug
+        stext.insertCharacters(" ", stext.length());  // fix bug in above line 
 				stext.getLines(buffer.g2);
 			}
 			moveCaretRight(endTLHI);
