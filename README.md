@@ -1,6 +1,12 @@
 # Processing-Sketch-Chatbot
-A Processing Sketch Chatbot Assistant for sketch code generation and learning using the Processing Development Environment - PDE, 
-an IDE - Integrated development environment for code edit, run, and debug. Sketches are small applications for artistic projects. 
+A Processing Sketch Chatbot Assistant for sketch code generation and learning using the Processing Development Environment - PDE.
+
+Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
+with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
+It's primarily used for creating graphics, animations, and interactive experiences.
+PDE is a Processing sketch application. 
+
+The Processing IDE, Integrated development environment, is a code editor with debug and run capabilities. 
 
 ## Introduction
 The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
