@@ -48,7 +48,7 @@ String lastResponseFilename;
 //String[] lines1;
 //String[] lines2;
 
-private static final int DEFAULT_MODE = 0; // single prompt, single response, no chat no context
+private static final int DEFAULT_MODE = 0; // single prompt, single response, no chat no system message context
 private static final int CHAT_MODE = 1; // multiple prompts, chat remembers prompt/responses, saves context
 int mode = CHAT_MODE;
 
@@ -184,5 +184,6 @@ void draw() {
   showError(errorText);
 
   // Drawing finished, check for screenshot request
-  saveScreenshot();
+  saveScreenshot();  // IMPORTANT does not show G4P GUI yet
+  
 } // draw

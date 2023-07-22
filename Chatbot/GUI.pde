@@ -193,10 +193,12 @@ void initGUI() {
   chatButton.tag = "Button:  Chat";
   chatButton.setOpaque(true);
   chatButton.setFont(buttonFont);
+  chatButton.setTipText("Function Key F2");
   chatSketchButton = new GButton(this, CHAT_SKETCH_BUTTON_X, CHAT_SKETCH_BUTTON_Y, CHAT_SKETCH_BUTTON_WIDTH, CHAT_SKETCH_BUTTON_HEIGHT, "Sketch\nChat");
   chatSketchButton.tag = "Button:  Sketch Chat";
   chatSketchButton.setOpaque(true);
   chatSketchButton.setFont(buttonFont);
+  chatSketchButton.setTipText("Function Key F4");
 
 }
 
@@ -209,30 +211,30 @@ public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
 
 public void handleButtonEvents(GButton button, GEvent event) {
   // Folder selection
-  if (button == generateButton) {
+  if (button == generateButton && event == GEvent.CLICKED) {
     println("Button Generate pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_ENTER;
-  } else if (button == runButton) {
+  } else if (button == runButton && event == GEvent.CLICKED) {
     println("Button Run pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F10;
-  } else if (button == runJButton) {
+  } else if (button == runJButton && event == GEvent.CLICKED) {
     println("Button Run pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F11;
-  } else if (button == chatButton) {
+  } else if (button == chatButton && event == GEvent.CLICKED) {
     println("Button Chat pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F2;
-  } else if (button == chatSketchButton) {
+  } else if (button == chatSketchButton && event == GEvent.CLICKED) {
     println("Button Chat Sketch pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F4;
-  } else if (button == clearButton) {
+  } else if (button == clearButton && event == GEvent.CLICKED) {
     println("Button Clear pressed");
     promptArea.setText("");
-  } else if (button == saveFolderButton) {
+  } else if (button == saveFolderButton && event == GEvent.CLICKED) {
     println("saveFolder selection pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F9;

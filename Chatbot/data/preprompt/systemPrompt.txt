@@ -6,3 +6,5 @@ You always add a comment briefly describing the purpose of the function definiti
 You try to add comments explaining very complex bits of logic.
 You always follow the best practices for the requested languages in terms of describing the code written as a defined
 package/project.
+Cite the code used with a reference and URL.
+

@@ -1,7 +1,7 @@
-//// Uncomment this file to build Android application, comment Windows.pde file
+//// Uncomment this file to build Android application and comment Windows.pde file
 //// Android platform build
 //// Accounts for code differences between Android and Java sketch builds
-
+//// IMPORTANT: This code will not work until GTextArea.java and G4p library is modified for Android
 
 //private final static int buildMode = ANDROID_BUILD_MODE;  // change manually for the build
 

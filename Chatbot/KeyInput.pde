@@ -222,83 +222,29 @@ boolean updateKey() {
     //  }
     //  break;
   case KEYCODE_F1:
+    mode = DEFAULT_MODE; // Single prompt response, no chat, no system message
+    println("CHAT_MODE F1");
     initChat();
-    mode = DEFAULT_MODE;
-    println("DEFAULT_MODE");
     break;
   case KEYCODE_F2:
     mode = CHAT_MODE;
-    initChat();
-    println("CHAT_MODE");
-    context.clear();
-    prompt = "";
-    String gmsg = combineStrings(loadStrings("preprompt" + File.separator + "generalPrompt.txt"));
-    ChatMessage chatMsg = new ChatMessage(ChatMessageRole.SYSTEM.value(), gmsg);
-    context.add(chatMsg);
-    ChatMessage userMsg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    context.add(userMsg);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
-    }
+    println("CHAT_MODE F2");
+    generalChat();
     break;
   case KEYCODE_F3:
     mode = CHAT_MODE;
-    initChat();
-    println("CHAT_MODE");
-    context.clear();
-    prompt = "";
-    String msg = combineStrings(loadStrings("preprompt" + File.separator + "systemPrompt.txt"));
-    ChatMessage chat0Msg = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
-    context.add(chat0Msg);
-    ChatMessage user0Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    context.add(user0Msg);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
-    }
+    println("CHAT_MODE F3");
+    processingAltChat();
     break;
   case KEYCODE_F4:
     mode = CHAT_MODE;
-    initChat();
     println("CHAT_MODE F4");
-    context.clear();
-    String smsg = combineStrings(loadStrings("preprompt" + File.separator + "processingPrompt.txt"));
-    ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), smsg);
-    context.add(systemMessage);
-    prompt = "";
-    ChatMessage user1Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    context.add(user1Msg);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
-    }
+    processingChat();
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
-    initChat();
-    println("CHAT_MODE Programming.org stereoscopic 3D vision sketch coder, java programming language assistant");
-    context.clear();
-    ChatMessage system2Message = new ChatMessage(ChatMessageRole.SYSTEM.value(), """You are a processing.org java programming language assistant.
-    Your respond with name 'Sketch 3D'.
-      When asked to code, generate a processing java sketch with setup using a gray background with black fill.
-      You use a screen size of 1920 by 1080. Clear the background in draw().
-      You use a camera view to determine the position of the output centered in each half of the screen.
-      You generate output for the left half of the screen and the same output on right half of the screen offset by the camera.
-      """
-    );
-    context.add(system2Message);
-    prompt = "";
-    ChatMessage user2Msg = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    context.add(user2Msg);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
-    }
+    println("CHAT_MODE F5");
+    processing3DChat();
     break;
   case KEYCODE_F6:
     break;
@@ -351,7 +297,7 @@ boolean updateKey() {
   return status;
 }
 
-// TODO reference code in case app wants to launch a companion sketch window
+// TODO reference code for launching a companion sketch window
 //String[] args ={this.toString()};  //Need to attach current name which is stripped by the new sketch
 //String[] newArgs = {name, str(handle)};
 //SecondApplet sa = new SecondApplet();

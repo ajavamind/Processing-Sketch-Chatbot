@@ -1,0 +1,22 @@
+Code a sketch that plays a complete snake game in 3D. 
+Name the sketch SnakeGame3D. 
+The game is written in java for the Processing IDE. 
+Code all needed methods, not placeholders. 
+Use mouse control so that the snake direction is the same as mouse direction change.
+Use mouse wheel to control depth, with zoom in and out. 
+Use a screen size of 1080 by 1080 and a z axis of 1080.
+When the snake is outside the boundaries of the screen, reverse direction.  
+Use green for food and red for the snake.
+Use a screen size of 1080 by 1080. 
+Make the food and snake sizes to a box of 40 pixels. 
+set the framerate to a moderate speed.
+make the snake larger by one box after it eats food by colliding with the food box. 
+
+Generate a pde that runs in the IDE.  the following tokens must be replaced such that
+FILENAME is the sketch file name including the file extension with whitespace separation, no quotes,
+LANG is the markup code block language for the code's language, and CODE is the code:
+FILENAME
+```LANG
+CODE
+```   
+

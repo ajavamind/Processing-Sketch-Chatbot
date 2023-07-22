@@ -1,4 +1,4 @@
-/** 
+/**
  * OpenAI API interface
  * OpenAI java library in code folder is from https://github.com/TheoKanning/openai-java
  */
@@ -34,11 +34,73 @@ void initAI() {
   service = new OpenAiService(token, CHAT_TIMEOUT);
 }
 
+// General chat system message
+void generalChat() {
+  initChat();
+  context.clear();
+  prompt = "";
+  String msg = combineStrings(loadStrings("preprompt" + File.separator + "generalPrompt.txt"));
+  ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+  context.add(systemMessage);
+  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  context.add(userMessage);
+  startChat();
+}
+
+// Processing chat system message
+void processingChat() {
+  initChat();
+  context.clear();
+  String msg = combineStrings(loadStrings("preprompt" + File.separator + "processingPrompt.txt"));
+  ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+  context.add(systemMessage);
+  prompt = "";
+  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  context.add(userMessage);
+  startChat();
+}
+
+// Processing alternate chat system message
+void processingAltChat() {
+  initChat();
+  context.clear();
+  prompt = "";
+  String msg = combineStrings(loadStrings("preprompt" + File.separator + "systemPrompt.txt"));
+  ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+  context.add(systemMessage);
+  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  context.add(userMessage);
+  startChat();
+}
+
+// Processing 3D Chat system message
+void processing3DChat() {
+  initChat();
+  println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
+  context.clear();
+  String msg = combineStrings(loadStrings("preprompt" + File.separator + "processing3DPrompt.txt"));
+  ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+  context.add(systemMessage);
+  prompt = "";
+  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  context.add(userMessage);
+  startChat();
+}
+
 // initialize for new chat
 void initChat() {
   chatCounter++;
   fileCounter = 0;
   mode = CHAT_MODE;
+}
+
+void startChat() {
+  // check if ready to start
+  if (!start) {
+    errorText = null;
+    ready = false;
+    start = true;
+  }
 }
 
 void addUserMessage(String promptStr) {
