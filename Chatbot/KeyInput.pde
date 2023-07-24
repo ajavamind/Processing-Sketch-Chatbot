@@ -194,8 +194,7 @@ boolean updateKey() {
 
   switch(lastKeyCode) {
   case KEYCODE_ERROR:
-    ready = false;
-    start = false;
+    resetChat();
     break;
   case KEYCODE_LF:
     break;
@@ -203,11 +202,7 @@ boolean updateKey() {
     if (DEBUG) println("Enter");
     prompt = promptArea.getText();
     responseArea.setVisible(false);
-    if (!start) {
-      errorText = null;
-      ready = false;
-      start = true;
-    }
+    startChat();
     break;
     //case KEYCODE_PAGE_UP:
     //  if (currentPromptIndex >= 0) {
@@ -228,30 +223,32 @@ boolean updateKey() {
     break;
   case KEYCODE_F2:
     mode = CHAT_MODE;
-    println("CHAT_MODE F2");
+    if (DEBUG) println("CHAT_MODE F2");
     generalChat();
     break;
   case KEYCODE_F3:
     mode = CHAT_MODE;
-    println("CHAT_MODE F3");
-    processingAltChat();
+    if (DEBUG) println("CHAT_MODE F3");
+    processingChat();
     break;
   case KEYCODE_F4:
     mode = CHAT_MODE;
-    println("CHAT_MODE F4");
-    processingChat();
+    if (DEBUG) println("CHAT_MODE F4");
+    processingAltChat();  // custom
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
-    println("CHAT_MODE F5");
-    processing3DChat();
+    if (DEBUG) println("CHAT_MODE F5");
+    processing3DChat();   // custom
     break;
   case KEYCODE_F6:
+    mode = CHAT_MODE;
+    if (DEBUG) println("CHAT_MODE F6");
     break;
   case KEYCODE_F7:
     break;
   case KEYCODE_F11:
-    println("F8 executing file: "+execFn);
+    if (DEBUG) println("F8 executing file: "+execFn);
     if (execFn != null) execSketch(execFn);
     break;
   case KEYCODE_F9:
@@ -261,12 +258,12 @@ boolean updateKey() {
     forceExecJFn = true;
     // fall through
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
-    println("extract and save embedded code as a processing sketch file and run in IDE");
+    if (DEBUG) println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
     println("lastResponseFilename="+lastResponseFilename);
     execFn = saveSketch(lastResponseFilename);
     for (int i=0; i<execFn.length; i++) {
-      println("using file: "+execFn[i]);
+      if (DEBUG) println("using file: "+execFn[i]);
     }
     if (execFn != null) {
       if (forceExecJFn) {

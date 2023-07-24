@@ -4,13 +4,21 @@
 import g4p_controls.*;
 import java.awt.Font;
 
+static final String TITLE = "Processing Sketch Chatbot Using OpenAI API - Java";
+static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
+
 GButton generateButton;
 GButton clearButton;
 GButton runButton;
 GButton runJButton;
 GButton saveFolderButton;
-GButton chatButton;
-GButton chatSketchButton;
+GButton chat1Button;
+GButton chat2Button;
+GButton chat3Button;
+GButton chat4Button;
+GButton chat5Button;
+GButton chat6Button;
+//GButton chatSketchButton;
 GTextArea promptArea;
 GTextArea responseArea;
 
@@ -44,10 +52,32 @@ int SAVE_FOLDER_BUTTON_X;
 int SAVE_FOLDER_BUTTON_Y;
 int SAVE_FOLDER_BUTTON_WIDTH;
 int SAVE_FOLDER_BUTTON_HEIGHT;
-int CHAT_BUTTON_X;
-int CHAT_BUTTON_Y;
-int CHAT_BUTTON_WIDTH;
-int CHAT_BUTTON_HEIGHT;
+
+int CHAT1_BUTTON_X;
+int CHAT1_BUTTON_Y;
+int CHAT1_BUTTON_WIDTH;
+int CHAT1_BUTTON_HEIGHT;
+int CHAT2_BUTTON_X;
+int CHAT2_BUTTON_Y;
+int CHAT2_BUTTON_WIDTH;
+int CHAT2_BUTTON_HEIGHT;
+int CHAT3_BUTTON_X;
+int CHAT3_BUTTON_Y;
+int CHAT3_BUTTON_WIDTH;
+int CHAT3_BUTTON_HEIGHT;
+int CHAT4_BUTTON_X;
+int CHAT4_BUTTON_Y;
+int CHAT4_BUTTON_WIDTH;
+int CHAT4_BUTTON_HEIGHT;
+int CHAT5_BUTTON_X;
+int CHAT5_BUTTON_Y;
+int CHAT5_BUTTON_WIDTH;
+int CHAT5_BUTTON_HEIGHT;
+int CHAT6_BUTTON_X;
+int CHAT6_BUTTON_Y;
+int CHAT6_BUTTON_WIDTH;
+int CHAT6_BUTTON_HEIGHT;
+
 int CHAT_SKETCH_BUTTON_X;
 int CHAT_SKETCH_BUTTON_Y;
 int CHAT_SKETCH_BUTTON_WIDTH;
@@ -57,7 +87,7 @@ int CHAT_SKETCH_BUTTON_HEIGHT;
 static final int ANIMATION_STEPS = 4;
 int[] animationCounter = new int[3];
 String[] animationSequence = {"|", "/", "-", "\\"};
-int animationHeight = 96;
+int animationHeight = 96;  // font height
 static final int NO_ANIMATION = 0;
 static final int SHOW_SECONDS = 1;
 static final int SHOW_SPINNER = 2;
@@ -70,16 +100,17 @@ int animation = NO_ANIMATION;  // flag to control animation while waiting for a 
 void doAnimation(int selectAnimation) {
   fill(color(0, 0, 255));
   textSize(animationHeight);
+  String working;
   switch(selectAnimation) {
   case SHOW_SECONDS:
     int seconds = animationCounter[selectAnimation]/int(appFrameRate);
-    String working0 = str(seconds) + " ... \u221e" ;  // infinity
-    text(working0, RESPONSE_WIDTH/2- textWidth(working0)/2, RESPONSE_HEIGHT/2);
+    working = str(seconds) + " ... \u221e" ;  // infinity
+    text(working, RESPONSE_WIDTH/2- textWidth(working)/2, RESPONSE_HEIGHT/2);
     animationCounter[selectAnimation]++;
     break;
   case SHOW_SPINNER:
-    String working1 = animationSequence[animationCounter[selectAnimation]]; // Symbol sequence
-    text(working1, RESPONSE_WIDTH/2 - textWidth(working1)/2, RESPONSE_HEIGHT/2);
+    working = animationSequence[animationCounter[selectAnimation]]; // Symbol sequence
+    text(working, RESPONSE_WIDTH/2 - textWidth(working)/2, RESPONSE_HEIGHT/2);
     animationCounter[selectAnimation]++;
     if (animationCounter[selectAnimation] >= ANIMATION_STEPS) animationCounter[selectAnimation] = 0;
     break;
@@ -137,36 +168,63 @@ void initGUI() {
   RUN_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUN_BUTTON_HEIGHT = 5 * fontHeight;
   RUN_BUTTON_X = PROMPT_WIDTH + 1;
-  RUN_BUTTON_Y = 5 * fontHeight;
+  RUN_BUTTON_Y = 15 * fontHeight;
 
   RUNJ_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUNJ_BUTTON_HEIGHT = 5 * fontHeight;
   RUNJ_BUTTON_X = PROMPT_WIDTH + 1 + RUN_BUTTON_WIDTH;
-  RUNJ_BUTTON_Y = 5 * fontHeight;
+  RUNJ_BUTTON_Y = 15 * fontHeight;
 
   SAVE_FOLDER_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   SAVE_FOLDER_BUTTON_HEIGHT = 5 * fontHeight;
   SAVE_FOLDER_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
   SAVE_FOLDER_BUTTON_Y = height - 2*PROMPT_HEIGHT;
 
-  CHAT_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
-  CHAT_BUTTON_HEIGHT = 5 * fontHeight;
-  CHAT_BUTTON_X = PROMPT_WIDTH + 1;
-  CHAT_BUTTON_Y = 0;
+  CHAT1_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT1_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT1_BUTTON_X = PROMPT_WIDTH + 1;
+  CHAT1_BUTTON_Y = 0;
 
-  CHAT_SKETCH_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
-  CHAT_SKETCH_BUTTON_HEIGHT = 5 * fontHeight;
-  CHAT_SKETCH_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
-  CHAT_SKETCH_BUTTON_Y = 0;
+  CHAT2_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT2_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT2_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
+  CHAT2_BUTTON_Y = 0;
+
+  CHAT3_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT3_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT3_BUTTON_X = PROMPT_WIDTH + 1 ;
+  CHAT3_BUTTON_Y = 5 * fontHeight;
+
+  CHAT4_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT4_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT4_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
+  CHAT4_BUTTON_Y = 5 * fontHeight;
+
+  CHAT5_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT5_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT5_BUTTON_X = PROMPT_WIDTH + 1 ;
+  CHAT5_BUTTON_Y = 10 * fontHeight;
+
+  CHAT6_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  CHAT6_BUTTON_HEIGHT = 5 * fontHeight;
+  CHAT6_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
+  CHAT6_BUTTON_Y = 10 * fontHeight;
+
+  //CHAT_SKETCH_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  //CHAT_SKETCH_BUTTON_HEIGHT = 5 * fontHeight;
+  //CHAT_SKETCH_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
+  //CHAT_SKETCH_BUTTON_Y = 0;
   
-    G4P.setMouseOverEnabled(true);
+  G4P.setMouseOverEnabled(true);
   promptArea = new GTextArea(this, PROMPT_X, PROMPT_Y, PROMPT_WIDTH, PROMPT_HEIGHT, G4P.SCROLLBARS_NONE, PROMPT_WIDTH-3*int(textWidth("W")));
   promptArea.setFont(new Font("Arial", Font.BOLD, fontHeight));
   promptArea.setPromptText(INITIAL_PROMPT);
   promptArea.setOpaque(true);
+  
   responseArea = new GTextArea(this, RESPONSE_X, RESPONSE_Y, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_NONE);
   responseArea.setFont(new Font("Arial", Font.PLAIN, fontHeight));
   responseArea.setOpaque(true);
+  
   generateButton = new GButton(this, GENERATE_BUTTON_X, GENERATE_BUTTON_Y, GENERATE_BUTTON_WIDTH, GENERATE_BUTTON_HEIGHT, "Generate");
   generateButton.tag = "Button:  Generate";
   generateButton.setOpaque(true);
@@ -177,29 +235,58 @@ void initGUI() {
   clearButton.tag = "Button:  Clear";
   clearButton.setOpaque(true);
   clearButton.setFont(buttonFont);
+  
   runButton = new GButton(this, RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, RUN_BUTTON_HEIGHT, "Run IDE\nSketch");
   runButton.tag = "Button:  Run";
   runButton.setOpaque(true);
   runButton.setFont(buttonFont);
+  
   runJButton = new GButton(this, RUNJ_BUTTON_X, RUNJ_BUTTON_Y, RUNJ_BUTTON_WIDTH, RUNJ_BUTTON_HEIGHT, "Run\nSketch");
   runJButton.tag = "Button:  Run Sketch";
   runJButton.setOpaque(true);
   runJButton.setFont(buttonFont);
+  
   saveFolderButton = new GButton(this, SAVE_FOLDER_BUTTON_X, SAVE_FOLDER_BUTTON_Y, SAVE_FOLDER_BUTTON_WIDTH, SAVE_FOLDER_BUTTON_HEIGHT, "Save\nFolder");
   saveFolderButton.tag = "Button:  Save Folder";
   saveFolderButton.setOpaque(true);
   saveFolderButton.setFont(buttonFont);
-  chatButton = new GButton(this, CHAT_BUTTON_X, CHAT_BUTTON_Y, CHAT_BUTTON_WIDTH, CHAT_BUTTON_HEIGHT, "General\nChat");
-  chatButton.tag = "Button:  Chat";
-  chatButton.setOpaque(true);
-  chatButton.setFont(buttonFont);
-  chatButton.setTipText("Function Key F2");
-  chatSketchButton = new GButton(this, CHAT_SKETCH_BUTTON_X, CHAT_SKETCH_BUTTON_Y, CHAT_SKETCH_BUTTON_WIDTH, CHAT_SKETCH_BUTTON_HEIGHT, "Sketch\nChat");
-  chatSketchButton.tag = "Button:  Sketch Chat";
-  chatSketchButton.setOpaque(true);
-  chatSketchButton.setFont(buttonFont);
-  chatSketchButton.setTipText("Function Key F4");
-
+  
+  chat1Button = new GButton(this, CHAT1_BUTTON_X, CHAT1_BUTTON_Y, CHAT1_BUTTON_WIDTH, CHAT1_BUTTON_HEIGHT, "Single\nPrompt");
+  chat1Button.tag = "Button:  Single Prompt";
+  chat1Button.setOpaque(true);
+  chat1Button.setFont(buttonFont);
+  chat1Button.setTipText("Function Key F1");
+  
+  chat2Button = new GButton(this, CHAT2_BUTTON_X, CHAT2_BUTTON_Y, CHAT2_BUTTON_WIDTH, CHAT2_BUTTON_HEIGHT, "General\nChat");
+  chat2Button.tag = "Button:  Chat";
+  chat2Button.setOpaque(true);
+  chat2Button.setFont(buttonFont);
+  chat2Button.setTipText("Function Key F2");
+  
+  chat3Button = new GButton(this, CHAT3_BUTTON_X, CHAT3_BUTTON_Y, CHAT3_BUTTON_WIDTH, CHAT3_BUTTON_HEIGHT, "Sketch\nChat");
+  chat3Button.tag = "Button:  Sketch Chat";
+  chat3Button.setOpaque(true);
+  chat3Button.setFont(buttonFont);
+  chat3Button.setTipText("Function Key F3");
+  
+  chat4Button = new GButton(this, CHAT4_BUTTON_X, CHAT4_BUTTON_Y, CHAT4_BUTTON_WIDTH, CHAT4_BUTTON_HEIGHT, "Custom\nChat1");
+  chat4Button.tag = "Button:  Custom Chat1";
+  chat4Button.setOpaque(true);
+  chat4Button.setFont(buttonFont);
+  chat4Button.setTipText("Function Key F4");
+  
+  chat5Button = new GButton(this, CHAT5_BUTTON_X, CHAT5_BUTTON_Y, CHAT5_BUTTON_WIDTH, CHAT5_BUTTON_HEIGHT, "Custom\nChat2");
+  chat5Button.tag = "Button:  Custom Chat2";
+  chat5Button.setOpaque(true);
+  chat5Button.setFont(buttonFont);
+  chat5Button.setTipText("Function Key F5");
+  
+  chat6Button = new GButton(this, CHAT6_BUTTON_X, CHAT6_BUTTON_Y, CHAT6_BUTTON_WIDTH, CHAT6_BUTTON_HEIGHT, "Custom\nChat3");
+  chat6Button.tag = "Button:  Custom Chat3";
+  chat6Button.setOpaque(true);
+  chat6Button.setFont(buttonFont);
+  chat6Button.setTipText("Function Key F6");
+  
 }
 
 public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
@@ -223,14 +310,32 @@ public void handleButtonEvents(GButton button, GEvent event) {
     println("Button Run pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F11;
-  } else if (button == chatButton && event == GEvent.CLICKED) {
+  ////////////
+  } else if (button == chat1Button && event == GEvent.CLICKED) {
+    println("Button Chat pressed");
+    lastKey = 0;
+    lastKeyCode = KEYCODE_F1;
+  } else if (button == chat2Button && event == GEvent.CLICKED) {
     println("Button Chat pressed");
     lastKey = 0;
     lastKeyCode = KEYCODE_F2;
-  } else if (button == chatSketchButton && event == GEvent.CLICKED) {
+  } else if (button == chat3Button && event == GEvent.CLICKED) {
     println("Button Chat Sketch pressed");
     lastKey = 0;
+    lastKeyCode = KEYCODE_F3;
+  } else if (button == chat4Button && event == GEvent.CLICKED) {
+    println("Button Custom1 Chat pressed");
+    lastKey = 0;
     lastKeyCode = KEYCODE_F4;
+  } else if (button == chat5Button && event == GEvent.CLICKED) {
+    println("Button Custom2 Chat pressed");
+    lastKey = 0;
+    lastKeyCode = KEYCODE_F5;
+  } else if (button == chat6Button && event == GEvent.CLICKED) {
+    println("Button Custom3 Chat pressed");
+    lastKey = 0;
+    lastKeyCode = KEYCODE_F6;
+  //
   } else if (button == clearButton && event == GEvent.CLICKED) {
     println("Button Clear pressed");
     promptArea.setText("");

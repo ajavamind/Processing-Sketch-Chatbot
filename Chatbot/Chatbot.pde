@@ -3,14 +3,9 @@
  * Calls OpenAI-Java API with prompt
  */
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.Locale;
 
 private static final boolean DEBUG = true;
 private static final boolean DEBUG_TEST = false;
@@ -22,8 +17,6 @@ String RENDERER = JAVA2D; // default for setup size()
 
 boolean screenshot = false;
 int screenshotCounter = 1;
-static final String TITLE = "Processing Sketch Chatbot Using OpenAI API - Java";
-static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
 volatile boolean start = false;
 volatile boolean ready = false;
 //volatile boolean first = true;
@@ -132,13 +125,12 @@ void draw() {
     default:
       break;
     }
-    animation = SHOW_SECONDS; // allow animatins while waiting for OpenAI response to request
+    animation = SHOW_SECONDS; // allow animation while waiting for OpenAI response to request
   }
 
   // check if request response was received and ready
   if (ready) {
-    start = false;
-    ready = false;
+    resetChat();
     String[] promptLines;
     promptLines = parseString(prompt);
     prompts.add(promptLines);

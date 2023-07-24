@@ -3,6 +3,8 @@
  * OpenAI java library in code folder is from https://github.com/TheoKanning/openai-java
  */
 
+import java.time.Duration;
+
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
 import com.theokanning.openai.completion.chat.ChatCompletionChoice;
@@ -39,7 +41,10 @@ void generalChat() {
   initChat();
   context.clear();
   prompt = "";
-  String msg = combineStrings(loadStrings("preprompt" + File.separator + "generalPrompt.txt"));
+  String path = sketchPath("systemprompts") + File.separator + "generalPrompt.txt";
+  if (DEBUG) println("generalChat: " + path);
+  String msg = combineStrings(loadStrings(path));
+  if (DEBUG) println("msg="+msg);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -51,12 +56,15 @@ void generalChat() {
 void processingChat() {
   initChat();
   context.clear();
-  String msg = combineStrings(loadStrings("preprompt" + File.separator + "processingPrompt.txt"));
+  prompt = "";
+  String path = sketchPath("systemprompts") + File.separator + "processingPrompt.txt";
+  if (DEBUG) println("processingChat: " + path);
+  String msg = combineStrings(loadStrings(path));
+  if (DEBUG) println("msg="+msg);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  prompt = "";
-  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  context.add(userMessage);
+  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  //context.add(userMessage);
   startChat();
 }
 
@@ -65,11 +73,13 @@ void processingAltChat() {
   initChat();
   context.clear();
   prompt = "";
-  String msg = combineStrings(loadStrings("preprompt" + File.separator + "systemPrompt.txt"));
+  String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
+  if (DEBUG) println("customChat: " + path);
+  String msg = combineStrings(loadStrings(path));
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  context.add(userMessage);
+  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  //context.add(userMessage);
   startChat();
 }
 
@@ -78,10 +88,12 @@ void processing3DChat() {
   initChat();
   println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
-  String msg = combineStrings(loadStrings("preprompt" + File.separator + "processing3DPrompt.txt"));
+  prompt = "";
+  String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
+  if (DEBUG) println("customChat: " + path);
+  String msg = combineStrings(loadStrings(path));
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  prompt = "";
   ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
   context.add(userMessage);
   startChat();
@@ -91,9 +103,12 @@ void processing3DChat() {
 void initChat() {
   chatCounter++;
   fileCounter = 0;
-  mode = CHAT_MODE;
 }
 
+void resetChat() {
+  ready = false;
+  start = false;
+}
 void startChat() {
   // check if ready to start
   if (!start) {

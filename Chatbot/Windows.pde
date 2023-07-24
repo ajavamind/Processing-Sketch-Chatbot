@@ -7,16 +7,15 @@ private final static int buildMode = JAVA_BUILD_MODE;
 String saveFolder = "output"; // default output folder location relative to sketch path
 String saveFolderPath; // full path to save folder
 
-// request focus on main window
-
 void setOrientation() {
   orientation(PORTRAIT);
 }
 
-
-/** getFocus is called so user does not have to press mouse button or keyboard key
- over the window to get focus.
- This fixes a quirk/bug/problem with processing sketches in Java on Windows
+/**
+ * request focus on main window
+ * getFocus is called so user does not have to press mouse button or keyboard key
+ * over the window to get focus.
+ * This fixes a quirk/bug/problem with processing sketches in Java on Windows
  */
 void getFocus() {
   try {
