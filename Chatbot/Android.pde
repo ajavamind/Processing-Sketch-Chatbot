@@ -87,9 +87,9 @@
 //  }
 
 //  public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//    println("onRequestPermissionsResult "+ requestCode + " " + grantResults + " ");
+//    if (DEBUG) println("onRequestPermissionsResult "+ requestCode + " " + grantResults + " ");
 //    for (int i=0; i<permissions.length; i++) {
-//      println(permissions[i]);
+//      if (DEBUG) println(permissions[i]);
 //    }
 //  }
 
@@ -105,18 +105,18 @@
 //  void handleRead(boolean granted) {
 //    if (granted) {
 //      grantedRead = granted;
-//      println("Granted read permissions.");
+//      if (DEBUG) println("Granted read permissions.");
 //    } else {
-//      println("Does not have permission to read external storage.");
+//      if (DEBUG) println("Does not have permission to read external storage.");
 //    }
 //  }
 
 //  void handleWrite(boolean granted) {
 //    if (granted) {
 //      grantedWrite = granted;
-//      println("Granted write permissions.");
+//      if (DEBUG) println("Granted write permissions.");
 //    } else {
-//      println("Does not have permission to write external storage.");
+//      if (DEBUG) println("Does not have permission to write external storage.");
 //    }
 //  }
 

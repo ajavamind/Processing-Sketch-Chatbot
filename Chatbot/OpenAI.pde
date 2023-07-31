@@ -28,6 +28,7 @@ String model = "gpt-4";
 double temperature = 0.0; // expect no randomness from the model
 double topP = 1.0;
 
+String[] systemPrompt;  // current system prompt
 
 void initAI() {
   // OPENAI_API_KEY is your paid account token stored in the environment variables for Windows 10/11
@@ -43,8 +44,9 @@ void generalChat() {
   prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "generalPrompt.txt";
   if (DEBUG) println("generalChat: " + path);
-  String msg = combineStrings(loadStrings(path));
-  if (DEBUG) println("msg="+msg);
+  systemPrompt = loadStrings(path);
+  if (DEBUG) println("systemMessage="+systemPrompt);
+  String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -59,8 +61,9 @@ void processingChat() {
   prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "processingPrompt.txt";
   if (DEBUG) println("processingChat: " + path);
-  String msg = combineStrings(loadStrings(path));
-  if (DEBUG) println("msg="+msg);
+  systemPrompt = loadStrings(path);
+  if (DEBUG) println("systemMessage="+systemPrompt);
+  String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -68,14 +71,32 @@ void processingChat() {
   startChat();
 }
 
-// Processing alternate chat system message
+// Processing load alternate chat system message
 void processingAltChat() {
   initChat();
   context.clear();
   prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
-  if (DEBUG) println("customChat: " + path);
-  String msg = combineStrings(loadStrings(path));
+  systemPrompt = loadStrings(path);
+  if (DEBUG) println("systemMessage="+systemPrompt);
+  String msg = combineStrings(systemPrompt);
+  ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
+  context.add(systemMessage);
+  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  //context.add(userMessage);
+  startChat();
+}
+
+// Load Custom chat system message
+void processCustomChat() {
+  initChat();
+  context.clear();
+  prompt = "";
+  //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
+  if (DEBUG) println("customChat: " + customChatFilePath);
+  systemPrompt = loadStrings(customChatFilePath);
+  if (DEBUG) println("systemMessage="+systemPrompt);
+  String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -86,12 +107,14 @@ void processingAltChat() {
 // Processing 3D Chat system message
 void processing3DChat() {
   initChat();
-  println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
+  if (DEBUG) println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
   prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
   if (DEBUG) println("customChat: " + path);
-  String msg = combineStrings(loadStrings(path));
+  systemPrompt = loadStrings(path);
+  if (DEBUG) println("systemMessage="+systemPrompt);
+  String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
@@ -109,6 +132,7 @@ void resetChat() {
   ready = false;
   start = false;
 }
+
 void startChat() {
   // check if ready to start
   if (!start) {
@@ -153,7 +177,7 @@ void sendOpenAiChatRequest() {
   }
   catch(Exception rex) {
     errorText = "Service problem "+ rex;
-    println("Service problem "+ rex + " "+ rex.toString());
+    if (DEBUG) println("Service problem "+ rex + " "+ rex.toString());
     lastKeyCode = KEYCODE_ERROR;
   }
   animation = NO_ANIMATION;

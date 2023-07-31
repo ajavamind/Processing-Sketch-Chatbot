@@ -98,6 +98,8 @@ static final int KEYCODE_QUOTE = 222;
 
 static final int KEYCODE_KEYBOARD = 1000;
 static final int KEYCODE_ERROR = 10000;
+static final int KEYCODE_GET_CUSTOM_CHAT_FILE = 20000;
+
 static final int KEY_CONTROL = 65535;
 
 //-------------------------------------------------------------------------------------
@@ -155,10 +157,10 @@ void keyPressed() {
 void keyReleased() {
   if (keyCode == KEYCODE_CTRL) {
     controlKey = false;
-    //println("keyReleased Ctrl");
+    //if (DEBUG) println("keyReleased Ctrl");
   } else if (keyCode == KEYCODE_ALT) {
     altKey = false;
-    //println("keyReleased Alt");
+    //if (DEBUG) println("keyReleased Alt");
   }
 }
 
@@ -183,9 +185,9 @@ boolean updateKey() {
     lastKey = 0;
     lastKeyCode = 0;
     // print debug information for context
-    println("debug context");
+    if (DEBUG) println("debug context");
     for (int i=0; i<context.size(); i++) {
-      println("context["+i+"]="+context.get(i));
+      if (DEBUG) println("context["+i+"]="+context.get(i));
     }
     return status;
   default:
@@ -198,27 +200,22 @@ boolean updateKey() {
     break;
   case KEYCODE_LF:
     break;
+  case KEYCODE_TAB:
+    selectChatLogFile(lastResponseFilename);
+    break;
   case KEYCODE_ENTER:
     if (DEBUG) println("Enter");
     prompt = promptArea.getText();
     responseArea.setVisible(false);
     startChat();
     break;
-    //case KEYCODE_PAGE_UP:
-    //  if (currentPromptIndex >= 0) {
-    //    if (currentPromptIndex < prompts.size()-1) {
-    //      currentPromptIndex++;
-    //    }
-    //  }
-    //  break;
-    //case KEYCODE_PAGE_DOWN:
-    //  if (currentPromptIndex > 0) {
-    //    currentPromptIndex--;
-    //  }
-    //  break;
+  case KEYCODE_PAGE_UP:
+    break;
+  case KEYCODE_PAGE_DOWN:
+    break;
   case KEYCODE_F1:
     mode = DEFAULT_MODE; // Single prompt response, no chat, no system message
-    println("CHAT_MODE F1");
+    if (DEBUG) println("CHAT_MODE F1");
     initChat();
     break;
   case KEYCODE_F2:
@@ -233,8 +230,9 @@ boolean updateKey() {
     break;
   case KEYCODE_F4:
     mode = CHAT_MODE;
-    if (DEBUG) println("CHAT_MODE F4");
-    processingAltChat();  // custom
+    if (DEBUG) println("Custom CHAT F4");
+    processCustomChat();
+    //    processingAltChat();  // custom
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
@@ -256,11 +254,11 @@ boolean updateKey() {
     break;
   case KEYCODE_F8:
     forceExecJFn = true;
-    // fall through
+    // fall through intentional
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
     if (DEBUG) println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
-    println("lastResponseFilename="+lastResponseFilename);
+    if (DEBUG) println("lastResponseFilename="+lastResponseFilename);
     execFn = saveSketch(lastResponseFilename);
     for (int i=0; i<execFn.length; i++) {
       if (DEBUG) println("using file: "+execFn[i]);
@@ -284,7 +282,10 @@ boolean updateKey() {
     break;
   case KEYCODE_ESC:
     service.shutdownExecutor();
-    exit(); // exit gracefully
+    exit(); // exit gracefully from the application after draw
+    break;
+  case KEYCODE_GET_CUSTOM_CHAT_FILE:
+    selectCustomChatFile();
     break;
   default:
     break;

@@ -12,7 +12,7 @@ private static final boolean DEBUG_TEST = false;
 private static final int JAVA_BUILD_MODE = 0;
 private static final int ANDROID_BUILD_MODE = 1;
 
-float appFrameRate = 30; // draw frames per second, used for animation
+float appFrameRate = 30; // draw loop rate frames per second, used for animation
 String RENDERER = JAVA2D; // default for setup size()
 
 boolean screenshot = false;
@@ -51,9 +51,12 @@ private static final int P5_CODE_MODE = 4; // Processing.org IDE, create P5 Java
 private static final int PYTHON_CODE_MODE = 4; // Processing.org IDE, create P5 Javascript sketch code and run in browser
 private static final int ANDROID_CODE_MODE = 5; // Processing.org IDE, create PDE Java sketch code and load into Android device to run
 
+Chatbot chatbotSketch;  // main sketch window
+
 void setup() {
   size(1920, 1080, RENDERER);
   background(128);
+  chatbotSketch = this;
   cursor(TEXT);
   frameRate(appFrameRate);
   setTitle(TITLE);
@@ -131,8 +134,7 @@ void draw() {
   // check if request response was received and ready
   if (ready) {
     resetChat();
-    String[] promptLines;
-    promptLines = parseString(prompt);
+    String[] promptLines = parseString(prompt);
     prompts.add(promptLines);
     responseArea.setText(response);
     responseArea.setVisible(true);
@@ -140,10 +142,6 @@ void draw() {
     String[] responseLines = parseString(response);
     responses.add(responseLines);
 
-    //int n = prompt.length();
-    //if (n > 16 ) n = 16;
-    //String prefix = prompt.substring(0, n);
-    //prefix.replaceAll(" ", "_");
     String prefix = "SketchChatbot";
     //String fn = prefix + sessionDateTime + "_" + number(chatCounter);
     // make folder with chatcounter
@@ -151,9 +149,10 @@ void draw() {
     File theDir = new File(saveFolderPath + File.separator + folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
-      println("make folder " + saveFolderPath + File.separator +folder);
+      if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
     }
     String fileName = "ChatSketches" + "_" + sessionDateTime + "_" + number(chatCounter);
+    newLogFile("SystemPrompt:\n", systemPrompt, saveFolderPath + File.separator + folder + File.separator +fileName + ".log");
     lastResponseFilename = saveLogText(promptLines, responseLines, folder, fileName);
     if (DEBUG) println("save prompt and responses in a log file in folder: "+ lastResponseFilename);
 

@@ -28,7 +28,7 @@ void getFocus() {
     }
   }
   catch (Exception ren) {
-    println("Renderer: "+ RENDERER + " Window focus exception: " + ren.toString());
+    if (DEBUG) println("Renderer: "+ RENDERER + " Window focus exception: " + ren.toString());
   }
 }
 
@@ -51,16 +51,8 @@ void setTitle(String str) {
   surface.setTitle(str);
 }
 
-void selectOutputFolder() {
-  selectFolder("Select Output Folder", "selectOutputFolder");
-}
-
 void selectSaveFolder() {
-//  if (saveFolderPath == null) {
     selectFolder("Select Save Folder", "folderSelected");
-//  } else {
-//    if (DEBUG) println("saveFolderPath="+saveFolderPath);
-//  }
 }
 
 // callback from selectSaveFolder()
@@ -70,6 +62,24 @@ void folderSelected(File selection) {
   } else {
     if (DEBUG) println("User selected saveFolderPath=" + selection.getAbsolutePath());
     saveFolderPath = selection.getAbsolutePath();
+  }
+}
+
+void selectCustomChatFile() {
+//  customChatFilePath 
+    selectInput("Select Custom Chat File", "customChatFileSelected");
+}
+
+void customChatFileSelected(File selection) {
+  if (selection == null) {
+    if (DEBUG) println("Window was closed or the user hit cancel.");
+  } else {
+    customChatFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
+    int startIndex = customChatFilePath.lastIndexOf(File.separator) + 1;
+    chatName = customChatFilePath.substring(startIndex, startIndex+12);
+    setChatButtonText(chatName);
+    if (DEBUG) println("Custom Chat="+chatName);
+    if (DEBUG) println("User selected " + customChatFilePath);
   }
 }
 
@@ -152,7 +162,7 @@ void setEXIF(String filename) {
 //    catch (Exception ufe) {
 //      text = "";
 //    }
-//    //println("paste clipboard "+ text);
+//    //if (DEBUG) println("paste clipboard "+ text);
 //    addString(text);
 //  }
 //}

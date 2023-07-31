@@ -17,15 +17,38 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.io.BufferedReader;
+import java.io.StringReader;
 
-void newOrAppend(String fileName, String[] lines) {
+String fileLogType = ".log";
+
+void newLogFile(String name, String[] lines, String fileName ) {
   File file;
-
   try {
-    println(fileName);
+    if (DEBUG) println(fileName);
     file = new File(fileName);
     if (!file.exists()) {
-      createNewFile(fileName, lines);
+      String[] p = new String[1];
+      p[0] = name;
+      createNewFile(fileName, p);
+      appendToFile(fileName, lines);
+    }
+  }
+  catch (FileNotFoundException e) {
+    e.printStackTrace();
+  }
+  catch (IOException e) {
+    e.printStackTrace();
+  }
+}
+
+void appendLog(String fileName, String[] lines) {
+  File file;
+  try {
+    if (DEBUG) println(fileName);
+    file = new File(fileName);
+    if (!file.exists()) {
+      println("Error program log file does not exist"); //  createNewFile(fileName, lines);
     } else {
       appendToFile(fileName, lines);
     }
@@ -55,33 +78,38 @@ void appendToFile(String fileName, String[] lines) throws IOException {
 // save prompt and response lines in a text or html file and
 // generate Processing sketch folder and store all files extracted into the folder
 String saveLogText(String[] prompts, String[] responses, String folderPath, String name) {
-  String fileLogType = ".log";
   String fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
   if (DEBUG) println("saveText number of lines: "+len);
   String[] list = new String[len];
   int j = 0;
-  list[j++] = "Prompt:";
+  list[j++] = "Prompt:\n";
   for (int i = 0; i<prompts.length; i++) {
     list[j++] = prompts[i];
   }
-  list[j++] = "Response:";
+  list[j++] = "Response:\n";
   for (int i = 0; i<responses.length; i++) {
     list[j++] = responses[i];
   }
-  list[j++] = "//";
+  list[j++] = "\n";
   if (responses[0].startsWith("<!DOCTYPE html")) {
     fileType = ".html";
   }
   String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
   saveStrings(filename + fileType, list);
-  newOrAppend(filename + fileLogType, list);
+  appendLog(filename + fileLogType, list);
+  initReviewText();
   return filename;
 }
 
 // split string into separate text lines using line feed 0x0A
 public static String[] parseString(String input) {
-  String[] lines = input.split("\n");
+  //  String[] lines = input.split("\n");
+  // keep end of line character
+  String[] lines = new BufferedReader(new StringReader(input))
+    .lines()
+    .map(s -> s + "\n")
+    .toArray(String[]::new);
   return lines;
 }
 
@@ -118,7 +146,7 @@ void execSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
   String codeType = info[2];
-  println("execSketch "+filenamePath);
+  if (DEBUG) println("execSketch "+filenamePath);
   if (filenamePath == null) return;
   try {
     if (DEBUG) println("processing-java.exe --sketch="+ filenamePath
@@ -137,7 +165,7 @@ void execPSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
   String codeType = info[2];
-  println("execSketch "+filenamePath);
+  if (DEBUG) println("execSketch "+filenamePath);
   if (filenamePath == null) return;
   try {
     if (DEBUG) println("processing.exe "+ filenamePath + File.separator + name + codeType);
@@ -151,7 +179,7 @@ void execPSketch(String[] info) {
 
 // calls runJ.bat in the sketch path
 void execJava(String filenamePath, String name) {
-  println("execJava "+filenamePath);
+  if (DEBUG) println("execJava "+filenamePath);
   if (filenamePath == null || name == null) return;
   try {
     if (DEBUG) println("process "+sketchPath() + File.separator + "runJ.bat "+ filenamePath+ " "+name);
@@ -170,7 +198,7 @@ String sketchNamePrefix = "sketch";
  * now create sketch folder in chatfolder
  */
 String[] saveSketch(String filenamePath) {
-  println("saveSketch folder: "+filenamePath);
+  if (DEBUG) println("saveSketch folder: "+filenamePath);
   if (filenamePath == null) return null;
   boolean pdeType = true;
   boolean androidMode = false;
@@ -181,7 +209,7 @@ String[] saveSketch(String filenamePath) {
   String[] lines = loadStrings(filenamePath+ ".txt");
   String[] sketchPrefix = getSketchName(lines);
 
-  if (isPython(lines)) {
+  if (isPythonApp(lines)) {
     commentPrefix = "# ";
   } else if (isJavaApp(lines)) {
     name = findClassNameRegex(lines);
@@ -283,7 +311,7 @@ String[] getSketchName(String[] lines) {
     if (lines[i].startsWith("```java")) {
       if (lines[i-1] == null) {
         lines[i-1] = "";
-        println("NuLL line????");
+        if (DEBUG) println("NuLL line????");
       } else {
         result[len] = lines[i-1];
       }
@@ -336,7 +364,7 @@ void modifyFile(String folder, String filename, String token, String name) {
   }
 }
 
-boolean isPython(String[] lines) {
+boolean isPythonApp(String[] lines) {
   boolean found = false;
   for (int i = 0; i< lines.length; i++) {
     if (lines[i].contains("```python")) {

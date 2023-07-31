@@ -11,6 +11,7 @@ GButton generateButton;
 GButton clearButton;
 GButton runButton;
 GButton runJButton;
+GButton reviewChatButton;
 GButton saveFolderButton;
 GButton chat1Button;
 GButton chat2Button;
@@ -48,6 +49,10 @@ int RUNJ_BUTTON_X;
 int RUNJ_BUTTON_Y;
 int RUNJ_BUTTON_WIDTH;
 int RUNJ_BUTTON_HEIGHT;
+int REVIEW_CHAT_BUTTON_X;
+int REVIEW_CHAT_BUTTON_Y;
+int REVIEW_CHAT_BUTTON_WIDTH;
+int REVIEW_CHAT_BUTTON_HEIGHT;
 int SAVE_FOLDER_BUTTON_X;
 int SAVE_FOLDER_BUTTON_Y;
 int SAVE_FOLDER_BUTTON_WIDTH;
@@ -144,7 +149,7 @@ void showError(String str) {
 
 void initGUI() {
   fontHeight = 24;
-  
+
   RESPONSE_WIDTH = (3*width) / 4;
   RESPONSE_HEIGHT = height - 5*fontHeight;
   RESPONSE_X = 0;
@@ -168,12 +173,17 @@ void initGUI() {
   RUN_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUN_BUTTON_HEIGHT = 5 * fontHeight;
   RUN_BUTTON_X = PROMPT_WIDTH + 1;
-  RUN_BUTTON_Y = 15 * fontHeight;
+  RUN_BUTTON_Y = 30 * fontHeight;
 
   RUNJ_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUNJ_BUTTON_HEIGHT = 5 * fontHeight;
   RUNJ_BUTTON_X = PROMPT_WIDTH + 1 + RUN_BUTTON_WIDTH;
-  RUNJ_BUTTON_Y = 15 * fontHeight;
+  RUNJ_BUTTON_Y = 30 * fontHeight;
+
+  REVIEW_CHAT_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  REVIEW_CHAT_BUTTON_HEIGHT = 5 * fontHeight;
+  REVIEW_CHAT_BUTTON_X = PROMPT_WIDTH + 1 ;
+  REVIEW_CHAT_BUTTON_Y = height - 2*PROMPT_HEIGHT;
 
   SAVE_FOLDER_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   SAVE_FOLDER_BUTTON_HEIGHT = 5 * fontHeight;
@@ -214,17 +224,18 @@ void initGUI() {
   //CHAT_SKETCH_BUTTON_HEIGHT = 5 * fontHeight;
   //CHAT_SKETCH_BUTTON_X = PROMPT_WIDTH + 1 + CLEAR_BUTTON_WIDTH;
   //CHAT_SKETCH_BUTTON_Y = 0;
-  
+
   G4P.setMouseOverEnabled(true);
   promptArea = new GTextArea(this, PROMPT_X, PROMPT_Y, PROMPT_WIDTH, PROMPT_HEIGHT, G4P.SCROLLBARS_NONE, PROMPT_WIDTH-3*int(textWidth("W")));
   promptArea.setFont(new Font("Arial", Font.BOLD, fontHeight));
   promptArea.setPromptText(INITIAL_PROMPT);
   promptArea.setOpaque(true);
-  
-  responseArea = new GTextArea(this, RESPONSE_X, RESPONSE_Y, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_NONE);
+
+  //responseArea = new GTextArea(this, RESPONSE_X, RESPONSE_Y, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_NONE);
+  responseArea = new GTextArea(this, RESPONSE_X, RESPONSE_Y, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_VERTICAL_ONLY);
   responseArea.setFont(new Font("Arial", Font.PLAIN, fontHeight));
   responseArea.setOpaque(true);
-  
+
   generateButton = new GButton(this, GENERATE_BUTTON_X, GENERATE_BUTTON_Y, GENERATE_BUTTON_WIDTH, GENERATE_BUTTON_HEIGHT, "Generate");
   generateButton.tag = "Button:  Generate";
   generateButton.setOpaque(true);
@@ -235,58 +246,73 @@ void initGUI() {
   clearButton.tag = "Button:  Clear";
   clearButton.setOpaque(true);
   clearButton.setFont(buttonFont);
-  
+
   runButton = new GButton(this, RUN_BUTTON_X, RUN_BUTTON_Y, RUN_BUTTON_WIDTH, RUN_BUTTON_HEIGHT, "Run IDE\nSketch");
   runButton.tag = "Button:  Run";
   runButton.setOpaque(true);
   runButton.setFont(buttonFont);
-  
+
   runJButton = new GButton(this, RUNJ_BUTTON_X, RUNJ_BUTTON_Y, RUNJ_BUTTON_WIDTH, RUNJ_BUTTON_HEIGHT, "Run\nSketch");
   runJButton.tag = "Button:  Run Sketch";
   runJButton.setOpaque(true);
   runJButton.setFont(buttonFont);
-  
+
+  reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Review\nChat");
+  reviewChatButton.tag = "Button:  Review Chat";
+  reviewChatButton.setOpaque(true);
+  reviewChatButton.setFont(buttonFont);
+
   saveFolderButton = new GButton(this, SAVE_FOLDER_BUTTON_X, SAVE_FOLDER_BUTTON_Y, SAVE_FOLDER_BUTTON_WIDTH, SAVE_FOLDER_BUTTON_HEIGHT, "Save\nFolder");
   saveFolderButton.tag = "Button:  Save Folder";
   saveFolderButton.setOpaque(true);
   saveFolderButton.setFont(buttonFont);
-  
+
   chat1Button = new GButton(this, CHAT1_BUTTON_X, CHAT1_BUTTON_Y, CHAT1_BUTTON_WIDTH, CHAT1_BUTTON_HEIGHT, "Single\nPrompt");
   chat1Button.tag = "Button:  Single Prompt";
   chat1Button.setOpaque(true);
   chat1Button.setFont(buttonFont);
   chat1Button.setTipText("Function Key F1");
-  
+
   chat2Button = new GButton(this, CHAT2_BUTTON_X, CHAT2_BUTTON_Y, CHAT2_BUTTON_WIDTH, CHAT2_BUTTON_HEIGHT, "General\nChat");
   chat2Button.tag = "Button:  Chat";
   chat2Button.setOpaque(true);
   chat2Button.setFont(buttonFont);
   chat2Button.setTipText("Function Key F2");
-  
+
   chat3Button = new GButton(this, CHAT3_BUTTON_X, CHAT3_BUTTON_Y, CHAT3_BUTTON_WIDTH, CHAT3_BUTTON_HEIGHT, "Sketch\nChat");
   chat3Button.tag = "Button:  Sketch Chat";
   chat3Button.setOpaque(true);
   chat3Button.setFont(buttonFont);
   chat3Button.setTipText("Function Key F3");
-  
+
   chat4Button = new GButton(this, CHAT4_BUTTON_X, CHAT4_BUTTON_Y, CHAT4_BUTTON_WIDTH, CHAT4_BUTTON_HEIGHT, "Custom\nChat1");
   chat4Button.tag = "Button:  Custom Chat1";
   chat4Button.setOpaque(true);
   chat4Button.setFont(buttonFont);
   chat4Button.setTipText("Function Key F4");
-  
-  chat5Button = new GButton(this, CHAT5_BUTTON_X, CHAT5_BUTTON_Y, CHAT5_BUTTON_WIDTH, CHAT5_BUTTON_HEIGHT, "Custom\nChat2");
-  chat5Button.tag = "Button:  Custom Chat2";
-  chat5Button.setOpaque(true);
-  chat5Button.setFont(buttonFont);
-  chat5Button.setTipText("Function Key F5");
-  
-  chat6Button = new GButton(this, CHAT6_BUTTON_X, CHAT6_BUTTON_Y, CHAT6_BUTTON_WIDTH, CHAT6_BUTTON_HEIGHT, "Custom\nChat3");
-  chat6Button.tag = "Button:  Custom Chat3";
-  chat6Button.setOpaque(true);
-  chat6Button.setFont(buttonFont);
-  chat6Button.setTipText("Function Key F6");
-  
+
+  //chat5Button = new GButton(this, CHAT5_BUTTON_X, CHAT5_BUTTON_Y, CHAT5_BUTTON_WIDTH, CHAT5_BUTTON_HEIGHT, "Custom\nChat2");
+  //chat5Button.tag = "Button:  Custom Chat2";
+  //chat5Button.setOpaque(true);
+  //chat5Button.setFont(buttonFont);
+  //chat5Button.setTipText("Function Key F5");
+
+  //chat6Button = new GButton(this, CHAT6_BUTTON_X, CHAT6_BUTTON_Y, CHAT6_BUTTON_WIDTH, CHAT6_BUTTON_HEIGHT, "Custom\nChat3");
+  //chat6Button.tag = "Button:  Custom Chat3";
+  //chat6Button.setOpaque(true);
+  //chat6Button.setFont(buttonFont);
+  //chat6Button.setTipText("Function Key F6");
+}
+
+void setChatButtonText(String text) {
+  chat4Button.setText(text);
+}
+
+void setChatButtonBackgroundColor(GButton button, boolean active) {
+  if (active)
+    button.setLocalColor(6, #FF808000);
+  else
+    button.setLocalColor(6, #FF000080);
 }
 
 public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
@@ -297,51 +323,61 @@ public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
 }
 
 public void handleButtonEvents(GButton button, GEvent event) {
-  // Folder selection
-  if (button == generateButton && event == GEvent.CLICKED) {
-    println("Button Generate pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_ENTER;
-  } else if (button == runButton && event == GEvent.CLICKED) {
-    println("Button Run pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F10;
-  } else if (button == runJButton && event == GEvent.CLICKED) {
-    println("Button Run pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F11;
-  ////////////
-  } else if (button == chat1Button && event == GEvent.CLICKED) {
-    println("Button Chat pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F1;
-  } else if (button == chat2Button && event == GEvent.CLICKED) {
-    println("Button Chat pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F2;
-  } else if (button == chat3Button && event == GEvent.CLICKED) {
-    println("Button Chat Sketch pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F3;
-  } else if (button == chat4Button && event == GEvent.CLICKED) {
-    println("Button Custom1 Chat pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F4;
-  } else if (button == chat5Button && event == GEvent.CLICKED) {
-    println("Button Custom2 Chat pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F5;
-  } else if (button == chat6Button && event == GEvent.CLICKED) {
-    println("Button Custom3 Chat pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F6;
-  //
-  } else if (button == clearButton && event == GEvent.CLICKED) {
-    println("Button Clear pressed");
-    promptArea.setText("");
-  } else if (button == saveFolderButton && event == GEvent.CLICKED) {
-    println("saveFolder selection pressed");
-    lastKey = 0;
-    lastKeyCode = KEYCODE_F9;
+  if (mouseButtonAlert == RIGHT) {
+    if (button == chat4Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Custom1 Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_GET_CUSTOM_CHAT_FILE;
+      if (DEBUG) println("Get custom chat file");
+    }
+  } else if (mouseButtonAlert == LEFT) {
+    if (button == generateButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Generate pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_ENTER;
+    } else if (button == runButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Run pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F10;
+    } else if (button == runJButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Run pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F11;
+    } else if (button == chat1Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F1;
+    } else if (button == chat2Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F2;
+    } else if (button == chat3Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Chat Sketch pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F3;
+    } else if (button == chat4Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Custom1 Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F4;
+    } else if (button == chat5Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Custom2 Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F5;
+    } else if (button == chat6Button && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Custom3 Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F6;
+    } else if (button == clearButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Button Clear pressed");
+      promptArea.setText("");
+    } else if (button == reviewChatButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Review Chat pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_TAB;
+    } else if (button == saveFolderButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("saveFolder selection pressed");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_F9;
+    }
   }
 }
