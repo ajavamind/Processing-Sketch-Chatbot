@@ -28,9 +28,15 @@ void newLogFile(String name, String[] lines, String fileName ) {
     if (DEBUG) println(fileName);
     file = new File(fileName);
     if (!file.exists()) {
+
       String[] p = new String[1];
-      p[0] = name;
+      if (name == null) {
+        p[0] = "";
+      } else {
+        p[0] = name;
+      }
       createNewFile(fileName, p);
+
       appendToFile(fileName, lines);
     }
   }
@@ -70,8 +76,10 @@ void createNewFile(String fileName, String[] lines) throws IOException {
 }
 
 void appendToFile(String fileName, String[] lines) throws IOException {
-  for (String line : lines) {
-    Files.write(Paths.get(fileName), (line + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+  if (lines != null) {
+    for (String line : lines) {
+      Files.write(Paths.get(fileName), (line + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
+    }
   }
 }
 

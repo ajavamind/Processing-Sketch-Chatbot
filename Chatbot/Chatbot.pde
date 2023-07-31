@@ -117,8 +117,10 @@ void draw() {
 
     ready = false;
     // check chat mode for type of request wanted
+    if (DEBUG) println("Chat mode="+mode);
     switch(mode) {
     case DEFAULT_MODE:
+      systemPrompt = null;
       thread("sendOpenAiRequest");
       break;
     case CHAT_MODE:
@@ -155,7 +157,8 @@ void draw() {
     newLogFile("SystemPrompt:\n", systemPrompt, saveFolderPath + File.separator + folder + File.separator +fileName + ".log");
     lastResponseFilename = saveLogText(promptLines, responseLines, folder, fileName);
     if (DEBUG) println("save prompt and responses in a log file in folder: "+ lastResponseFilename);
-
+    
+    if (DEBUG) println("response Chat mode="+mode);
     switch(mode) {
     case DEFAULT_MODE:
       break;
