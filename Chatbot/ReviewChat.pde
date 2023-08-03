@@ -8,7 +8,8 @@ GWindow winAWT = null;
 String logFile;
 GTextArea reviewArea;
 
-void selectChatLogFile(String logFilePath) {
+void showChatLogFile(String logFilePath) {
+  if (DEBUG) println("showChatLogFile="+logFilePath);
   if (logFilePath == null) return;
   if (winAWT == null) {
     winAWT = GWindow.getWindow(this, "Chat Log", 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
@@ -17,11 +18,19 @@ void selectChatLogFile(String logFilePath) {
     reviewArea = new GTextArea(winAWT, 0, 0, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_VERTICAL_ONLY);
     reviewArea.setFont(new Font("Arial", Font.PLAIN, fontHeight));
     reviewArea.setOpaque(true);
-    logFile = logFilePath + ".log";
+    logFile = logFilePath;
   } else {
     winAWT.setVisible(!winAWT.isVisible());
   }
   initReviewText();
+}
+
+void readChatLogFile(String chatLogFilePath) {
+  if (DEBUG) println("readChatLogFile="+chatLogFilePath);
+  if (chatLogFilePath == null) return;
+  String[] chatLog = loadStrings(chatLogFilePath);
+  parseChatLog(chatLog);
+  //showChatLogFile(chatLogFilePath);
 }
 
 /**

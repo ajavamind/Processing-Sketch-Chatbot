@@ -37,11 +37,16 @@ void initAI() {
   service = new OpenAiService(token, CHAT_TIMEOUT);
 }
 
+// parse chat log
+void parseChatLog(String[] log) {
+  if (DEBUG) println("parseChatLog\n"+log[0] + log[1] + log[2] + log[3]);
+}
+
 // General chat system message
 void generalChat() {
   initChat();
   context.clear();
-  prompt = "";
+  if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "generalPrompt.txt";
   if (DEBUG) println("generalChat: " + path);
   systemPrompt = loadStrings(path);
@@ -58,7 +63,7 @@ void generalChat() {
 void processingChat() {
   initChat();
   context.clear();
-  prompt = "";
+  if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "processingPrompt.txt";
   if (DEBUG) println("processingChat: " + path);
   systemPrompt = loadStrings(path);
@@ -75,7 +80,7 @@ void processingChat() {
 void processingAltChat() {
   initChat();
   context.clear();
-  prompt = "";
+  if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
@@ -91,7 +96,7 @@ void processingAltChat() {
 void processCustomChat() {
   initChat();
   context.clear();
-  prompt = "";
+  if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   if (DEBUG) println("customChat: " + customChatFilePath);
   systemPrompt = loadStrings(customChatFilePath);
@@ -109,7 +114,7 @@ void processing3DChat() {
   initChat();
   if (DEBUG) println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
-  prompt = "";
+  if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
   if (DEBUG) println("customChat: " + path);
   systemPrompt = loadStrings(path);

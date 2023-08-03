@@ -36,7 +36,6 @@ void newLogFile(String name, String[] lines, String fileName ) {
         p[0] = name;
       }
       createNewFile(fileName, p);
-
       appendToFile(fileName, lines);
     }
   }
@@ -91,11 +90,11 @@ String saveLogText(String[] prompts, String[] responses, String folderPath, Stri
   if (DEBUG) println("saveText number of lines: "+len);
   String[] list = new String[len];
   int j = 0;
-  list[j++] = "Prompt:\n";
+  list[j++] = "<prompt>";
   for (int i = 0; i<prompts.length; i++) {
     list[j++] = prompts[i];
   }
-  list[j++] = "Response:\n";
+  list[j++] = "<response>";
   for (int i = 0; i<responses.length; i++) {
     list[j++] = responses[i];
   }
@@ -116,7 +115,8 @@ public static String[] parseString(String input) {
   // keep end of line character
   String[] lines = new BufferedReader(new StringReader(input))
     .lines()
-    .map(s -> s + "\n")
+//    .map(s -> s + "\n")
+    .map(s -> s)
     .toArray(String[]::new);
   return lines;
 }

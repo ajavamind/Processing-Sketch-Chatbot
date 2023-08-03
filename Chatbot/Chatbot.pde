@@ -51,12 +51,9 @@ private static final int P5_CODE_MODE = 4; // Processing.org IDE, create P5 Java
 private static final int PYTHON_CODE_MODE = 4; // Processing.org IDE, create P5 Javascript sketch code and run in browser
 private static final int ANDROID_CODE_MODE = 5; // Processing.org IDE, create PDE Java sketch code and load into Android device to run
 
-Chatbot chatbotSketch;  // main sketch window
-
 void setup() {
   size(1920, 1080, RENDERER);
   background(128);
-  chatbotSketch = this;
   cursor(TEXT);
   frameRate(appFrameRate);
   setTitle(TITLE);
@@ -154,7 +151,8 @@ void draw() {
       if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
     }
     String fileName = "ChatSketches" + "_" + sessionDateTime + "_" + number(chatCounter);
-    newLogFile("SystemPrompt:\n", systemPrompt, saveFolderPath + File.separator + folder + File.separator +fileName + ".log");
+    chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName + ".log";
+    newLogFile("<system>", systemPrompt, chatLogFilePath);
     lastResponseFilename = saveLogText(promptLines, responseLines, folder, fileName);
     if (DEBUG) println("save prompt and responses in a log file in folder: "+ lastResponseFilename);
     

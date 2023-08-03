@@ -4,13 +4,14 @@
 import g4p_controls.*;
 import java.awt.Font;
 
-static final String TITLE = "Processing Sketch Chatbot Using OpenAI API - Java";
+static final String TITLE = "Processing Sketch OpenAI Chat";
 static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
 
 GButton generateButton;
 GButton clearButton;
 GButton runButton;
 GButton runJButton;
+GButton loadChatLogButton;
 GButton reviewChatButton;
 GButton saveFolderButton;
 GButton chat1Button;
@@ -49,6 +50,10 @@ int RUNJ_BUTTON_X;
 int RUNJ_BUTTON_Y;
 int RUNJ_BUTTON_WIDTH;
 int RUNJ_BUTTON_HEIGHT;
+int LOAD_CHATLOG_BUTTON_X;
+int LOAD_CHATLOG_BUTTON_Y;
+int LOAD_CHATLOG_BUTTON_WIDTH;
+int LOAD_CHATLOG_BUTTON_HEIGHT;
 int REVIEW_CHAT_BUTTON_X;
 int REVIEW_CHAT_BUTTON_Y;
 int REVIEW_CHAT_BUTTON_WIDTH;
@@ -173,12 +178,17 @@ void initGUI() {
   RUN_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUN_BUTTON_HEIGHT = 5 * fontHeight;
   RUN_BUTTON_X = PROMPT_WIDTH + 1;
-  RUN_BUTTON_Y = 30 * fontHeight;
+  RUN_BUTTON_Y = 25 * fontHeight;
 
   RUNJ_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   RUNJ_BUTTON_HEIGHT = 5 * fontHeight;
   RUNJ_BUTTON_X = PROMPT_WIDTH + 1 + RUN_BUTTON_WIDTH;
-  RUNJ_BUTTON_Y = 30 * fontHeight;
+  RUNJ_BUTTON_Y = 25 * fontHeight;
+
+  LOAD_CHATLOG_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  LOAD_CHATLOG_BUTTON_HEIGHT = 5 * fontHeight;
+  LOAD_CHATLOG_BUTTON_X = PROMPT_WIDTH + 1 ;
+  LOAD_CHATLOG_BUTTON_Y = height - 3*PROMPT_HEIGHT;
 
   REVIEW_CHAT_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   REVIEW_CHAT_BUTTON_HEIGHT = 5 * fontHeight;
@@ -257,6 +267,11 @@ void initGUI() {
   runJButton.setOpaque(true);
   runJButton.setFont(buttonFont);
 
+  loadChatLogButton = new GButton(this, LOAD_CHATLOG_BUTTON_X, LOAD_CHATLOG_BUTTON_Y, LOAD_CHATLOG_BUTTON_WIDTH, LOAD_CHATLOG_BUTTON_HEIGHT, "Load\nChat Log");
+  loadChatLogButton.tag = "Button:  Load Chat Log";
+  loadChatLogButton.setOpaque(true);
+  loadChatLogButton.setFont(buttonFont);
+
   reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Review\nChat");
   reviewChatButton.tag = "Button:  Review Chat";
   reviewChatButton.setOpaque(true);
@@ -289,7 +304,7 @@ void initGUI() {
   chat4Button.tag = "Button:  Custom Chat1";
   chat4Button.setOpaque(true);
   chat4Button.setFont(buttonFont);
-  chat4Button.setTipText("Function Key F4");
+  chat4Button.setTip("Left Click - start new custom chat\nRight Click - select custom chat file", 0,0);
 
   //chat5Button = new GButton(this, CHAT5_BUTTON_X, CHAT5_BUTTON_Y, CHAT5_BUTTON_WIDTH, CHAT5_BUTTON_HEIGHT, "Custom\nChat2");
   //chat5Button.tag = "Button:  Custom Chat2";
@@ -378,6 +393,10 @@ public void handleButtonEvents(GButton button, GEvent event) {
       if (DEBUG) println("saveFolder selection pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F9;
+    } else if (button == loadChatLogButton && event == GEvent.CLICKED) {
+      if (DEBUG) println("Load chat log Button");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_LOAD_CHAT_LOG_FILE;
     }
   }
 }

@@ -70,6 +70,11 @@ void selectCustomChatFile() {
     selectInput("Select Custom Chat File", "customChatFileSelected");
 }
 
+void selectChatLogFile() {
+//  chatLogFilePath 
+    selectInput("Select Chat Log File", "chatLogFileSelected");
+}
+
 void customChatFileSelected(File selection) {
   if (selection == null) {
     if (DEBUG) println("Window was closed or the user hit cancel.");
@@ -80,6 +85,16 @@ void customChatFileSelected(File selection) {
     setChatButtonText(chatName);
     if (DEBUG) println("Custom Chat="+chatName);
     if (DEBUG) println("User selected " + customChatFilePath);
+  }
+}
+
+void chatLogFileSelected(File selection) {
+  if (selection == null) {
+    if (DEBUG) println("Window was closed or the user hit cancel.");
+  } else {
+    chatLogFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
+    if (DEBUG) println("Chat Log File selected " + chatLogFilePath);
+    readChatLogFile(chatLogFilePath);
   }
 }
 

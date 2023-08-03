@@ -99,6 +99,7 @@ static final int KEYCODE_QUOTE = 222;
 static final int KEYCODE_KEYBOARD = 1000;
 static final int KEYCODE_ERROR = 10000;
 static final int KEYCODE_GET_CUSTOM_CHAT_FILE = 20000;
+static final int KEYCODE_LOAD_CHAT_LOG_FILE = 20001;
 
 static final int KEY_CONTROL = 65535;
 
@@ -201,7 +202,7 @@ boolean updateKey() {
   case KEYCODE_LF:
     break;
   case KEYCODE_TAB:
-    selectChatLogFile(lastResponseFilename);
+    showChatLogFile(lastResponseFilename+ ".log");
     break;
   case KEYCODE_ENTER:
     if (DEBUG) println("Enter");
@@ -244,10 +245,7 @@ boolean updateKey() {
     if (DEBUG) println("CHAT_MODE F6");
     break;
   case KEYCODE_F7:
-    break;
-  case KEYCODE_F11:
-    if (DEBUG) println("F8 executing file: "+execFn);
-    if (execFn != null) execSketch(execFn);
+    if (DEBUG) println("F7");
     break;
   case KEYCODE_F9:
     selectSaveFolder();
@@ -276,6 +274,10 @@ boolean updateKey() {
       }
     }
     break;
+  case KEYCODE_F11:
+    if (DEBUG) println("F8 executing file: "+execFn);
+    if (execFn != null) execSketch(execFn);
+    break;
   case KEYCODE_F12:
     if (DEBUG) println("F12 screenshot command");
     screenshot = true;
@@ -286,6 +288,9 @@ boolean updateKey() {
     break;
   case KEYCODE_GET_CUSTOM_CHAT_FILE:
     selectCustomChatFile();
+    break;
+  case KEYCODE_LOAD_CHAT_LOG_FILE:
+    selectChatLogFile();
     break;
   default:
     break;
