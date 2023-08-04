@@ -20,11 +20,12 @@ import java.util.Locale;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
-String fileLogType = ".log";
+static final String fileLogType = ".log";
+String fileType = ".txt";
 
 void newLogFile(String name, String[] lines, String fname ) {
   File file;
-  String fileName = fname + ".log";
+  String fileName = fname + fileLogType;
   try {
     if (DEBUG) println(fileName);
     file = new File(fileName);
@@ -50,8 +51,7 @@ void newLogFile(String name, String[] lines, String fname ) {
 
 void appendLog(String fname, String[] lines) {
   File file;
-  String fileName = fname + ".log";
-
+  String fileName = fname + fileLogType;
   try {
     if (DEBUG) println(fileName);
     file = new File(fileName);
@@ -70,6 +70,7 @@ void appendLog(String fname, String[] lines) {
 }
 
 void createNewFile(String fileName, String[] lines) throws IOException {
+  if (DEBUG) println("createNewFile="+fileName);
   FileWriter writer = new FileWriter(fileName);
   for (String line : lines) {
     writer.write(line + System.lineSeparator());
@@ -78,6 +79,7 @@ void createNewFile(String fileName, String[] lines) throws IOException {
 }
 
 void appendToFile(String fileName, String[] lines) throws IOException {
+  if (DEBUG) println("appendToFile="+fileName);
   if (lines != null) {
     for (String line : lines) {
       Files.write(Paths.get(fileName), (line + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
@@ -88,7 +90,6 @@ void appendToFile(String fileName, String[] lines) throws IOException {
 // save prompt and response lines in a text or html file and
 // generate Processing sketch folder and store all files extracted into the folder
 void saveLogText(String[] prompts, String[] responses, String fname) {
-  String fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
   if (DEBUG) println("saveText number of lines: "+len);
   String[] list = new String[len];
@@ -107,7 +108,7 @@ void saveLogText(String[] prompts, String[] responses, String fname) {
   }
   //String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
   saveStrings(fname + fileType, list);
-  appendLog(fname + fileLogType, list);
+  appendLog(fname, list);
   initReviewText(fname);
 }
 
@@ -237,7 +238,7 @@ String[] saveSketch(String filenamePath) {
         codeType = ".js";
         lines[i] = commentPrefix + lines[i];
         comment = !comment;
-      } else if (lines[i].startsWith("```java")) {
+      } else if (lines[i].startsWith("```java") || lines[i].startsWith("```processing")) {
         if (pdeType) {
           codeType = ".pde";
         } else {
