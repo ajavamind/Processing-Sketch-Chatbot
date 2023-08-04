@@ -88,16 +88,6 @@ void customChatFileSelected(File selection) {
   }
 }
 
-void chatLogFileSelected(File selection) {
-  if (selection == null) {
-    if (DEBUG) println("Window was closed or the user hit cancel.");
-  } else {
-    chatLogFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
-    if (DEBUG) println("Chat Log File selected " + chatLogFilePath);
-    readChatLogFile(chatLogFilePath);
-  }
-}
-
 void saveConfig(String config) {
 }
 

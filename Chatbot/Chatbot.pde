@@ -35,7 +35,6 @@ String response;
 String sessionDateTime;
 int fileCounter = 0;
 int chatCounter = 0;
-String lastResponseFilename;
 
 //// debug test lines for formatting
 //String[] lines1;
@@ -151,10 +150,10 @@ void draw() {
       if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
     }
     String fileName = "ChatSketches" + "_" + sessionDateTime + "_" + number(chatCounter);
-    chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName + ".log";
+    chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName ;
     newLogFile("<system>", systemPrompt, chatLogFilePath);
-    lastResponseFilename = saveLogText(promptLines, responseLines, folder, fileName);
-    if (DEBUG) println("save prompt and responses in a log file in folder: "+ lastResponseFilename);
+    saveLogText(promptLines, responseLines, chatLogFilePath);
+    if (DEBUG) println("save prompt and responses in a log file in folder: "+ chatLogFilePath + ".log");
     
     if (DEBUG) println("response Chat mode="+mode);
     switch(mode) {

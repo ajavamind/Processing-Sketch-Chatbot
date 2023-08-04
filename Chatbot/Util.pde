@@ -22,8 +22,9 @@ import java.io.StringReader;
 
 String fileLogType = ".log";
 
-void newLogFile(String name, String[] lines, String fileName ) {
+void newLogFile(String name, String[] lines, String fname ) {
   File file;
+  String fileName = fname + ".log";
   try {
     if (DEBUG) println(fileName);
     file = new File(fileName);
@@ -47,8 +48,10 @@ void newLogFile(String name, String[] lines, String fileName ) {
   }
 }
 
-void appendLog(String fileName, String[] lines) {
+void appendLog(String fname, String[] lines) {
   File file;
+  String fileName = fname + ".log";
+
   try {
     if (DEBUG) println(fileName);
     file = new File(fileName);
@@ -84,7 +87,7 @@ void appendToFile(String fileName, String[] lines) throws IOException {
 
 // save prompt and response lines in a text or html file and
 // generate Processing sketch folder and store all files extracted into the folder
-String saveLogText(String[] prompts, String[] responses, String folderPath, String name) {
+void saveLogText(String[] prompts, String[] responses, String fname) {
   String fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
   if (DEBUG) println("saveText number of lines: "+len);
@@ -102,11 +105,10 @@ String saveLogText(String[] prompts, String[] responses, String folderPath, Stri
   if (responses[0].startsWith("<!DOCTYPE html")) {
     fileType = ".html";
   }
-  String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
-  saveStrings(filename + fileType, list);
-  appendLog(filename + fileLogType, list);
-  initReviewText();
-  return filename;
+  //String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
+  saveStrings(fname + fileType, list);
+  appendLog(fname + fileLogType, list);
+  initReviewText(fname);
 }
 
 // split string into separate text lines using line feed 0x0A

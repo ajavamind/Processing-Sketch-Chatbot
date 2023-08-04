@@ -5,12 +5,25 @@
 import g4p_controls.*;
 
 GWindow winAWT = null;
-String logFile;
 GTextArea reviewArea;
 
-void showChatLogFile(String logFilePath) {
-  if (DEBUG) println("showChatLogFile="+logFilePath);
-  if (logFilePath == null) return;
+String chatLogFilePath;
+
+void chatLogFileSelected(File selection) {
+  if (selection == null) {
+    if (DEBUG) println("Window was closed or the user hit cancel.");
+  } else {
+    String logFile = selection.getAbsolutePath(); //selection.getAbsoluteFile();
+    if (DEBUG) println("Chat Log File selected " + logFile);
+    chatLogFilePath = logFile.substring(0,logFile.lastIndexOf("."));
+    readChatLogFile(chatLogFilePath + ".log");
+    if (DEBUG) println("chatLogFilePath="+chatLogFilePath);
+  }
+}
+
+void showChatLogFile(String logFile) {
+  if (DEBUG) println("showChatLogFile="+logFile);
+  if (logFile == null || logFile.equals("null.log")) return;
   if (winAWT == null) {
     winAWT = GWindow.getWindow(this, "Chat Log", 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
     winAWT.setActionOnClose(G4P.HIDE_WINDOW);
@@ -18,25 +31,24 @@ void showChatLogFile(String logFilePath) {
     reviewArea = new GTextArea(winAWT, 0, 0, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_VERTICAL_ONLY);
     reviewArea.setFont(new Font("Arial", Font.PLAIN, fontHeight));
     reviewArea.setOpaque(true);
-    logFile = logFilePath;
   } else {
     winAWT.setVisible(!winAWT.isVisible());
   }
-  initReviewText();
+  initReviewText(logFile);
 }
 
-void readChatLogFile(String chatLogFilePath) {
-  if (DEBUG) println("readChatLogFile="+chatLogFilePath);
-  if (chatLogFilePath == null) return;
-  String[] chatLog = loadStrings(chatLogFilePath);
+void readChatLogFile(String logFile) {
+  if (DEBUG) println("readChatLogFile="+logFile);
+  if (logFile == null) return;
+  String[] chatLog = loadStrings(logFile);
   parseChatLog(chatLog);
-  //showChatLogFile(chatLogFilePath);
+  showChatLogFile(logFile);
 }
 
 /**
  * initialize chat log file
  */
-void initReviewText() {
+void initReviewText(String logFile) {
   if (logFile != null && reviewArea != null) {
     if (DEBUG) println("Load strings: "+logFile);
     String[] reviewText = loadStrings(logFile);

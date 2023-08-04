@@ -202,7 +202,7 @@ boolean updateKey() {
   case KEYCODE_LF:
     break;
   case KEYCODE_TAB:
-    showChatLogFile(lastResponseFilename+ ".log");
+    showChatLogFile(chatLogFilePath + ".log");
     break;
   case KEYCODE_ENTER:
     if (DEBUG) println("Enter");
@@ -256,8 +256,8 @@ boolean updateKey() {
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
     if (DEBUG) println("extract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
-    if (DEBUG) println("lastResponseFilename="+lastResponseFilename);
-    execFn = saveSketch(lastResponseFilename);
+    if (DEBUG) println("saveSketch folder="+chatLogFilePath);
+    execFn = saveSketch(chatLogFilePath);
     for (int i=0; i<execFn.length; i++) {
       if (DEBUG) println("using file: "+execFn[i]);
     }
