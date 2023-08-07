@@ -1,12 +1,10 @@
 # Processing-Sketch-Chatbot
-A Processing Sketch Chatbot Assistant for sketch code generation and learning using the Processing Development Environment - PDE.
+A Processing Sketch AI Chat Assistant for sketch code generation and learning using the Processing Development Environment - PDE.
 
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
 It's primarily used for creating graphics, animations, and interactive experiences.
-PDE is a Processing sketch application. 
-
-The Processing IDE, Integrated development environment, is a code editor with debug and run capabilities. 
+PDE is a Processing sketch application. The Processing IDE, Integrated development environment, is a code editor with debug and run capabilities. 
 
 ## Introduction
 The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
@@ -15,29 +13,22 @@ prompts sent to the OpenAI ChatGpt service using Java based API (Application Pro
 This respository is work in progress and it only implements essential features to implement a chat prompt request
 and run the response code. 
 
-Many improvements are possible but time limitations prevent more enhancements for now. 
-For example I would like to add a saving the chat in a database to allow resuming the chat at a later date.
-Also more parameters should be visible through the GUI and prompts out to be stored in files instead of declared in the code, etc...
-
-The application is written in the Processing Java language and currently only runs on Windows OS platform
+The application is written in the Processing Java language and currently only runs on Windows platform
 (due to the library used for GUI is only available for Windows).
 It requires an OpenAI API key subscription from OpenAI.org.
 
 Chat responses cause an instance of the sketch to be run with the IDE when a "Run" key is pressed.
 
 ## Background
-I'm a Processing user since 2010 and retired software engineer who likes to code.
-I like Processing because it is geared to create algorithmic generative art and may introduce students in the Arts to programming.
+I'm a retired software engineer who likes to code with Processing (since 2010).
+I like Processing because it is geared to create algorithmic generative art.
 
-To learn more about the AI and machine learning revolution going on now, I created here a Processing sketch code assistant chatbot using Java API calls to OpenAI.org. 
-My chatbot application could be modified for other chatbot application uses.
+To learn more about the AI and machine learning revolution going on now, here I wrote a Processing sketch code assistant chatbot using Java API calls to OpenAI.org. 
+My chatbot application can be modified for other chatbot application uses besides programming.
 Only a small number of the API calls are invoked.
 
-The interest in AI now with all new developments going on, reminds me of the rapid growth that occurred when microcomputers (Intel 8080) became mainstream 
-as personal computers and I and others built our own computers back in 1976.
-
 ## Usage
-I found that a code assistant is helpful writing sketches quickly, and avoid some tedium and mistakes during the program development process.
+A code assistant is helpful writing sketches quickly, and avoids some tedium and mistakes during the program development process.
 You cannot trust the output response from the chatbot and have to read and understand the generated code. (Although it is often correct)
 
 I find specific prompts are best to get good generated sketch code. And after a few prompts for requesting changes, I find it easier
@@ -84,18 +75,18 @@ IDE Library requirements are:
 ## Support Libraries
 
 ### Openai-java
-Sketches use OpenAI-Java API from a Github implementation (version 0.12.0) found at
+The application uses the OpenAI-Java API from the Github implementation (version 0.15.0) found at
 https://github.com/TheoKanning/openai-java - thank you Theo Kanning!
 
-The OpenAiApiExample.java file is the code I used to build with OpenAI-Java (gradlew) to determine the library jar files needed. 
-I built the example with gradlew in info debug mode with a request to build an distribution zip file.
+I use the build with OpenAI-Java (gradlew) to determine the library jar files needed. 
+This command line in Windows uses the gradlew command in info debug mode with a request to build an distribution zip file.
 
 .\gradlew --info example:distZip
 
-The zip file in example/build/distributions, example.zip, was unzipped and 
-I copied jar files from example/lib folders into the "code" folder used by this sketch.
+The zip file in example/build/distributions, example.zip, is unzipped and 
+then copy jar files from example/lib folder into the "code" folder used by this application sketch.
 
 ### Gpt-engineer
 After I started this project I noticed https://github.com/AntonOsika/gpt-engineer
 This is an exciting and ambitious project to guide and build a complete software development using ChatGPT from OpenAI.
-I will incorporate some ideas from gpt-engineer into this project and possibly some code after conversion to Java.
+I will incorporate some ideas from gpt-engineer into this project.
