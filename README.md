@@ -19,6 +19,8 @@ It requires an OpenAI API key subscription from OpenAI.org.
 
 Chat responses cause an instance of the sketch to be run with the IDE when a "Run" key is pressed.
 
+![Chatbot Application Screenshot](Chatbot/screenshots/promptScreen.png)
+
 ## Background
 I'm a retired software engineer who likes to code with Processing (since 2010).
 I like Processing because it is geared to create algorithmic generative art.
