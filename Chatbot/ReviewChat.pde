@@ -21,9 +21,14 @@ void chatLogFileSelected(File selection) {
   }
 }
 
-void showChatLogFile(String logFile) {
+/**
+ * show chat log file
+ * return 0 OK
+ * return -1 no log file exists
+ */
+int showChatLogFile(String logFile) {
   if (DEBUG) println("showChatLogFile="+logFile);
-  if (logFile == null || logFile.equals("null.log")) return;
+  if (logFile == null || logFile.equals("null.log")) return -1;
   if (winAWT == null) {
     winAWT = GWindow.getWindow(this, "Chat Log", 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
     winAWT.setActionOnClose(G4P.HIDE_WINDOW);
@@ -35,13 +40,14 @@ void showChatLogFile(String logFile) {
     winAWT.setVisible(!winAWT.isVisible());
   }
   initReviewText(logFile);
+  return 0;
 }
 
 void readChatLogFile(String logFile) {
   if (DEBUG) println("readChatLogFile="+logFile);
   if (logFile == null) return;
   String[] chatLog = loadStrings(logFile);
-  parseChatLog(chatLog);
+  parseChatLog(logFile, chatLog);
   showChatLogFile(logFile);
 }
 
