@@ -23,19 +23,29 @@ OpenAiService service;
 //String model = "gpt-3.5-turbo-16k";  // allows larger context prompt/response
 //String model = "gpt-3.5-turbo-0613"; // function calling, system message steering better
 String model = "gpt-4";
+//String model = "gpt4all-j-v1.3-groovy"; // local machine data base
+//String model = "vicuna-7b-v1.3";
+
+private static final String BASE_URL = "https://api.openai.com/";
+//private static final String BASE_URL = "http://localhost:4891/v1/";  // GPT4All LLM server on local machine (verified)
+//private static final String BASE_URL = "http://127.0.0.1:7860/v1/";  // Local Vicuan CPU LLM (not working)
+//private static final String BASE_URL = "http://localhost:8000/v1/";  // FastChat https://github.com/lm-sys/FastChat (not verified)
+
 
 double temperature = 0.0; // expect no randomness from the model
 double topP = 1.0;
-int timeout = 120;
+int timeout = 120; // LLM server reponse timeout in seconds
 
 String[] systemPrompt;  // current system prompt
 
 void initAI() {
   // OPENAI_API_KEY is your paid account token variable stored in the environment variables for Windows 10/11
   String token = getToken();
+  //token = "local LLM";  // override to test GPT4All on local machine
   // create the OPENAI API service
   final Duration CHAT_TIMEOUT = Duration.ofSeconds(timeout);
-  service = new OpenAiService(token, CHAT_TIMEOUT);
+  //service = new OpenAiService(token, CHAT_TIMEOUT);  // default BASE_URL for OpenAI
+  service = new OpenAiService(token, CHAT_TIMEOUT, BASE_URL);  // for custom LLM or OpenAI server
 }
 
 /**

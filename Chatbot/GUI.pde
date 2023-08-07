@@ -114,7 +114,7 @@ void doAnimation(int selectAnimation) {
   switch(selectAnimation) {
   case SHOW_SECONDS:
     int seconds = animationCounter[selectAnimation]/int(appFrameRate);
-    working = str(seconds) + " ... \u221e" ;  // infinity
+    working = "Model " + model + "    " + str(seconds) + " ... \u221e" ;  // infinity
     text(working, RESPONSE_WIDTH/2- textWidth(working)/2, RESPONSE_HEIGHT/2);
     animationCounter[selectAnimation]++;
     break;
