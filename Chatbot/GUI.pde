@@ -272,7 +272,7 @@ void initGUI() {
   loadChatLogButton.setOpaque(true);
   loadChatLogButton.setFont(buttonFont);
 
-  reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Review\nChat");
+  reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Shot\nChat Log");
   reviewChatButton.tag = "Button:  Review Chat";
   reviewChatButton.setOpaque(true);
   reviewChatButton.setFont(buttonFont);

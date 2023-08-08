@@ -23,14 +23,14 @@ OpenAiService service;
 //String model = "gpt-3.5-turbo-16k";  // allows larger context prompt/response
 //String model = "gpt-3.5-turbo-0613"; // function calling, system message steering better
 String model = "gpt-4";
-//String model = "gpt4all-j-v1.3-groovy"; // local machine data base
+//String model = "gpt4all-j-v1.3-groovy"; // local machine server
 //String model = "vicuna-7b-v1.3";
 
-private static final String BASE_URL = "https://api.openai.com/";
+private static final String OPENAI_URL = "https://api.openai.com/";
+private static final String BASE_URL = OPENAI_URL;
 //private static final String BASE_URL = "http://localhost:4891/v1/";  // GPT4All LLM server on local machine (verified)
 //private static final String BASE_URL = "http://127.0.0.1:7860/v1/";  // Local Vicuan CPU LLM (not working)
 //private static final String BASE_URL = "http://localhost:8000/v1/";  // FastChat https://github.com/lm-sys/FastChat (not verified)
-
 
 double temperature = 0.0; // expect no randomness from the model
 double topP = 1.0;
@@ -39,9 +39,14 @@ int timeout = 120; // LLM server reponse timeout in seconds
 String[] systemPrompt;  // current system prompt
 
 void initAI() {
-  // OPENAI_API_KEY is your paid account token variable stored in the environment variables for Windows 10/11
-  String token = getToken();
-  //token = "local LLM";  // override to test GPT4All on local machine
+  // OPENAI_API_KEY is your paid account token variable defined in the environment variables for Windows 10/11
+  String token;
+  if (BASE_URL.equals(OPENAI_URL)) {
+    token = getToken();
+  } else {
+    token = "local LLM";  // override to test GPT4All on local machine
+  }
+
   // create the OPENAI API service
   final Duration CHAT_TIMEOUT = Duration.ofSeconds(timeout);
   //service = new OpenAiService(token, CHAT_TIMEOUT);  // default BASE_URL for OpenAI
@@ -54,13 +59,19 @@ void initAI() {
  * return status -1 error with log file structure
  */
 int parseChatLog(String logFile, String[] log) {
-  if (DEBUG) println("parseChatLog\n"+logFile+"\n"+log[0] +"\n"+ log[1] +"\n" + log[2] +"\n"+ log[3]);
+
   // first line must be <system>
-  if (!log[0].equals("<system>")) return -1; // invalid log file
-  //initChat();  TO DO set chat counter etc to resume chat
-  
+  if (log == null || log.length == 0) {
+    if (DEBUG) println("invalid log file");
+    return -1; // invalid log file
+  } else if (!log[0].equals("<system>")) {
+    if (DEBUG) println("invalid log line: "+ log[0]);
+    return -2;
+  }
+
   context.clear();  // clear out current chat context for OpenAI
   int index = 1;  // the line after <system>
+
   // collect and copy system prompt
   int count = countLinesUntil(log, index, "<prompt>");
   systemPrompt = new String[count];
@@ -68,66 +79,77 @@ int parseChatLog(String logFile, String[] log) {
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  prompt = "";
-  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  context.add(userMessage);
+  //prompt = "";
+  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  //context.add(userMessage);
   index = index + count; // the line after the system prompt, should be prompt or end of file
-
-  //count = countLinesUntil(log, index, "<prompt>");
-  //String[] response = new String[count];
 
   // collect and copy prompt and responses
   while (index < log.length) {
+    if (!log[index].equals("<prompt>")) {
+      if (DEBUG) println("invalid log file: "+ index +"  "+log[index]);
+      break;  // invalid log file
+    }
+    index++;
     count = countLinesUntil(log, index, "<response>");
-    index = index + count + 1;
+    index = index + count ;
     if (count == 0) prompt = "";
+    ChatMessage userMessage2 = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+    context.add(userMessage2);
     // response is assistant message
+    count = countLinesUntil(log, index, "<prompt>");
+    if (count == 0) prompt = "";
     String[] response = new String[count];
+    index++;
     copyLines(log, index, response, count);
     String msgr = combineStrings(response);
     ChatMessage assistantMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), msgr);
     context.add(assistantMessage);
-    if (index >= log.length)
+    index = index + count ;
+    if (index >= log.length) {
+      if (DEBUG) println("break exit loop");
       break;
-    count = countLinesUntil(log, index, "<prompt>");
-    if (count == 0) break;
-    ChatMessage userMessage2 = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-    context.add(userMessage2);
+    }
   }
+  //initChat();  TO DO set chat counter etc to resume chat
+
   //startChat();
   return 0;
 }
+
 /*
 debug context
-context[0]=ChatMessage(role=system, content=You are a friendly assistant.)
-context[1]=ChatMessage(role=user, content=)
-context[2]=ChatMessage(role=user, content=)
-context[3]=ChatMessage(role=assistant, content=Hello! How can I assist you today?)
-context[4]=ChatMessage(role=user, content=what is a perlin line in processing.org)
-context[5]=ChatMessage(role=assistant, content=Perlin noise is a type of gradient noise developed by Ken Perlin in 1983. It's often used in computer graphics for creating procedural textures, shapes, terrains, and other structures that have a natural, organic quality.
-
-In Processing.org, Perlin noise is used to generate smooth, natural-seeming randomness. This is different from the 'random()' function in Processing, which generates purely random values with no relationship to each other.
-
-Here's a simple example of how you might use Perlin noise in Processing:
-
-```processing
-float xoff = 0.0;
-
-void draw() {
-  background(204);
-  xoff = xoff + .01;
-  float n = noise(xoff) * width;
-  line(n, 0, n, height);
-}
-```
-
-In this example, the 'noise()' function is used to generate a Perlin noise value, which is then used to determine the x-coordinate of a line drawn on the screen. The result is a line that moves smoothly and organically across the screen, rather than jumping randomly from place to place.)
-*/
+ context[0]=ChatMessage(role=system, content=You are a friendly assistant.)
+ context[1]=ChatMessage(role=user, content=)
+ context[2]=ChatMessage(role=user, content=)
+ context[3]=ChatMessage(role=assistant, content=Hello! How can I assist you today?)
+ context[4]=ChatMessage(role=user, content=what is a perlin line in processing.org)
+ context[5]=ChatMessage(role=assistant, content=Perlin noise is a type of gradient noise developed by Ken Perlin in 1983. It's often used in computer graphics for creating procedural textures, shapes, terrains, and other structures that have a natural, organic quality.
+ 
+ In Processing.org, Perlin noise is used to generate smooth, natural-seeming randomness. This is different from the 'random()' function in Processing, which generates purely random values with no relationship to each other.
+ 
+ Here's a simple example of how you might use Perlin noise in Processing:
+ 
+ ```processing
+ float xoff = 0.0;
+ 
+ void draw() {
+ background(204);
+ xoff = xoff + .01;
+ float n = noise(xoff) * width;
+ line(n, 0, n, height);
+ }
+ ```
+ 
+ In this example, the 'noise()' function is used to generate a Perlin noise value, which is then used to determine the x-coordinate of a line drawn on the screen. The result is a line that moves smoothly and organically across the screen, rather than jumping randomly from place to place.)
+ */
 
 void copyLines(String[] fromArray, int start, String[] toArray, int count) {
-  int j = 0;
-  for (int i=start; i<count; i++) {
-    toArray[j++] = fromArray[i];
+  int i = start;
+  for (int j=0; j<count; j++) {
+    if (i < fromArray.length) {
+      toArray[j] = fromArray[i++];
+    }
   }
 }
 
