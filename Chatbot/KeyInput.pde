@@ -100,7 +100,7 @@ static final int KEYCODE_KEYBOARD = 1000;
 static final int KEYCODE_ERROR = 10000;
 static final int KEYCODE_GET_CUSTOM_CHAT_FILE = 20000;
 static final int KEYCODE_LOAD_CHAT_LOG_FILE = 20001;
-
+static final int KEYCODE_READ_CHAT_LOG_FILE = 20002;
 static final int KEY_CONTROL = 65535;
 
 //-------------------------------------------------------------------------------------
@@ -291,6 +291,10 @@ boolean updateKey() {
     break;
   case KEYCODE_LOAD_CHAT_LOG_FILE:
     selectChatLogFile();
+    break;
+  case KEYCODE_READ_CHAT_LOG_FILE:
+    readChatLogFile(chatLogFilePath + ".log");
+    initReviewText(chatLogFilePath + ".log");
     break;
   default:
     break;

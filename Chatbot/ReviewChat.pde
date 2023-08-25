@@ -15,8 +15,8 @@ void chatLogFileSelected(File selection) {
   } else {
     String logFile = selection.getAbsolutePath(); //selection.getAbsoluteFile();
     if (DEBUG) println("Chat Log File selected " + logFile);
-    chatLogFilePath = logFile.substring(0,logFile.lastIndexOf("."));
-    readChatLogFile(chatLogFilePath + ".log");
+    chatLogFilePath = logFile.substring(0, logFile.lastIndexOf("."));
+    lastKeyCode = KEYCODE_READ_CHAT_LOG_FILE;
     if (DEBUG) println("chatLogFilePath="+chatLogFilePath);
   }
 }
@@ -31,15 +31,17 @@ int showChatLogFile(String logFile) {
   if (logFile == null || logFile.equals("null.log")) return -1;
   if (winAWT == null) {
     winAWT = GWindow.getWindow(this, "Chat Log", 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
+    winAWT.noLoop();
     winAWT.setActionOnClose(G4P.HIDE_WINDOW);
     //winAWT.addDrawHandler(this, "win_awt_draw");  // no handler
     reviewArea = new GTextArea(winAWT, 0, 0, RESPONSE_WIDTH, RESPONSE_HEIGHT, G4P.SCROLLBARS_VERTICAL_ONLY);
     reviewArea.setFont(new Font("Arial", Font.PLAIN, fontHeight));
     reviewArea.setOpaque(true);
   } else {
+    winAWT.loop();
     winAWT.setVisible(!winAWT.isVisible());
   }
-  initReviewText(logFile);
+  //initReviewText(logFile);
   return 0;
 }
 
@@ -58,7 +60,18 @@ void initReviewText(String logFile) {
   if (logFile != null && reviewArea != null) {
     if (DEBUG) println("Load strings: "+logFile);
     String[] reviewText = loadStrings(logFile);
-    reviewArea.setText(reviewText);
+    if (DEBUG) println("initReviewText setText array ");
+    try {
+      winAWT.noLoop();
+      reviewArea.setText(reviewText);
+      winAWT.loop();
+    }
+    catch (Exception ne) {
+      ne.printStackTrace();
+    }
+    if (DEBUG) println("setVisible window");
     reviewArea.setVisible(true);
+    if (DEBUG) println("initReviewText complete ");
+    
   }
 }

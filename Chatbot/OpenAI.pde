@@ -175,7 +175,7 @@ void generalChat() {
   initChat();
   context.clear();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
-  String path = sketchPath("systemprompts") + File.separator + "generalPrompt.txt";
+  String path = sketchPath("systemprompts") + File.separator + "General Chat.txt";
   if (DEBUG) println("generalChat: " + path);
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
@@ -192,7 +192,7 @@ void processingChat() {
   initChat();
   context.clear();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
-  String path = sketchPath("systemprompts") + File.separator + "processingPrompt.txt";
+  String path = sketchPath("systemprompts") + File.separator + "Sketch Chat.txt";
   if (DEBUG) println("processingChat: " + path);
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
@@ -227,6 +227,11 @@ void processCustomChat() {
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   if (DEBUG) println("customChat: " + customChatFilePath);
+  if (customChatFilePath == null) {
+    responseArea.setVisible(false);
+    errorText = "No Custom Chat Selected. Click with Right Mouse Button";
+    return;
+  }
   systemPrompt = loadStrings(customChatFilePath);
   if (DEBUG) println("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
