@@ -59,12 +59,12 @@ void initAI() {
  * return status -1 error with log file structure
  */
 int parseChatLog(String logFile, String[] log) {
-
+  if (DEBUG) println("parseChatLog "+logFile);
   // first line must be <system>
   if (log == null || log.length == 0) {
-    if (DEBUG) println("invalid log file");
+    if (DEBUG) println("parseChatLog log file missing");
     return -1; // invalid log file
-  } else if (!log[0].equals("<system>")) {
+  } else if (!log[0].startsWith("<system>")) {
     if (DEBUG) println("invalid log line: "+ log[0]);
     return -2;
   }
@@ -77,30 +77,29 @@ int parseChatLog(String logFile, String[] log) {
   systemPrompt = new String[count];
   copyLines(log, index, systemPrompt, count);
   String msg = combineStrings(systemPrompt);
+  if (DEBUG) println("systemPrompt: "+msg);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  //prompt = "";
-  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  //context.add(userMessage);
   index = index + count; // the line after the system prompt, should be prompt or end of file
 
   // collect and copy prompt and responses
   while (index < log.length) {
-    if (!log[index].equals("<prompt>")) {
-      if (DEBUG) println("invalid log file: "+ index +"  "+log[index]);
-      break;  // invalid log file
+    if (!log[index].startsWith("<prompt>")) {
+      if (DEBUG) println("parseChatLog invalid log file: "+ index +"  "+log[index]);
+      return -2;  // invalid log file
     }
     index++;
     count = countLinesUntil(log, index, "<response>");
-    index = index + count ;
-    if (count == 0) prompt = "";
-    ChatMessage userMessage2 = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+    index = index + count;
+    String[] user = new String[count];
+    copyLines(log, index, user, count);
+    String msguser = combineStrings(user);
+    ChatMessage userMessage2 = new ChatMessage(ChatMessageRole.USER.value(), msguser);
     context.add(userMessage2);
     // response is assistant message
-    count = countLinesUntil(log, index, "<prompt>");
-    if (count == 0) prompt = "";
-    String[] response = new String[count];
     index++;
+    count = countLinesUntil(log, index, "<prompt>");
+    String[] response = new String[count];
     copyLines(log, index, response, count);
     String msgr = combineStrings(response);
     ChatMessage assistantMessage = new ChatMessage(ChatMessageRole.ASSISTANT.value(), msgr);
@@ -111,8 +110,16 @@ int parseChatLog(String logFile, String[] log) {
       break;
     }
   }
-  //initChat();  TO DO set chat counter etc to resume chat
-
+  // change session date time from log file name
+  int sIndex = logFile.lastIndexOf(File.separator)+1+chatSketchPrefix.length()+1;
+  sessionDateTime = logFile.substring(sIndex,sIndex + 15);
+  if (DEBUG) println("sessionDateTime in log file: "+ sessionDateTime);
+  String cs = logFile.substring(sIndex+16, sIndex+20);
+  if (DEBUG) println("chatcounter="+cs);
+  chatCounter = parseInt(cs);
+  if (DEBUG) println("chatcounter="+chatCounter);
+  initChat(); // TO DO set chat counter etc to resume chat
+  prompt = "";
   //startChat();
   return 0;
 }

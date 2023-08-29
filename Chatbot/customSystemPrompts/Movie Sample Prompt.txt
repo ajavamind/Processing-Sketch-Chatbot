@@ -1,0 +1,8 @@
+code a sketch with size 1080 by 1080 with white background
+every frame set background to white and draw 79 random color, size, and position squares, circles, triangles, and rectangles.
+set frame rate to 2 per second.
+add VideoExport library to output screens.
+set videoexport frame rate to 2 per second. 
+set videoexport file "output.mp4". 
+call videoexport startMovie in setup.
+endMovie with space key and exit. 

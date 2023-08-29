@@ -41,7 +41,7 @@ int showChatLogFile(String logFile) {
     winAWT.loop();
     winAWT.setVisible(!winAWT.isVisible());
   }
-  //initReviewText(logFile);
+  initReviewText(logFile);
   return 0;
 }
 

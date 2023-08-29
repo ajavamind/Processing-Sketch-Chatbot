@@ -19,9 +19,7 @@ boolean screenshot = false;
 int screenshotCounter = 1;
 volatile boolean start = false;
 volatile boolean ready = false;
-//volatile boolean first = true;
 
-int statusHeight;
 int errorMessageHeight;
 int fontHeight;
 int indexOffset;
@@ -32,6 +30,8 @@ String prompt;
 List<String[]> responses;
 String response;
 
+String chatbotPrefix = "SketchChatbot";
+String chatSketchPrefix = "ChatSketches";
 String sessionDateTime;
 int fileCounter = 0;
 int chatCounter = 0;
@@ -140,16 +140,14 @@ void draw() {
     String[] responseLines = parseString(response);
     responses.add(responseLines);
 
-    String prefix = "SketchChatbot";
-    //String fn = prefix + sessionDateTime + "_" + number(chatCounter);
     // make folder with chatcounter
-    String folder = prefix+ "_" + sessionDateTime + "_" + number(chatCounter);
+    String folder = chatbotPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
     File theDir = new File(saveFolderPath + File.separator + folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
       if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
     }
-    String fileName = "ChatSketches" + "_" + sessionDateTime + "_" + number(chatCounter);
+    String fileName = chatSketchPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
     chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName ;
     newLogFile("<system>", systemPrompt, chatLogFilePath);
     saveLogText(promptLines, responseLines, chatLogFilePath);

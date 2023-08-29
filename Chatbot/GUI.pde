@@ -385,6 +385,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
     } else if (button == clearButton && event == GEvent.CLICKED) {
       if (DEBUG) println("Button Clear pressed");
       promptArea.setText("");
+      prompt = "";
     } else if (button == reviewChatButton && event == GEvent.CLICKED) {
       if (DEBUG) println("Review Chat pressed");
       lastKey = 0;
