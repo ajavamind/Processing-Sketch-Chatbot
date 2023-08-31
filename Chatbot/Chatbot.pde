@@ -30,17 +30,18 @@ String prompt;
 List<String[]> responses;
 String response;
 
-String chatbotPrefix = "SketchChatbot";
-String chatSketchPrefix = "ChatSketches";
+String chatbotPrefix = "SketchChat";
+String chatSketchPrefix = "Sketch";
+String sketchParamFile = "Sketch_Param.txt";
 String sessionDateTime;
-int fileCounter = 0;
-int chatCounter = 0;
+int sketchCounter = 1; // initialize next sketch folder name counter
+String sketchNamePrefix = "sketch";
 
 //// debug test lines for formatting
 //String[] lines1;
 //String[] lines2;
 
-private static final int DEFAULT_MODE = 0; // single prompt, single response, no chat no system message context
+private static final int SINGLE_MODE = 0; // single prompt, single response, no chat no system message context
 private static final int CHAT_MODE = 1; // multiple prompts, chat remembers prompt/responses, saves context
 int mode = CHAT_MODE;
 
@@ -115,7 +116,7 @@ void draw() {
     // check chat mode for type of request wanted
     if (DEBUG) println("Chat mode="+mode);
     switch(mode) {
-    case DEFAULT_MODE:
+    case SINGLE_MODE:
       systemPrompt = null;
       thread("sendOpenAiRequest");
       break;
@@ -141,13 +142,15 @@ void draw() {
     responses.add(responseLines);
 
     // make folder with chatcounter
-    String folder = chatbotPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
+    //String folder = chatbotPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
+    String folder = chatbotPrefix + "_" + sessionDateTime;
     File theDir = new File(saveFolderPath + File.separator + folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
       if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
     }
-    String fileName = chatSketchPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
+    //String fileName = chatSketchPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
+    String fileName = chatSketchPrefix + "_" + sessionDateTime;
     chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName ;
     newLogFile("<system>", systemPrompt, chatLogFilePath);
     saveLogText(promptLines, responseLines, chatLogFilePath);
@@ -155,7 +158,7 @@ void draw() {
     
     if (DEBUG) println("response Chat mode="+mode);
     switch(mode) {
-    case DEFAULT_MODE:
+    case SINGLE_MODE:
       break;
     case CHAT_MODE:
       addAssistantMessage(response);  // add to context

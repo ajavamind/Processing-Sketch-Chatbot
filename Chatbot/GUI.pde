@@ -286,31 +286,31 @@ void initGUI() {
   chat1Button.tag = "Button:  Single Prompt";
   chat1Button.setOpaque(true);
   chat1Button.setFont(buttonFont);
-  chat1Button.setTipText("Function Key F1");
+  chat1Button.setTip("New Single Prompt", 0, 0);
 
   chat2Button = new GButton(this, CHAT2_BUTTON_X, CHAT2_BUTTON_Y, CHAT2_BUTTON_WIDTH, CHAT2_BUTTON_HEIGHT, "General\nChat");
   chat2Button.tag = "Button:  Chat";
   chat2Button.setOpaque(true);
   chat2Button.setFont(buttonFont);
-  chat2Button.setTipText("Function Key F2");
+  chat2Button.setTip("New General Chat", 0, 0);
 
   chat3Button = new GButton(this, CHAT3_BUTTON_X, CHAT3_BUTTON_Y, CHAT3_BUTTON_WIDTH, CHAT3_BUTTON_HEIGHT, "Sketch\nChat");
   chat3Button.tag = "Button:  Sketch Chat";
   chat3Button.setOpaque(true);
   chat3Button.setFont(buttonFont);
-  chat3Button.setTipText("Function Key F3");
+  chat3Button.setTip("New Processing Sketch Chat", 0, 0);
 
-  chat4Button = new GButton(this, CHAT4_BUTTON_X, CHAT4_BUTTON_Y, CHAT4_BUTTON_WIDTH, CHAT4_BUTTON_HEIGHT, "Custom\nChat1");
-  chat4Button.tag = "Button:  Custom Chat1";
+  chat4Button = new GButton(this, CHAT4_BUTTON_X, CHAT4_BUTTON_Y, CHAT4_BUTTON_WIDTH, CHAT4_BUTTON_HEIGHT, "Custom\nChat");
+  chat4Button.tag = "Button:  Custom Chat";
   chat4Button.setOpaque(true);
   chat4Button.setFont(buttonFont);
-  chat4Button.setTip("Left Click - start new custom chat\nRight Click - select custom chat file", 0,0);
+  chat4Button.setTip("Left Click - New Custom Chat\nRight Click - Select Custom Chat File", 0, 0);
 
   //chat5Button = new GButton(this, CHAT5_BUTTON_X, CHAT5_BUTTON_Y, CHAT5_BUTTON_WIDTH, CHAT5_BUTTON_HEIGHT, "Custom\nChat2");
   //chat5Button.tag = "Button:  Custom Chat2";
   //chat5Button.setOpaque(true);
   //chat5Button.setFont(buttonFont);
-  //chat5Button.setTipText("Function Key F5");
+  //chat5Button.setTip("Function Key F5", 0, 0);
 
   //chat6Button = new GButton(this, CHAT6_BUTTON_X, CHAT6_BUTTON_Y, CHAT6_BUTTON_WIDTH, CHAT6_BUTTON_HEIGHT, "Custom\nChat3");
   //chat6Button.tag = "Button:  Custom Chat3";
@@ -384,8 +384,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
       lastKeyCode = KEYCODE_F6;
     } else if (button == clearButton && event == GEvent.CLICKED) {
       if (DEBUG) println("Button Clear pressed");
-      promptArea.setText("");
-      prompt = "";
+      clearPrompt();
     } else if (button == reviewChatButton && event == GEvent.CLICKED) {
       if (DEBUG) println("Review Chat pressed");
       lastKey = 0;
@@ -400,4 +399,10 @@ public void handleButtonEvents(GButton button, GEvent event) {
       lastKeyCode = KEYCODE_LOAD_CHAT_LOG_FILE;
     }
   }
+}
+
+public void clearPrompt() {
+  promptArea.setText("");
+  prompt = "";
+  responseArea.setText("");
 }

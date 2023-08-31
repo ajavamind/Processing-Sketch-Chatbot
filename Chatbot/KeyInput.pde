@@ -215,9 +215,11 @@ boolean updateKey() {
   case KEYCODE_PAGE_DOWN:
     break;
   case KEYCODE_F1:
-    mode = DEFAULT_MODE; // Single prompt response, no chat, no system message
+    mode = SINGLE_MODE; // Single prompt response, no chat, no system message
     if (DEBUG) println("CHAT_MODE F1");
     initChat();
+    context.clear();
+    setTitle(TITLE + " - Single Prompt ");
     break;
   case KEYCODE_F2:
     mode = CHAT_MODE;
@@ -254,7 +256,7 @@ boolean updateKey() {
     forceExecJFn = true;
     // fall through intentional
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
-    if (DEBUG) println("extract and save embedded code as a processing sketch file and run in IDE");
+    if (DEBUG) println("\nExtract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
     if (DEBUG) println("saveSketch folder="+chatLogFilePath);
     execFn = saveSketch(chatLogFilePath);
@@ -295,6 +297,7 @@ boolean updateKey() {
   case KEYCODE_READ_CHAT_LOG_FILE:
     readChatLogFile(chatLogFilePath + ".log");
     initReviewText(chatLogFilePath + ".log");
+    readLastSketchFile(chatLogFilePath + ".txt");
     break;
   default:
     break;

@@ -1,0 +1,5 @@
+code a java sketch to plot the graph of the equation  x**2+4x+3
+use computed values for the range x>=0 and x<5.
+include x-axis and y-axis labels and tick marks with range values.
+set text color to black.
+the map function returns type float

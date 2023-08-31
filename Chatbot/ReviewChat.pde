@@ -30,7 +30,8 @@ int showChatLogFile(String logFile) {
   if (DEBUG) println("showChatLogFile="+logFile);
   if (logFile == null || logFile.equals("null.log")) return -1;
   if (winAWT == null) {
-    winAWT = GWindow.getWindow(this, "Chat Log", 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
+    String title = logFile.substring(logFile.lastIndexOf(File.separator)+1);
+    winAWT = GWindow.getWindow(this, "Chat Log  " + title, 50, 50, RESPONSE_WIDTH, RESPONSE_HEIGHT, JAVA2D);
     winAWT.noLoop();
     winAWT.setActionOnClose(G4P.HIDE_WINDOW);
     //winAWT.addDrawHandler(this, "win_awt_draw");  // no handler
@@ -51,6 +52,18 @@ void readChatLogFile(String logFile) {
   String[] chatLog = loadStrings(logFile);
   parseChatLog(logFile, chatLog);
   showChatLogFile(logFile);
+}
+
+void readLastSketchFile(String logFile) {
+  if (DEBUG) println("readLastSketchFile="+logFile);
+  if (logFile == null) return;
+  // update sketch counter from sketch param file
+  String paramFile = logFile.substring(0, logFile.lastIndexOf(File.separator)) + File.separator + sketchParamFile;
+  if (DEBUG) println("sketchParamFile path="+paramFile);
+  String[] sketchText = loadStrings(paramFile);
+  String counter = sketchText[0];
+  sketchCounter = parseInt(counter);
+  if (DEBUG) println("read sketchCounter="+sketchCounter);
 }
 
 /**

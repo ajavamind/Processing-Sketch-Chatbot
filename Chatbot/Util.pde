@@ -22,6 +22,7 @@ import java.io.StringReader;
 import java.lang.StringBuilder;
 import java.lang.Process;
 import java.lang.Exception;
+import java.util.concurrent.TimeUnit;
 
 static final String fileLogType = ".log";
 String fileType = ".txt";
@@ -93,9 +94,10 @@ void appendToFile(String fileName, String[] lines) throws IOException {
 // save prompt and response lines in a text or html file and
 // generate Processing sketch folder and store all files extracted into the folder
 void saveLogText(String[] prompts, String[] responses, String fname) {
+  fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
   if (DEBUG) println("saveText number of lines: "+len);
-  String[] list = new String[len];
+  String[] list = new String[len+1];
   int j = 0;
   list[j++] = "<prompt>";
   for (int i = 0; i<prompts.length; i++) {
@@ -110,7 +112,7 @@ void saveLogText(String[] prompts, String[] responses, String fname) {
     fileType = ".html";
   }
   //String filename = saveFolderPath + File.separator + folderPath + File.separator + name ; // chat folder
-  saveStrings(fname + fileType, list);
+  saveStrings(fname + fileType, list);  // save txt or html file
   appendLog(fname, list);
   initReviewText(fname);
 }
@@ -121,7 +123,7 @@ public static String[] parseString(String input) {
   // keep end of line character
   String[] lines = new BufferedReader(new StringReader(input))
     .lines()
-//    .map(s -> s + "\n")
+    //    .map(s -> s + "\n")
     .map(s -> s)
     .toArray(String[]::new);
   return lines;
@@ -204,15 +206,12 @@ void execJava(String filenamePath, String name) {
   }
 }
 
-int sketchCounter = 0;
-String sketchNamePrefix = "sketch";
-
 /**
  * filenamePath is chat folder
  * now create sketch folder in chatfolder
  */
 String[] saveSketch(String filenamePath) {
-  if (DEBUG) println("saveSketch folder: "+filenamePath);
+  if (DEBUG) println("saveSketch in folder: "+filenamePath);
   if (filenamePath == null) return null;
   boolean pdeType = true;
   boolean androidMode = false;
@@ -266,9 +265,16 @@ String[] saveSketch(String filenamePath) {
       }
     }
   }
-  sketchCounter++;
   if (sketchPrefix == null) {
     name = sketchNamePrefix + number(sketchCounter);
+    // save next sketchCounter after using here
+    String[] sA = new String[1];
+    sketchCounter++;
+    sA[0] = str(sketchCounter);
+    // write sketch counter to sketch param file
+    String paramFile = filenamePath.substring(0, filenamePath.lastIndexOf(File.separator)) + File.separator + sketchParamFile;
+    if (DEBUG) println("sketchParamFile path="+paramFile);
+    saveStrings(paramFile, sA);
   } else {
     name = sketchPrefix[0];
   }
@@ -280,6 +286,8 @@ String[] saveSketch(String filenamePath) {
     File theDir = new File(folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
+    } else {
+      if (DEBUG) println("folder already exists: "+theDir.getAbsolutePath());
     }
 
     String fnName = folder + File.separator + name + codeType;
@@ -358,9 +366,11 @@ void copyFiles(String mode, String folder) {
     String pStr = "xcopy " + sketchPath("data") + File.separator + mode + " " + folder + " /E";
     if (DEBUG) println("copyFiles: "+pStr);
     Process process = Runtime.getRuntime().exec(pStr);
-    process.waitFor();
+    process.waitFor(1, TimeUnit.SECONDS);
+    //process.waitFor();
   }
   catch (Exception ex) {
+    if (DEBUG) println(ex.toString());
   }
 }
 

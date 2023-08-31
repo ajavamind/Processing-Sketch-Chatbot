@@ -114,13 +114,7 @@ int parseChatLog(String logFile, String[] log) {
   int sIndex = logFile.lastIndexOf(File.separator)+1+chatSketchPrefix.length()+1;
   sessionDateTime = logFile.substring(sIndex,sIndex + 15);
   if (DEBUG) println("sessionDateTime in log file: "+ sessionDateTime);
-  String cs = logFile.substring(sIndex+16, sIndex+20);
-  if (DEBUG) println("chatcounter="+cs);
-  chatCounter = parseInt(cs);
-  if (DEBUG) println("chatcounter="+chatCounter);
-  initChat(); // TO DO set chat counter etc to resume chat
   prompt = "";
-  //startChat();
   return 0;
 }
 
@@ -181,8 +175,11 @@ int countLinesUntil(String[] lines, int index, String token) {
 void generalChat() {
   initChat();
   context.clear();
+  // clear prompt areas in GUI and Chatbot
+  clearPrompt();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "General Chat.txt";
+  setTitle(TITLE + " - General Chat");
   if (DEBUG) println("generalChat: " + path);
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
@@ -198,9 +195,12 @@ void generalChat() {
 void processingChat() {
   initChat();
   context.clear();
+  // clear prompt areas in GUI and Chatbot
+  clearPrompt();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "Sketch Chat.txt";
   if (DEBUG) println("processingChat: " + path);
+  setTitle(TITLE + " - Sketch Chat Mode");
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
@@ -215,8 +215,11 @@ void processingChat() {
 void processingAltChat() {
   initChat();
   context.clear();
+  // clear prompt areas in GUI and Chatbot
+  clearPrompt();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
+  setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(path);
   if (DEBUG) println("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
@@ -231,6 +234,8 @@ void processingAltChat() {
 void processCustomChat() {
   initChat();
   context.clear();
+  // clear prompt areas in GUI and Chatbot
+  clearPrompt();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   if (DEBUG) println("customChat: " + customChatFilePath);
@@ -239,6 +244,7 @@ void processCustomChat() {
     errorText = "No Custom Chat Selected. Click with Right Mouse Button";
     return;
   }
+  setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(customChatFilePath);
   if (DEBUG) println("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
@@ -254,6 +260,8 @@ void processing3DChat() {
   initChat();
   if (DEBUG) println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
+  // clear prompt areas in GUI and Chatbot
+  clearPrompt();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
   if (DEBUG) println("customChat: " + path);
@@ -269,8 +277,8 @@ void processing3DChat() {
 
 // initialize for new chat
 void initChat() {
-  chatCounter++;
-  fileCounter = 0;
+  sessionDateTime = getDateTime();
+  sketchCounter = 1; // initialize next sketch folder name counter
 }
 
 void resetChat() {
