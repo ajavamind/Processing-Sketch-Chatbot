@@ -176,7 +176,7 @@ void generalChat() {
   initChat();
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearPrompt();
+  clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "General Chat.txt";
   setTitle(TITLE + " - General Chat");
@@ -196,7 +196,7 @@ void processingChat() {
   initChat();
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearPrompt();
+  clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "Sketch Chat.txt";
   if (DEBUG) println("processingChat: " + path);
@@ -216,7 +216,7 @@ void processingAltChat() {
   initChat();
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearPrompt();
+  clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   setTitle(TITLE + " - "+ chatName);
@@ -235,7 +235,7 @@ void processCustomChat() {
   initChat();
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearPrompt();
+  clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   if (DEBUG) println("customChat: " + customChatFilePath);
@@ -261,7 +261,7 @@ void processing3DChat() {
   if (DEBUG) println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearPrompt();
+  clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
   if (DEBUG) println("customChat: " + path);

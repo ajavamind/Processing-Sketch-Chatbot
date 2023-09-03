@@ -404,5 +404,10 @@ public void handleButtonEvents(GButton button, GEvent event) {
 public void clearPrompt() {
   promptArea.setText("");
   prompt = "";
+}
+
+public void clearAll() {
+  promptArea.setText("");
+  prompt = "";
   responseArea.setText("");
 }

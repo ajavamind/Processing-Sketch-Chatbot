@@ -39,7 +39,7 @@ String customChatFilePath;
 String chatName;
 
 /** 
- * read custom chat file json file and decode
+ * read custom chat text file
  */
 String[] readCustomChatFile(String path) {
   String[] str = loadStrings(path);

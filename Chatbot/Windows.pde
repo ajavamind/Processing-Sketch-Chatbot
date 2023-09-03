@@ -81,7 +81,7 @@ void customChatFileSelected(File selection) {
   } else {
     customChatFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
     int startIndex = customChatFilePath.lastIndexOf(File.separator) + 1;
-    chatName = customChatFilePath.substring(startIndex, startIndex+12);
+    chatName = customChatFilePath.substring(startIndex, startIndex+16);
     setChatButtonText(chatName);
     if (DEBUG) println("Custom Chat="+chatName);
     if (DEBUG) println("User selected " + customChatFilePath);
