@@ -59,13 +59,13 @@ void initAI() {
  * return status -1 error with log file structure
  */
 int parseChatLog(String logFile, String[] log) {
-  if (DEBUG) println("parseChatLog "+logFile);
+  logger("parseChatLog "+logFile);
   // first line must be <system>
   if (log == null || log.length == 0) {
-    if (DEBUG) println("parseChatLog log file missing");
+    logger("parseChatLog log file missing");
     return -1; // invalid log file
   } else if (!log[0].startsWith("<system>")) {
-    if (DEBUG) println("invalid log line: "+ log[0]);
+    logger("invalid log line: "+ log[0]);
     return -2;
   }
 
@@ -77,7 +77,7 @@ int parseChatLog(String logFile, String[] log) {
   systemPrompt = new String[count];
   copyLines(log, index, systemPrompt, count);
   String msg = combineStrings(systemPrompt);
-  if (DEBUG) println("systemPrompt: "+msg);
+  logger("systemPrompt: "+msg);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
   index = index + count; // the line after the system prompt, should be prompt or end of file
@@ -85,7 +85,7 @@ int parseChatLog(String logFile, String[] log) {
   // collect and copy prompt and responses
   while (index < log.length) {
     if (!log[index].startsWith("<prompt>")) {
-      if (DEBUG) println("parseChatLog invalid log file: "+ index +"  "+log[index]);
+      logger("parseChatLog invalid log file: "+ index +"  "+log[index]);
       return -2;  // invalid log file
     }
     index++;
@@ -106,14 +106,14 @@ int parseChatLog(String logFile, String[] log) {
     context.add(assistantMessage);
     index = index + count ;
     if (index >= log.length) {
-      if (DEBUG) println("break exit loop");
+      logger("break exit loop");
       break;
     }
   }
   // change session date time from log file name
   int sIndex = logFile.lastIndexOf(File.separator)+1+chatSketchPrefix.length()+1;
   sessionDateTime = logFile.substring(sIndex,sIndex + 15);
-  if (DEBUG) println("sessionDateTime in log file: "+ sessionDateTime);
+  logger("sessionDateTime in log file: "+ sessionDateTime);
   prompt = "";
   return 0;
 }
@@ -180,9 +180,9 @@ void generalChat() {
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "General Chat.txt";
   setTitle(TITLE + " - General Chat");
-  if (DEBUG) println("generalChat: " + path);
+  logger("generalChat: " + path);
   systemPrompt = loadStrings(path);
-  if (DEBUG) println("systemMessage="+systemPrompt);
+  logger("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -199,10 +199,10 @@ void processingChat() {
   clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "Sketch Chat.txt";
-  if (DEBUG) println("processingChat: " + path);
+  logger("processingChat: " + path);
   setTitle(TITLE + " - Sketch Chat Mode");
   systemPrompt = loadStrings(path);
-  if (DEBUG) println("systemMessage="+systemPrompt);
+  logger("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -221,7 +221,7 @@ void processingAltChat() {
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(path);
-  if (DEBUG) println("systemMessage="+systemPrompt);
+  logger("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -238,7 +238,7 @@ void processCustomChat() {
   clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
-  if (DEBUG) println("customChat: " + customChatFilePath);
+  logger("customChat: " + customChatFilePath);
   if (customChatFilePath == null) {
     responseArea.setVisible(false);
     errorText = "No Custom Chat Selected. Click with Right Mouse Button";
@@ -246,7 +246,7 @@ void processCustomChat() {
   }
   setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(customChatFilePath);
-  if (DEBUG) println("systemMessage="+systemPrompt);
+  logger("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -258,15 +258,15 @@ void processCustomChat() {
 // Processing 3D Chat system message
 void processing3DChat() {
   initChat();
-  if (DEBUG) println("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
+  logger("CHAT_MODE Processing.org stereoscopic 3D vision sketch coder, java programming language assistant");
   context.clear();
   // clear prompt areas in GUI and Chatbot
   clearAll();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
-  if (DEBUG) println("customChat: " + path);
+  logger("customChat: " + path);
   systemPrompt = loadStrings(path);
-  if (DEBUG) println("systemMessage="+systemPrompt);
+  logger("systemMessage="+systemPrompt);
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -307,7 +307,7 @@ void addAssistantMessage(String response) {
 
 // Processing thread call, no parameters, works during draw()
 void sendOpenAiRequest() {
-  if (DEBUG) println("sendOpenAiRequest");
+  logger("sendOpenAiRequest");
   try {
     response = getCompletion(prompt);
     ready = true;
@@ -323,14 +323,14 @@ void sendOpenAiRequest() {
 
 // Processing thread call, no parameters, works during draw()
 void sendOpenAiChatRequest() {
-  if (DEBUG) println("sendOpenAiChatRequest");
+  logger("sendOpenAiChatRequest");
   try {
     response = getCompletionFromMessages(context);
     ready = true;
   }
   catch(Exception rex) {
     errorText = "Service problem "+ rex;
-    if (DEBUG) println("Service problem "+ rex + " "+ rex.toString());
+    logger("Service problem "+ rex + " "+ rex.toString());
     lastKeyCode = KEYCODE_ERROR;
   }
   animation = NO_ANIMATION;

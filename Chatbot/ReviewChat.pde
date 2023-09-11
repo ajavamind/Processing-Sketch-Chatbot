@@ -11,13 +11,13 @@ String chatLogFilePath;
 
 void chatLogFileSelected(File selection) {
   if (selection == null) {
-    if (DEBUG) println("Window was closed or the user hit cancel.");
+    logger("Window was closed or the user hit cancel.");
   } else {
     String logFile = selection.getAbsolutePath(); //selection.getAbsoluteFile();
-    if (DEBUG) println("Chat Log File selected " + logFile);
+    logger("Chat Log File selected " + logFile);
     chatLogFilePath = logFile.substring(0, logFile.lastIndexOf("."));
     lastKeyCode = KEYCODE_READ_CHAT_LOG_FILE;
-    if (DEBUG) println("chatLogFilePath="+chatLogFilePath);
+    logger("chatLogFilePath="+chatLogFilePath);
   }
 }
 
@@ -27,7 +27,7 @@ void chatLogFileSelected(File selection) {
  * return -1 no log file exists
  */
 int showChatLogFile(String logFile) {
-  if (DEBUG) println("showChatLogFile="+logFile);
+  logger("showChatLogFile="+logFile);
   if (logFile == null || logFile.equals("null.log")) return -1;
   if (winAWT == null) {
     String title = logFile.substring(logFile.lastIndexOf(File.separator)+1);
@@ -47,7 +47,7 @@ int showChatLogFile(String logFile) {
 }
 
 void readChatLogFile(String logFile) {
-  if (DEBUG) println("readChatLogFile="+logFile);
+  logger("readChatLogFile="+logFile);
   if (logFile == null) return;
   String[] chatLog = loadStrings(logFile);
   parseChatLog(logFile, chatLog);
@@ -55,11 +55,11 @@ void readChatLogFile(String logFile) {
 }
 
 void readLastSketchFile(String logFile) {
-  if (DEBUG) println("readLastSketchFile="+logFile);
+  logger("readLastSketchFile="+logFile);
   if (logFile == null) return;
   // update sketch counter from sketch param file
   String paramFile = logFile.substring(0, logFile.lastIndexOf(File.separator)) + File.separator + sketchParamFile;
-  if (DEBUG) println("sketchParamFile path="+paramFile);
+  logger("sketchParamFile path="+paramFile);
   String[] sketchText = loadStrings(paramFile);
   if (sketchText == null) {
     sketchCounter = 0;
@@ -67,7 +67,7 @@ void readLastSketchFile(String logFile) {
     String counter = sketchText[0];
     sketchCounter = parseInt(counter);
   }
-  if (DEBUG) println("read sketchCounter="+sketchCounter);
+  logger("read sketchCounter="+sketchCounter);
 }
 
 /**
@@ -75,9 +75,9 @@ void readLastSketchFile(String logFile) {
  */
 void initReviewText(String logFile) {
   if (logFile != null && reviewArea != null) {
-    if (DEBUG) println("Load strings: "+logFile);
+    logger("Load strings: "+logFile);
     String[] reviewText = loadStrings(logFile);
-    if (DEBUG) println("initReviewText setText array ");
+    logger("initReviewText setText array ");
     try {
       winAWT.noLoop();
       reviewArea.setText(reviewText);
@@ -86,8 +86,8 @@ void initReviewText(String logFile) {
     catch (Exception ne) {
       ne.printStackTrace();
     }
-    if (DEBUG) println("setVisible window");
+    logger("setVisible window");
     reviewArea.setVisible(true);
-    if (DEBUG) println("initReviewText complete ");
+    logger("initReviewText complete ");
   }
 }

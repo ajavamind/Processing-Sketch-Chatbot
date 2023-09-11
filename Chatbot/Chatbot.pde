@@ -64,7 +64,7 @@ void setup() {
   getFocus();
 
   saveFolderPath = sketchPath() + File.separator + saveFolder; // default on start
-  if (DEBUG) println("saveFolderPath="+saveFolderPath);
+  logger("saveFolderPath="+saveFolderPath);
 
   initAI();
 
@@ -103,7 +103,7 @@ void draw() {
   boolean update = updateKey();
   if (update) {
     // place holder for possible changes to draw
-    if (DEBUG) println("updateKey = true");
+    logger("updateKey = true");
   }
 
   // check is prompt length is minimum size and start request set
@@ -114,7 +114,7 @@ void draw() {
 
     ready = false;
     // check chat mode for type of request wanted
-    if (DEBUG) println("Chat mode="+mode);
+    logger("Chat mode="+mode);
     switch(mode) {
     case SINGLE_MODE:
       systemPrompt = null;
@@ -147,16 +147,16 @@ void draw() {
     File theDir = new File(saveFolderPath + File.separator + folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
-      if (DEBUG) println("make folder " + saveFolderPath + File.separator +folder);
+      logger("make folder " + saveFolderPath + File.separator +folder);
     }
     //String fileName = chatSketchPrefix + "_" + sessionDateTime + "_" + number(chatCounter);
     String fileName = chatSketchPrefix + "_" + sessionDateTime;
     chatLogFilePath = saveFolderPath + File.separator + folder + File.separator + fileName ;
     newLogFile("<system>", systemPrompt, chatLogFilePath);
     saveLogText(promptLines, responseLines, chatLogFilePath);
-    if (DEBUG) println("save prompt and responses in a log file in folder: "+ chatLogFilePath + ".log");
+    logger("save prompt and responses in a log file in folder: "+ chatLogFilePath + ".log");
     
-    if (DEBUG) println("response Chat mode="+mode);
+    logger("response Chat mode="+mode);
     switch(mode) {
     case SINGLE_MODE:
       break;

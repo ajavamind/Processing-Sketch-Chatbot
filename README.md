@@ -57,7 +57,7 @@ Install the Processing IDE, Windows 64 bit, from [www.processing.org/download](h
 The previous major version of the Processing IDE (3.5.4) will not build this application.
 
 After installing the Processing IDE, note the folder location of the IDE processing.exe run file.
-Add the folder location to the environment variable "PROCESSING_HOME" and add %PROCESSING_HOME to the path in the Windows system environment settings.
+Add the folder location to the environment variable "PROCESSING_HOME" and add %PROCESSING_HOME% to the path in the Windows system environment settings.
 This is required for seamless starts of the IDE from the chatbot when you make a run request on code generated using the chatbot.
 
 ### OpenAI Api Key

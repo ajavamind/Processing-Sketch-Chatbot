@@ -332,7 +332,7 @@ void setChatButtonBackgroundColor(GButton button, boolean active) {
 
 public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
   /* code */
-  //if (DEBUG) println(event.toString());
+  //logger(event.toString());
   if (event.toString().equals("LOST_FOCUS")) {
   }
 }
@@ -340,61 +340,61 @@ public void handleTextEvents(GEditableTextControl textcontrol, GEvent event) {
 public void handleButtonEvents(GButton button, GEvent event) {
   if (mouseButtonAlert == RIGHT) {
     if (button == chat4Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Custom1 Chat pressed");
+      logger("Button Custom1 Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_GET_CUSTOM_CHAT_FILE;
-      if (DEBUG) println("Get custom chat file");
+      logger("Get custom chat file");
     }
   } else if (mouseButtonAlert == LEFT) {
     if (button == generateButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Generate pressed");
+      logger("Button Generate pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_ENTER;
     } else if (button == runButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Run pressed");
+      logger("Button Run pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F10;
     } else if (button == runJButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Run pressed");
+      logger("Button Run pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F11;
     } else if (button == chat1Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Chat pressed");
+      logger("Button Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F1;
     } else if (button == chat2Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Chat pressed");
+      logger("Button Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F2;
     } else if (button == chat3Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Chat Sketch pressed");
+      logger("Button Chat Sketch pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F3;
     } else if (button == chat4Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Custom1 Chat pressed");
+      logger("Button Custom1 Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F4;
     } else if (button == chat5Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Custom2 Chat pressed");
+      logger("Button Custom2 Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F5;
     } else if (button == chat6Button && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Custom3 Chat pressed");
+      logger("Button Custom3 Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F6;
     } else if (button == clearButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Button Clear pressed");
+      logger("Button Clear pressed");
       clearPrompt();
     } else if (button == reviewChatButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Review Chat pressed");
+      logger("Review Chat pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_TAB;
     } else if (button == saveFolderButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("saveFolder selection pressed");
+      logger("saveFolder selection pressed");
       lastKey = 0;
       lastKeyCode = KEYCODE_F9;
     } else if (button == loadChatLogButton && event == GEvent.CLICKED) {
-      if (DEBUG) println("Load chat log Button");
+      logger("Load chat log Button");
       lastKey = 0;
       lastKeyCode = KEYCODE_LOAD_CHAT_LOG_FILE;
     }

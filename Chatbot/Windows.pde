@@ -28,7 +28,7 @@ void getFocus() {
     }
   }
   catch (Exception ren) {
-    if (DEBUG) println("Renderer: "+ RENDERER + " Window focus exception: " + ren.toString());
+    logger("Renderer: "+ RENDERER + " Window focus exception: " + ren.toString());
   }
 }
 
@@ -58,9 +58,9 @@ void selectSaveFolder() {
 // callback from selectSaveFolder()
 void folderSelected(File selection) {
   if (selection == null) {
-    if (DEBUG) println("Window closed or canceled for Save Folder.");
+    logger("Window closed or canceled for Save Folder.");
   } else {
-    if (DEBUG) println("User selected saveFolderPath=" + selection.getAbsolutePath());
+    logger("User selected saveFolderPath=" + selection.getAbsolutePath());
     saveFolderPath = selection.getAbsolutePath();
   }
 }
@@ -77,14 +77,14 @@ void selectChatLogFile() {
 
 void customChatFileSelected(File selection) {
   if (selection == null) {
-    if (DEBUG) println("Window was closed or the user hit cancel.");
+    logger("Window was closed or the user hit cancel.");
   } else {
     customChatFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
     int startIndex = customChatFilePath.lastIndexOf(File.separator) + 1;
     chatName = customChatFilePath.substring(startIndex, startIndex+16);
     setChatButtonText(chatName);
-    if (DEBUG) println("Custom Chat="+chatName);
-    if (DEBUG) println("User selected " + customChatFilePath);
+    logger("Custom Chat="+chatName);
+    logger("User selected " + customChatFilePath);
   }
 }
 
@@ -104,9 +104,9 @@ void closeKeyboard() {  // on screen keyboard
 
 void selectOutputFolder(File selection) {
   if (selection == null) {
-    if (DEBUG) println("Window closed or canceled.");
+    logger("Window closed or canceled.");
   } else {
-    if (DEBUG) println("User selected Output Folder: " + selection.getAbsolutePath());
+    logger("User selected Output Folder: " + selection.getAbsolutePath());
     saveFolderPath = selection.getAbsolutePath();
   }
 }
@@ -115,7 +115,7 @@ void saveScreenshot() {
   if (screenshot) {
     screenshot = false;
     saveScreen(saveFolderPath, "screenshot_"+ getDateTime() + "_", number(screenshotCounter), "png");
-    if (DEBUG) println("save "+ "screenshot_" + number(screenshotCounter));
+    logger("save "+ "screenshot_" + number(screenshotCounter));
     screenshotCounter++;
   }
 }
@@ -136,6 +136,12 @@ void setEXIF(String filename) {
   }
   catch (Exception ex) {
   }
+}
+
+// debug logger
+public void logger(String str) {
+  //logger(str);
+  if (DEBUG) System.out.println(str);
 }
 
 //-------------------------------------------------------------------------------------
@@ -167,7 +173,7 @@ void setEXIF(String filename) {
 //    catch (Exception ufe) {
 //      text = "";
 //    }
-//    //if (DEBUG) println("paste clipboard "+ text);
+//    //logger("paste clipboard "+ text);
 //    addString(text);
 //  }
 //}

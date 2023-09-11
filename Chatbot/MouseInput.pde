@@ -11,14 +11,14 @@ void mousePressed() {
     keyboard = false;
   }
   if (mouseButton == LEFT) {
-    //if (DEBUG) println("LEFT");
+    //logger("LEFT");
     mouseButtonAlert = LEFT;
   } else if (mouseButton == RIGHT) {
-    //if (DEBUG) println("RIGHT");
-    if (DEBUG) println(mouseButton);
+    //logger("RIGHT");
+    logger(str(mouseButton));
     mouseButtonAlert = RIGHT;
   } else {
-    //if (DEBUG) println("CENTER");
+    //logger("CENTER");
     mouseButtonAlert = CENTER;
   }
 }

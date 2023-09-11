@@ -127,7 +127,7 @@ volatile int lastKey;
 volatile int lastKeyCode;
 
 void keyPressed() {
-  //if (DEBUG) println("key="+ key + " key10=" + int(key) + " keyCode="+keyCode);
+  //logger("key="+ key + " key10=" + int(key) + " keyCode="+keyCode);
   if (lastKeyCode == KEYCODE_ERROR) {
     return;
   } else if (buildMode == ANDROID_BUILD_MODE && key == KEYCODE_LF) {
@@ -158,10 +158,10 @@ void keyPressed() {
 void keyReleased() {
   if (keyCode == KEYCODE_CTRL) {
     controlKey = false;
-    //if (DEBUG) println("keyReleased Ctrl");
+    //logger("keyReleased Ctrl");
   } else if (keyCode == KEYCODE_ALT) {
     altKey = false;
-    //if (DEBUG) println("keyReleased Alt");
+    //logger("keyReleased Alt");
   }
 }
 
@@ -186,9 +186,9 @@ boolean updateKey() {
     lastKey = 0;
     lastKeyCode = 0;
     // print debug information for context
-    if (DEBUG) println("debug context");
+    logger("debug context");
     for (int i=0; i<context.size(); i++) {
-      if (DEBUG) println("context["+i+"]="+context.get(i));
+      logger("context["+i+"]="+context.get(i));
     }
     return status;
   default:
@@ -205,7 +205,7 @@ boolean updateKey() {
     showChatLogFile(chatLogFilePath + ".log");
     break;
   case KEYCODE_ENTER:
-    if (DEBUG) println("Enter");
+    logger("Enter");
     prompt = promptArea.getText();
     responseArea.setVisible(false);
     startChat();
@@ -216,38 +216,38 @@ boolean updateKey() {
     break;
   case KEYCODE_F1:
     mode = SINGLE_MODE; // Single prompt response, no chat, no system message
-    if (DEBUG) println("CHAT_MODE F1");
+    logger("CHAT_MODE F1");
     initChat();
     context.clear();
     setTitle(TITLE + " - Single Prompt ");
     break;
   case KEYCODE_F2:
     mode = CHAT_MODE;
-    if (DEBUG) println("CHAT_MODE F2");
+    logger("CHAT_MODE F2");
     generalChat();
     break;
   case KEYCODE_F3:
     mode = CHAT_MODE;
-    if (DEBUG) println("CHAT_MODE F3");
+    logger("CHAT_MODE F3");
     processingChat();
     break;
   case KEYCODE_F4:
     mode = CHAT_MODE;
-    if (DEBUG) println("Custom CHAT F4");
+    logger("Custom CHAT F4");
     processCustomChat();
     //    processingAltChat();  // custom
     break;
   case KEYCODE_F5:
     mode = CHAT_MODE;
-    if (DEBUG) println("CHAT_MODE F5");
+    logger("CHAT_MODE F5");
     processing3DChat();   // custom
     break;
   case KEYCODE_F6:
     mode = CHAT_MODE;
-    if (DEBUG) println("CHAT_MODE F6");
+    logger("CHAT_MODE F6");
     break;
   case KEYCODE_F7:
-    if (DEBUG) println("F7");
+    logger("F7");
     break;
   case KEYCODE_F9:
     selectSaveFolder();
@@ -256,12 +256,12 @@ boolean updateKey() {
     forceExecJFn = true;
     // fall through intentional
   case KEYCODE_F10:  // extract and save embedded code as a processing sketch file and run in IDE
-    if (DEBUG) println("\nExtract and save embedded code as a processing sketch file and run in IDE");
+    logger("\nExtract and save embedded code as a processing sketch file and run in IDE");
     // check if response text was modified and TODO
-    if (DEBUG) println("saveSketch folder="+chatLogFilePath);
+    logger("saveSketch folder="+chatLogFilePath);
     execFn = saveSketch(chatLogFilePath);
     for (int i=0; i<execFn.length; i++) {
-      if (DEBUG) println("using file: "+execFn[i]);
+      logger("using file: "+execFn[i]);
     }
     if (execFn != null) {
       if (forceExecJFn) {
@@ -277,11 +277,11 @@ boolean updateKey() {
     }
     break;
   case KEYCODE_F11:
-    if (DEBUG) println("F8 executing file: "+execFn);
+    logger("F8 executing file: "+execFn);
     if (execFn != null) execSketch(execFn);
     break;
   case KEYCODE_F12:
-    if (DEBUG) println("F12 screenshot command");
+    logger("F12 screenshot command");
     screenshot = true;
     break;
   case KEYCODE_ESC:

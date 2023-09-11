@@ -31,7 +31,7 @@ void newLogFile(String name, String[] lines, String fname ) {
   File file;
   String fileName = fname + fileLogType;
   try {
-    if (DEBUG) println(fileName);
+    logger(fileName);
     file = new File(fileName);
     if (!file.exists()) {
 
@@ -57,7 +57,7 @@ void appendLog(String fname, String[] lines) {
   File file;
   String fileName = fname + fileLogType;
   try {
-    if (DEBUG) println(fileName);
+    logger(fileName);
     file = new File(fileName);
     if (!file.exists()) {
       println("Error program log file does not exist"); //  createNewFile(fileName, lines);
@@ -74,7 +74,7 @@ void appendLog(String fname, String[] lines) {
 }
 
 void createNewFile(String fileName, String[] lines) throws IOException {
-  if (DEBUG) println("createNewFile="+fileName);
+  logger("createNewFile="+fileName);
   FileWriter writer = new FileWriter(fileName);
   for (String line : lines) {
     writer.write(line + System.lineSeparator());
@@ -83,7 +83,7 @@ void createNewFile(String fileName, String[] lines) throws IOException {
 }
 
 void appendToFile(String fileName, String[] lines) throws IOException {
-  if (DEBUG) println("appendToFile="+fileName);
+  logger("appendToFile="+fileName);
   if (lines != null) {
     for (String line : lines) {
       Files.write(Paths.get(fileName), (line + System.lineSeparator()).getBytes(), StandardOpenOption.APPEND);
@@ -96,7 +96,7 @@ void appendToFile(String fileName, String[] lines) throws IOException {
 void saveLogText(String[] prompts, String[] responses, String fname) {
   fileType = ".txt";
   int len = prompts.length + responses.length + 3;  // and add space for prompt, response, separation lines
-  if (DEBUG) println("saveText number of lines: "+len);
+  logger("saveText number of lines: "+len);
   String[] list = new String[len+1];
   int j = 0;
   list[j++] = "<prompt>";
@@ -162,10 +162,10 @@ void execSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
   String codeType = info[2];
-  if (DEBUG) println("execSketch "+filenamePath);
+  logger("execSketch "+filenamePath);
   if (filenamePath == null) return;
   try {
-    if (DEBUG) println("processing-java.exe --sketch="+ filenamePath
+    logger("processing-java.exe --sketch="+ filenamePath
       + " --output=" + filenamePath + "test" + " --force --run");
 
     Process process = Runtime.getRuntime().exec("processing-java.exe --sketch="+ filenamePath
@@ -181,29 +181,34 @@ void execPSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
   String codeType = info[2];
-  if (DEBUG) println("execSketch "+filenamePath);
+  logger("execSketch "+ filenamePath);
   if (filenamePath == null) return;
+  String str = "processing.exe "+ filenamePath + File.separator + name + codeType;
   try {
-    if (DEBUG) println("processing.exe "+ filenamePath + File.separator + name + codeType);
-
-    Process process = Runtime.getRuntime().exec("processing.exe "+ filenamePath + File.separator + name + codeType);
+    logger("start processind ide " + str);
+    Process process = Runtime.getRuntime().exec(str);
     //process.waitFor();
   }
   catch (Exception ex) {
+    logger(ex.toString());
   }
+  logger("processing.exe call to run " + str);
 }
 
 // calls runJ.bat in the sketch path
 void execJava(String filenamePath, String name) {
-  if (DEBUG) println("execJava "+filenamePath);
+  logger("execJava "+filenamePath);
   if (filenamePath == null || name == null) return;
+  String str = sketchPath() + File.separator + "runJ.bat " + filenamePath + " "+name;
   try {
-    if (DEBUG) println("process "+sketchPath() + File.separator + "runJ.bat "+ filenamePath+ " "+name);
-    Process process = Runtime.getRuntime().exec(sketchPath()+ File.separator + "runJ.bat "+filenamePath +" "+name);
+    logger("start process java " + str);
+    Process process = Runtime.getRuntime().exec(str);
     //process.waitFor();
   }
   catch (Exception ex) {
+    logger(ex.toString());
   }
+  logger("processing java call to run "+ str);
 }
 
 /**
@@ -211,7 +216,7 @@ void execJava(String filenamePath, String name) {
  * now create sketch folder in chatfolder
  */
 String[] saveSketch(String filenamePath) {
-  if (DEBUG) println("saveSketch in folder: "+filenamePath);
+  logger("saveSketch in folder: "+filenamePath);
   if (filenamePath == null) return null;
   boolean pdeType = true;
   boolean androidMode = false;
@@ -273,7 +278,7 @@ String[] saveSketch(String filenamePath) {
     sA[0] = str(sketchCounter);
     // write sketch counter to sketch param file
     String paramFile = filenamePath.substring(0, filenamePath.lastIndexOf(File.separator)) + File.separator + sketchParamFile;
-    if (DEBUG) println("sketchParamFile path="+paramFile);
+    logger("sketchParamFile path="+paramFile);
     saveStrings(paramFile, sA);
   } else {
     name = sketchPrefix[0];
@@ -282,17 +287,17 @@ String[] saveSketch(String filenamePath) {
   if (pdeType) {
     // make folder
     folder = filenamePath + File.separator +  name;
-    if (DEBUG) println("create folder: "+folder);
+    logger("create folder: "+folder);
     File theDir = new File(folder);
     if (!theDir.exists()) {
       theDir.mkdirs();
     } else {
-      if (DEBUG) println("folder already exists: "+theDir.getAbsolutePath());
+      logger("folder already exists: "+theDir.getAbsolutePath());
     }
 
     String fnName = folder + File.separator + name + codeType;
     saveStrings(fnName, lines);
-    if (DEBUG) println("saveStrings at: "+fnName);
+    logger("saveStrings at: "+fnName);
 
     // copy mode type information
     if (codeType.equals(".pde")) {
@@ -333,7 +338,7 @@ String[] getSketchName(String[] lines) {
     if (lines[i].startsWith("```java")) {
       if (lines[i-1] == null) {
         lines[i-1] = "";
-        if (DEBUG) println("NuLL line????");
+        logger("NuLL line????");
       } else {
         result[len] = lines[i-1];
       }
@@ -364,24 +369,24 @@ String[] getSketchName(String[] lines) {
 void copyFiles(String mode, String folder) {
   try {
     String pStr = "xcopy " + sketchPath("data") + File.separator + mode + " " + folder + " /E";
-    if (DEBUG) println("copyFiles: "+pStr);
+    logger("copyFiles: "+pStr);
     Process process = Runtime.getRuntime().exec(pStr);
     process.waitFor(1, TimeUnit.SECONDS);
     //process.waitFor();
   }
   catch (Exception ex) {
-    if (DEBUG) println(ex.toString());
+    logger(ex.toString());
   }
 }
 
 void modifyFile(String folder, String filename, String token, String name) {
   String where = folder + File.separator + filename;
-  if (DEBUG) println("where="+where);
+  logger("where="+where);
   String[] lines = loadStrings(where);
   for (int i = 0; i<lines.length; i++) {
     if (lines[i].contains(token)) {
       lines[i] = lines[i].replace(token, name);
-      if (DEBUG) println("found "+token +" replace "+name +" "+lines[i]);
+      logger("found "+token +" replace "+name +" "+lines[i]);
       saveStrings(where, lines);
       break;
     }
