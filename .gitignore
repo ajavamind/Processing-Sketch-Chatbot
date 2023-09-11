@@ -8,6 +8,14 @@ application.windows32
 application.windows64
 application.macosx
 out
+output
 Chatbot/output
 Chatbot/test
+Chatbot/application.linux64
+Chatbot/application.linux-armv6hf
+Chatbot/application.linux32
+Chatbot/application.linux64
+Chatbot/application.windows32
+Chatbot/application.windows64
+Chatbot/application.macosx
 articles
