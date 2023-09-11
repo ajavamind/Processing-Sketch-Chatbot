@@ -26,9 +26,9 @@ Chat responses cause an instance of the sketch to be run with the IDE when a "Ru
 ## Background
 I'm a retired software engineer who likes to code with Processing (since 2010) for many of my camera, photography, and photo art projects.
 
-To learn more about the AI and machine learning revolution going on now, here I wrote a Processing sketch code assistant chatbot using Java API calls to OpenAI.org. 
+To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org. 
 My chatbot application can be modified for other chatbot application uses besides programming.
-Only a small number of the API calls are invoked.
+Only a small number of the API features and calls are actually used in the application.
 
 ## Usage
 A code assistant is helpful writing sketches quickly, and avoids some tedium and mistakes during the program development process.
