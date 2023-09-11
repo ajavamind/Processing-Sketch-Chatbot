@@ -1,10 +1,12 @@
 # Processing-Sketch-Chatbot
-A Processing Sketch AI Chat Assistant for sketch code generation and learning using the Processing Development Environment - PDE.
+Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant for learning and generating sketch code.
 
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
-It's primarily used for creating graphics, animations, and interactive experiences.
-PDE is a Processing sketch application. The Processing IDE, Integrated development environment, is a code editor with debug and run capabilities. 
+It's primarily used for creating graphics, animations, and interactive experiences, 
+and is also capable of building small sized applications on several platforms (Windows, Linux, iOS, Javascript-P5, Android, and Python).
+Processing Development Environment (PDE) is a Processing sketch application. 
+The Processing IDE, Integrated Development Environment, is a Processing sketchbook with code editor, debugger, and run execution capabilities for sketches. 
 
 ## Introduction
 The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
@@ -22,8 +24,7 @@ Chat responses cause an instance of the sketch to be run with the IDE when a "Ru
 ![Chatbot Application Screenshot](Chatbot/screenshots/promptScreen.png)
 
 ## Background
-I'm a retired software engineer who likes to code with Processing (since 2010).
-I like Processing because it is geared to create algorithmic generative art.
+I'm a retired software engineer who likes to code with Processing (since 2010) for many of my camera, photography, and photo art projects.
 
 To learn more about the AI and machine learning revolution going on now, here I wrote a Processing sketch code assistant chatbot using Java API calls to OpenAI.org. 
 My chatbot application can be modified for other chatbot application uses besides programming.
@@ -46,35 +47,50 @@ You can run the generated code directly with the IDE, rather than copying and pa
 The OpenAI model used in the application by default is "gpt-4" and 
 randomness in responses is limited by the temperature variable set to 0.
 
-## Setup
-The chatbot application runs on Windows 11 and Processing 4.2. 
-Install Processing 4 or later versions from [www.processing.org/download](https://processing.org/download)
-The previous version of Processing IDE (3.5.4) fails to build this application for unknown reasons.
+You can build your own custom chat by creating a system prompt text file and loading it with the custom chat soft key.
+This is similar to custom instructions available in online OpenAI ChatGPT. Use it for specific tasks you want to have your chatbot perform.
 
-After installing the Processing IDE version 4.2 with Windows 64 bit, note the folder location of the IDE processing.exe file.
-Add processing.exe folder location to the Path in the Windows system environment settings.
-Doing this gives a seamless start to the IDE from the chatbot when you make a run request.
+
+## Setup
+The Processing Sketch Chatbot application runs on Windows 11 and requires Processing 4.2 or later versions.
+Install the Processing IDE, Windows 64 bit, from [www.processing.org/download](https://processing.org/download)
+The previous major version of the Processing IDE (3.5.4) will not build this application.
+
+After installing the Processing IDE, note the folder location of the IDE processing.exe run file.
+Add the folder location to the Path environment variable in the Windows system environment settings.
+This is required for seamless starts of the IDE from the chatbot when you make a run request on code generated using the chatbot.
 
 ### OpenAI Api Key
-OPENAI_API_KEY is your paid OpenAI API account token stored in the environment variables for Windows 10/11.
-Define your OpenAI API Key with variable name "OPENAI_API_KEY" in the Windows environment settings (search for environment).
-Use the account token as the value of the variable.
-Restart the IDE after adding or changing your environment variable.
+You will need OPENAI API payment account to use this chatbot application. 
+See [OpenAI](https://openai.com/) for information about setting up an API account. 
+The API by this application used is currently described at https://openai.com/product#made-for-developers
+The application defaults to "gpt-4" model, but can be changed if you build the chat application yourself.
+I found the GPT4 model gives the best generated code.
+
+The application makes API calls into the OpenAI endpoint servers and requires an identifying token with API requests.
+The application reads a Windows environment variable, OPENAI_API_KEY, for your OpenAI API account token.
+Define your OpenAI API Key as variable name "OPENAI_API_KEY" in the Windows environment settings.
+Store the account token as the value of the variable.
 
 ### IDE Modes
-Code can be run in the IDE for the following modes: Java, p5.js, and Python. Android mode is not available.
-Make sure the modes you want to run with the generated code are included in the IDE under manage modes setup.
+When you request code generation for your Processing sketch project, you can prompt for one of the modes Processing IDE sketches could use.
+Generated code can be run in the IDE in the following modes: Java, p5.js (based on Javascript), and Python. 
+Android mode is not available yet with the application, but you can still prompt for Android java/kotlin code if you wish.
+Make sure the modes you want to run with the generated code are included in the IDE by adding in "manage modes" setup.
 
 ### IDE Libraries 
 In the IDE enter menu: Sketch -> Import Library -> Manage Libraries... menu selection you can add libaries used by the application.
 
-IDE Library requirements are:
+To build the chatbot application requires the IDE Library:
 
-1. G4P - A graphical user interface library that provides a set of 2D GUI controls and multiple window support.
+1. G4P - A graphical user interface library that provides a set of 2D GUI controls and multiple window support. 
+This library only runs on Windows and is why the application is only available with Windows at this time.
 
-2. Other - This is dependent on the generated code response from prompts requesting contributed libraries.
+To run generated code with with the IDE may require other contribution libraries:
 
-## Support Libraries
+1. Other - This is dependent on the generated code response from prompts.
+
+## Application Support Libraries
 
 ### Openai-java
 The application uses the OpenAI-Java API from the Github implementation (version 0.15.0) found at

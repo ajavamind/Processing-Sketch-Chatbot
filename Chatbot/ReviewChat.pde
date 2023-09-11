@@ -61,8 +61,12 @@ void readLastSketchFile(String logFile) {
   String paramFile = logFile.substring(0, logFile.lastIndexOf(File.separator)) + File.separator + sketchParamFile;
   if (DEBUG) println("sketchParamFile path="+paramFile);
   String[] sketchText = loadStrings(paramFile);
-  String counter = sketchText[0];
-  sketchCounter = parseInt(counter);
+  if (sketchText == null) {
+    sketchCounter = 0;
+  } else {
+    String counter = sketchText[0];
+    sketchCounter = parseInt(counter);
+  }
   if (DEBUG) println("read sketchCounter="+sketchCounter);
 }
 
@@ -85,6 +89,5 @@ void initReviewText(String logFile) {
     if (DEBUG) println("setVisible window");
     reviewArea.setVisible(true);
     if (DEBUG) println("initReviewText complete ");
-    
   }
 }

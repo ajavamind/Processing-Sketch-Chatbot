@@ -4,7 +4,7 @@
 import g4p_controls.*;
 import java.awt.Font;
 
-static final String TITLE = "Processing Sketch OpenAI Chat";
+static final String TITLE = "Processing Sketch Chatbot";
 static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: General or Sketch. Use ESC key to exit. ";
 
 GButton generateButton;
@@ -20,7 +20,6 @@ GButton chat3Button;
 GButton chat4Button;
 GButton chat5Button;
 GButton chat6Button;
-//GButton chatSketchButton;
 GTextArea promptArea;
 GTextArea responseArea;
 
@@ -105,7 +104,7 @@ int animation = NO_ANIMATION;  // flag to control animation while waiting for a 
 
 /**
  * Perform animation while waiting for a thread to complete
- * selectAnimation type of animation
+ * selectAnimation variable defines the type of animation seen
  */
 void doAnimation(int selectAnimation) {
   fill(color(0, 0, 255));
@@ -132,6 +131,7 @@ void doAnimation(int selectAnimation) {
   }
 }
 
+// display an error message
 void showError(String str) {
   if (str != null) {
     fill(color(255, 128, 0));
