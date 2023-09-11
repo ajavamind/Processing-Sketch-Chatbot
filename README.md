@@ -4,7 +4,7 @@ Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant f
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
 It's primarily used for creating graphics, animations, and interactive experiences, 
-and is also capable of building small sized applications on several platforms (Windows, Linux, iOS, Javascript-P5, Android, and Python).
+and is also capable of building small sized applications on several platforms: Windows, Linux, iOS; and coding environments: Java, Javascript-P5.js, Android, and Python.
 Processing Development Environment (PDE) is a Processing sketch application. 
 The Processing IDE, Integrated Development Environment, is a Processing sketchbook with code editor, debugger, and run execution capabilities for sketches. 
 
@@ -57,7 +57,7 @@ Install the Processing IDE, Windows 64 bit, from [www.processing.org/download](h
 The previous major version of the Processing IDE (3.5.4) will not build this application.
 
 After installing the Processing IDE, note the folder location of the IDE processing.exe run file.
-Add the folder location to the Path environment variable in the Windows system environment settings.
+Add the folder location to the environment variable "PROCESSING_HOME" and add %PROCESSING_HOME to the path in the Windows system environment settings.
 This is required for seamless starts of the IDE from the chatbot when you make a run request on code generated using the chatbot.
 
 ### OpenAI Api Key
