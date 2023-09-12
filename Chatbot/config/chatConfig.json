@@ -1,4 +1,4 @@
-{	"description": "OpenAI Client Configuration",
+{	"description": "OpenAI API Client Configuration",
 	"parameters": {
 		"model": "gpt-4",
 		"temperature": 0.0,

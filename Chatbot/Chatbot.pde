@@ -1,5 +1,6 @@
 /**
  * Processing Sketch Chatbot
+ * Copyright 2023 Andrew Modla
  * Calls OpenAI-Java API with prompt
  */
 
@@ -11,12 +12,14 @@ private static final boolean DEBUG = true;
 private static final boolean DEBUG_TEST = false;
 private static final int JAVA_BUILD_MODE = 0;
 private static final int ANDROID_BUILD_MODE = 1;
+private static final String VERSION = "v1.0";
 
 float appFrameRate = 30; // draw loop rate frames per second, used for animation
 String RENDERER = JAVA2D; // default for setup size()
 
 boolean screenshot = false;
 int screenshotCounter = 1;
+boolean first = true;
 volatile boolean start = false;
 volatile boolean ready = false;
 
@@ -94,8 +97,8 @@ void setup() {
 
 // Processing main GUI loop and OpenAI API request start
 void draw() {
-  background(224); // off white background
-  fill(0); // black text
+  background(offWhite); // off white background
+  fill(black); // for black text
 
   checkKeyboard();  // should we display soft on screen keyboard?
 
@@ -105,7 +108,7 @@ void draw() {
     // place holder for possible changes to draw
     logger("updateKey = true");
   }
-
+  
   // check is prompt length is minimum size and start request set
   //if (start && prompt.length() > 3) {
   if (start) {
@@ -175,7 +178,13 @@ void draw() {
   // show any errors from the request
   showError(errorText);
 
+  // show application introduction text
+  if (first) {
+    showIntroduction();
+    showInformation();
+  }
+  
   // Drawing finished, check for screenshot request
   saveScreenshot();  // IMPORTANT does not show G4P GUI yet
   
-} // draw
+} // end draw

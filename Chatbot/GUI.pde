@@ -92,6 +92,23 @@ int CHAT_SKETCH_BUTTON_Y;
 int CHAT_SKETCH_BUTTON_WIDTH;
 int CHAT_SKETCH_BUTTON_HEIGHT;
 
+color black = color(0);   // black
+color gray = color(128);
+color graytransparent = color(128, 128, 128, 128);
+color darktransparent = color(32, 32, 32, 128);
+color white = color(255); // white
+color red = color(255, 0, 0);
+color aqua = color(128, 0, 128);
+color lightblue = color(64, 64, 128);
+color darkblue = color(32, 32, 64);
+color blue = color(0, 0, 255);
+color hintblue = color(192, 128, 255);
+color yellow = color(255, 204, 0);
+color silver = color(193, 194, 186);
+color brown = color(69, 66, 61);
+color bague = color(183, 180, 139);
+color offWhite = color(224);
+
 // animation variables section
 static final int ANIMATION_STEPS = 4;
 int[] animationCounter = new int[3];
@@ -107,13 +124,13 @@ int animation = NO_ANIMATION;  // flag to control animation while waiting for a 
  * selectAnimation variable defines the type of animation seen
  */
 void doAnimation(int selectAnimation) {
-  fill(color(0, 0, 255));
+  fill(blue);
   textSize(animationHeight);
   String working;
   switch(selectAnimation) {
   case SHOW_SECONDS:
     int seconds = animationCounter[selectAnimation]/int(appFrameRate);
-    working = "Model " + model + "    " + str(seconds) + " ... \u221e" ;  // infinity
+    working =  model + "    " + str(seconds) + " ... \u221e" ;  // infinity
     text(working, RESPONSE_WIDTH/2- textWidth(working)/2, RESPONSE_HEIGHT/2);
     animationCounter[selectAnimation]++;
     break;
@@ -129,6 +146,30 @@ void doAnimation(int selectAnimation) {
     animationCounter[2] = 0;
     break;
   }
+}
+
+void showIntroduction() {
+  responseArea.setVisible(false);
+  textSize(2*fontHeight);
+  int delta = int(textAscent() + textDescent());
+  int offsetX = 20;
+  int offsetY = height/2 - delta;
+  drawText("Processing Sketch Chat", offsetX, offsetY, black, hintblue );
+  drawText("Version: " + VERSION, offsetX, offsetY+delta, black, hintblue );
+  drawText("Copyright 2023 Andy Modla, All Rights Reserved", offsetX, offsetY+2*delta, black, hintblue );
+}
+
+void showInformation() {
+  responseArea.setVisible(false);
+  textSize(fontHeight);
+  int delta = int(textAscent() + textDescent());
+  int offsetX = 20;
+  int offsetY = 3*height/4 - delta;
+  drawText("Save Folder: "+ saveFolderPath, offsetX, offsetY, black, offWhite );
+  drawText("model: " + model, offsetX, offsetY+delta, black, offWhite );
+  drawText("temperature: " + temperature, offsetX, offsetY+2*delta, black, offWhite );
+  drawText("topP: " + topP, offsetX, offsetY+3*delta, black, offWhite );
+  drawText("timeout: " + timeout+ " seconds", offsetX, offsetY+4*delta, black, offWhite );
 }
 
 // display an error message
@@ -150,6 +191,15 @@ void showError(String str) {
       k++;
     }
   }
+}
+
+// draw text on screen
+void drawText(String str, int x, int y, color foreground, color background) {
+  fill(background); // Set the fill color behind text
+  noStroke();
+  rect(x, y-(textAscent() ), textWidth(str), textAscent() + textDescent()); // Draw a rectangle behind the text
+  fill(foreground); // Set the text fill color
+  text(str, x, y); // Display the text
 }
 
 void initGUI() {

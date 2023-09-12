@@ -1,0 +1,5 @@
+{	"description": "Processing Sketch Chat Configuration",
+	"parameters": {
+	    "outputPath": "output",
+	},
+}

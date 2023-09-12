@@ -8,6 +8,13 @@ and is also capable of building small sized applications on several platforms: W
 Processing Development Environment (PDE) is a Processing sketch application. 
 The Processing IDE, Integrated Development Environment, is a Processing sketchbook with code editor, debugger, and run execution capabilities for sketches. 
 
+## Background
+I'm a retired software engineer using Processing (since 2010) for many personal camera, photography, and photo art projects.
+
+To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org. 
+My chatbot application can be modified for other chatbot application uses besides programming code.
+Only a small number of the API features and calls are actually used in the application.
+
 ## Introduction
 The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
 in generating and running code from responses to
@@ -22,13 +29,6 @@ It requires an OpenAI API key subscription from OpenAI.org.
 Chat responses cause an instance of the sketch to be run with the IDE when a "Run" key is pressed.
 
 ![Chatbot Application Screenshot](Chatbot/screenshots/promptScreen.png)
-
-## Background
-I'm a retired software engineer who likes to code with Processing (since 2010) for many of my camera, photography, and photo art projects.
-
-To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org. 
-My chatbot application can be modified for other chatbot application uses besides programming.
-Only a small number of the API features and calls are actually used in the application.
 
 ## Usage
 A code assistant is helpful writing sketches quickly, and avoids some tedium and mistakes during the program development process.

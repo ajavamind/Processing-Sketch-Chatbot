@@ -3,6 +3,7 @@ int mouseButtonAlert = 0;
 
 void mousePressed() {
   //System.out.println("mouseX="+mouseX+" mouseY="+mouseY);
+  first = false;
   if (!keyboard) {
     openKeyboard();  // opens soft keyboard
     keyboard = true;

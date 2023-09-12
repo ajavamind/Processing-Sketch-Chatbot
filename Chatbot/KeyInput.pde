@@ -108,12 +108,6 @@ static final int KEY_CONTROL = 65535;
 private boolean shiftKey = false;
 private boolean controlKey = false;
 private boolean altKey = false;
-//StringBuilder promptEntry;
-//int promptIndex;
-//String[] promptList = new String[3];
-//promptList[0] = prompt;
-//promptList[1] = filename;
-//promptList[2] = filenamePath + ".png";
 String errorText = null;
 
 // save exec refactor needed
@@ -128,6 +122,7 @@ volatile int lastKeyCode;
 
 void keyPressed() {
   //logger("key="+ key + " key10=" + int(key) + " keyCode="+keyCode);
+  first = false;
   if (lastKeyCode == KEYCODE_ERROR) {
     return;
   } else if (buildMode == ANDROID_BUILD_MODE && key == KEYCODE_LF) {
