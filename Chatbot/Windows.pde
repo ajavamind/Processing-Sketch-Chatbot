@@ -4,9 +4,6 @@
 
 private final static int buildMode = JAVA_BUILD_MODE; 
 
-String saveFolder = "output"; // default output folder location relative to sketch path
-String saveFolderPath; // full path to save folder
-
 void setOrientation() {
   orientation(PORTRAIT);
 }
@@ -62,6 +59,7 @@ void folderSelected(File selection) {
   } else {
     logger("User selected saveFolderPath=" + selection.getAbsolutePath());
     saveFolderPath = selection.getAbsolutePath();
+    updateSaveFolderPath();
   }
 }
 
@@ -81,7 +79,8 @@ void customChatFileSelected(File selection) {
   } else {
     customChatFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
     int startIndex = customChatFilePath.lastIndexOf(File.separator) + 1;
-    chatName = customChatFilePath.substring(startIndex, startIndex+16);
+    String[] temp = splitTokens(customChatFilePath.substring(startIndex, startIndex+18), ". _-");
+    chatName = temp[0] + " "+ temp[1];
     setChatButtonText(chatName);
     logger("Custom Chat="+chatName);
     logger("User selected " + customChatFilePath);

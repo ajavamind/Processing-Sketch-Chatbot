@@ -1,5 +1,4 @@
-{	"description": "Processing Sketch Chat Configuration",
-	"parameters": {
-	    "outputPath": "output",
-	},
+{
+  "description": "Processing Sketch Chat Configuration",
+  "parameters": {"outputPath": "C:\\Users\\andym\\Downloads\\chatBot_output"}
 }

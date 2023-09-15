@@ -15,7 +15,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.Locale;
 import java.io.BufferedReader;
 import java.io.StringReader;
@@ -181,7 +180,7 @@ void execPSketch(String[] info) {
   String filenamePath = info[0];
   String name = info[1];
   String codeType = info[2];
-  logger("execSketch "+ filenamePath);
+  logger("execPSketch "+ filenamePath);
   if (filenamePath == null) return;
   String str = "processing.exe "+ filenamePath + File.separator + name + codeType;
   try {
@@ -192,7 +191,7 @@ void execPSketch(String[] info) {
   catch (Exception ex) {
     logger(ex.toString());
   }
-  logger("processing.exe call to run " + str);
+  logger("execPSketch processing.exe call to run " + str);
 }
 
 // calls runJ.bat in the sketch path
@@ -201,7 +200,7 @@ void execJava(String filenamePath, String name) {
   if (filenamePath == null || name == null) return;
   String str = sketchPath() + File.separator + "runJ.bat " + filenamePath + " "+name;
   try {
-    logger("start process java " + str);
+    logger("execJava start process java " + str);
     Process process = Runtime.getRuntime().exec(str);
     //process.waitFor();
   }

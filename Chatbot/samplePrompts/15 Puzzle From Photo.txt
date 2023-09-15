@@ -1,0 +1,5 @@
+add code a 15 slide puzzle from the photo. 
+split the photo into 4x4 squares with the last square of the photo not used and is blank. 
+place the 15 squares randomly in the 4x4 puzzle
+use mouse to select the square to move. 
+show text "Solved" when the position of the 15 squares matches the original photo. 

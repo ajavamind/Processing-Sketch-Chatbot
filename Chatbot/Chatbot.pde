@@ -57,6 +57,18 @@ private static final int ANDROID_CODE_MODE = 5; // Processing.org IDE, create PD
 void setup() {
   size(1920, 1080, RENDERER);
   background(128);
+  int err = initConfig(0);
+  if (err < 0) {
+    logger("envConfig file error "+err);
+  }
+  if (saveFolderPath == null) {  // when config file does not have outputPath defined
+    saveFolderPath = sketchPath() + File.separator + saveFolder; // default on start
+    logger("saveFolderPath="+saveFolderPath);
+  }
+  err = initConfig(1);
+  if (err < 0) {
+    logger("chatConfig file error "+err);
+  }
   cursor(TEXT);
   frameRate(appFrameRate);
   setTitle(TITLE);
@@ -65,9 +77,6 @@ void setup() {
 
   setOrientation();
   getFocus();
-
-  saveFolderPath = sketchPath() + File.separator + saveFolder; // default on start
-  logger("saveFolderPath="+saveFolderPath);
 
   initAI();
 
@@ -108,7 +117,7 @@ void draw() {
     // place holder for possible changes to draw
     logger("updateKey = true");
   }
-  
+
   // check is prompt length is minimum size and start request set
   //if (start && prompt.length() > 3) {
   if (start) {
@@ -158,7 +167,7 @@ void draw() {
     newLogFile("<system>", systemPrompt, chatLogFilePath);
     saveLogText(promptLines, responseLines, chatLogFilePath);
     logger("save prompt and responses in a log file in folder: "+ chatLogFilePath + ".log");
-    
+
     logger("response Chat mode="+mode);
     switch(mode) {
     case SINGLE_MODE:
@@ -183,8 +192,7 @@ void draw() {
     showIntroduction();
     showInformation();
   }
-  
+
   // Drawing finished, check for screenshot request
   saveScreenshot();  // IMPORTANT does not show G4P GUI yet
-  
 } // end draw
