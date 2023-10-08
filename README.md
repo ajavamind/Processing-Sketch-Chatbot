@@ -116,5 +116,7 @@ I may incorporate some ideas from gpt-engineer into this project.
 https://github.com/Pythagora-io/gpt-pilot
 
 ### Smol Developer
-https://github.com/breeko/smol-developer
+https://github.com/smol-ai/developer
+
+https://github.com/tmc/smol-dev-go  (fork smol-ai developer using Go language)
 
