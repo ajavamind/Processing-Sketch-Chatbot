@@ -16,29 +16,43 @@ VideoExport videoExport;
 PImage img;
 String imgPath;
 String imgName;
+float imgAR;
 
-setup()
+void setup() {
   selectPhotoFile("Select a photo File"); // Select a file
-  videoExport = new VideoExport(this,  "video_"+getDateTime() + ".mp4");
+  background(255);
+}
+
+void draw() {
+  if (img != null) {
+    image(img, 0,0, height * imgAR, height);
+    if (recording) videoExport.saveFrame();
+  } else {
+    if (imgName != null) {
+      if (!recording) newMovie(imgName);
+    }
+  }
+}
+
+void newMovie(String name) {
+  videoExport = new VideoExport(this, name+"_"+getDateTime() + ".mp4");
   videoExport.setFrameRate(FPS);
   videoExport.startMovie();
-  
-draw()
-  if (img != null) {
-    videoExport.saveFrame();
-  }
-  
+  recording = true;
+}
+
 void selectPhotoFile(String title) {
   selectInput(title, "selectPhoto"); // Select a photo file
 }
   
 void selectPhoto(File selected) {
   if (selected == null) {
-    System.out.println("Window was closed or the user canceled.");
+    System.out.println("Photo selection window closed by user cancel.");
   } else {
     imgPath = selected.getAbsolutePath();
     imgName = selected.getName();
     img = loadImage(imgPath); // Load the image
+	imgAR = (float)img.width/(float)img.height;
     System.out.println("image Path="+imgPath+ " name="+imgName);
   }
 }

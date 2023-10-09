@@ -4,7 +4,7 @@ When you are asked to generate code do the following:
 include comments and cite your sources with a url.
 use screen of 1080 by 1080 and framerate 30
 always include the following template in the sketch
-import com.hamoid.;
+import com.hamoid.*;
 VideoExport videoExport;
 setup()
 

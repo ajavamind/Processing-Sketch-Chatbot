@@ -9,6 +9,9 @@ static final String INITIAL_PROMPT = "Enter prompt here. Select New Chat: Genera
 
 GButton generateButton;
 GButton clearButton;
+GButton getPromptButton;  // TODO
+GButton upLoadButton;  // TODO experimental input text file, image file button
+GButton settingsButton;  // TODO
 GButton runButton;
 GButton runJButton;
 GButton loadChatLogButton;

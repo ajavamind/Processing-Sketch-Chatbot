@@ -22,7 +22,7 @@
  */
 /* 
   Modified by Andy Modla to fix a few bugs
-  */
+*/
   
 package g4p_controls;
 
@@ -41,7 +41,7 @@ import java.util.LinkedList;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.event.MouseEvent;
-import processing.event.KeyEvent;
+import processing.event.KeyEvent;  // added Andy Modla
 
 /**
  * The text area component. <br>
@@ -69,7 +69,7 @@ import processing.event.KeyEvent;
 public class GTextArea extends GEditableTextControl {
 
 	protected boolean newline = false, backspace = false;
-// suedo keys used in mouse wheel
+// suedo keys used in mouse wheel, added Andy Modla
   KeyEvent UP_KEY = new processing.event.KeyEvent(null, 1L, KeyEvent.PRESS, 0, ' ', UP);
   KeyEvent DOWN_KEY = new processing.event.KeyEvent(null, 1L, KeyEvent.PRESS, 0, ' ', DOWN);
   
@@ -127,7 +127,7 @@ public class GTextArea extends GEditableTextControl {
 		super(theApplet, p0, p1, p2, p3, sbPolicy);
 		children = new LinkedList<GAbstractControl>();
 		tx = ty = TPAD6;
-		tw = width - 2 * TPAD6 - ((scrollbarPolicy & SCROLLBAR_VERTICAL) != 0 ? 18 : 0);
+    tw = width - 2 * TPAD6 - ((scrollbarPolicy & SCROLLBAR_VERTICAL) != 0 ? 18 : 0);
 		th = height - 2 * TPAD6 - ((scrollbarPolicy & SCROLLBAR_HORIZONTAL) != 0 ? 18 : 0);
 		// The text wrap width is based on the width of the text display area unless
 		// some other value is specified.
@@ -157,7 +157,8 @@ public class GTextArea extends GEditableTextControl {
 			hsb.setAutoHide(autoHide);
 		}
 		if((scrollbarPolicy & SCROLLBAR_VERTICAL) != 0){
-			vsb = new GScrollbar(theApplet, 0, 0, th, 16);
+      //vsb = new GScrollbar(theApplet, 0, 0, th, 16);  // original
+      vsb = new GScrollbar(theApplet, 0, 0, th, 24);  // Andy Modla increase width of vertical scrollbar
 			addControl(vsb, tx + tw + 18, ty, PI/2);
 			vsb.addEventHandler(this, "vsbEventHandler");
 			vsb.setAutoHide(autoHide);
@@ -178,7 +179,7 @@ public class GTextArea extends GEditableTextControl {
 
 		// Must register control
 		G4P.registerControl(this);
-//System.out.println("GTextArea.java constructor");
+//System.out.println("GTextArea.java constructor");  // Andy Modla debug output
 //for (int i=0; i<hotspots.length; i++) {
 //	System.out.println("i="+i + " "+ hotspots[i]);
 //}
@@ -866,9 +867,9 @@ public class GTextArea extends GEditableTextControl {
 		// Do we have to move cursor to start of next line
 		if(newline) {
 			if(pos >= stext.length()){
-        //System.out.println("changeText pos="+pos + " stext.length()="+stext.length());
-        //stext.insertCharacters(" ", pos);   // StringIndexOutOfBoundsException: begin 0, end 1313, length 1302 bug
-        stext.insertCharacters(" ", stext.length());  // fix bug in above line 
+        //System.out.println("changeText pos="+pos + " stext.length()="+stext.length());  // Debug Andy Modla
+        //stext.insertCharacters(" ", pos);   // StringIndexOutOfBoundsException: begin 0, end 1313, length 1302 bug Andy Modla
+        stext.insertCharacters(" ", stext.length());  // fix bug in above line Andy Modla
 				stext.getLines(buffer.g2);
 			}
 			moveCaretRight(endTLHI);
@@ -1069,7 +1070,7 @@ public class GTextArea extends GEditableTextControl {
 
 		calcTransformedOrigin(winApp.mouseX, winApp.mouseY);
 		ox -= tx; oy -= ty; // Remove translation
-    //System.out.println(" ox="+ox+" oy="+oy+" tx="+tx+" ty="+ty);
+    //System.out.println(" ox="+ox+" oy="+oy+" tx="+tx+" ty="+ty); // debug Andy Modla
 		currSpot = whichHotSpot(ox, oy);
 
 		if(currSpot == 1 || focusIsWith == this)
@@ -1113,7 +1114,7 @@ public class GTextArea extends GEditableTextControl {
       dragging = false;
       bufferInvalid = true;
       break;
-    case MouseEvent.WHEEL:
+    case MouseEvent.WHEEL:  // added by Andy Modla
 	//System.out.println(event);
       if(focusIsWith == this) {
         int e = event.getCount();
