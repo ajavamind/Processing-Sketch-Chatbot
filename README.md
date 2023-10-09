@@ -104,7 +104,19 @@ This command line in Windows uses the gradlew command in info debug mode with a 
 The zip file in example/build/distributions, example.zip, is unzipped and 
 then copy jar files from example/lib folder into the "code" folder used by this application sketch.
 
+## Alternate Application Code Development Projects
+After I started this project I noticed there are other projects using AI to generate application code.
+
 ### Gpt-engineer
-After I started this project I noticed https://github.com/AntonOsika/gpt-engineer
-This is an exciting and ambitious project to guide and build a complete software development using ChatGPT from OpenAI.
-I will incorporate some ideas from gpt-engineer into this project.
+https://github.com/AntonOsika/gpt-engineer
+This is an ambitious project to guide and build a complete software development using ChatGPT from OpenAI.
+I may incorporate some ideas from gpt-engineer into this project.
+
+### Gpt Pilot
+https://github.com/Pythagora-io/gpt-pilot
+
+### Smol Developer
+https://github.com/smol-ai/developer
+
+https://github.com/tmc/smol-dev-go  (fork smol-ai developer using Go language)
+
