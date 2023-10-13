@@ -120,3 +120,10 @@ https://github.com/smol-ai/developer
 
 https://github.com/tmc/smol-dev-go  (fork smol-ai developer using Go language)
 
+### How to Turn ChatGPT into AutoGPT with 1 prompt
+
+https://youtu.be/BL9x1SuNLRo?si=UHBHNFayqNaDJtKn
+Use custom prompt "Prof Synapse prompt.txt"
+
+https://github.com/ProfSynapse/Synapse_CoR
+Use custom prompt: "Synapse CoR Prof Synapse prompt.txt"
