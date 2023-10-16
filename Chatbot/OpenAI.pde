@@ -112,7 +112,7 @@ int parseChatLog(String logFile, String[] log) {
   }
   // change session date time from log file name
   int sIndex = logFile.lastIndexOf(File.separator)+1+chatSketchPrefix.length()+1;
-  sessionDateTime = logFile.substring(sIndex,sIndex + 15);
+  sessionDateTime = logFile.substring(sIndex, sIndex + 15);
   logger("sessionDateTime in log file: "+ sessionDateTime);
   prompt = "";
   return 0;
@@ -182,10 +182,15 @@ void generalChat() {
   setTitle(TITLE + " - General Chat");
   logger("generalChat: " + path);
   systemPrompt = loadStrings(path);
-  logger("systemMessage="+systemPrompt);
+  logger("systemMessage "+"systemPrompt= ");
+  for (String line : systemPrompt) {
+    println(line);
+  }
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
+  prompt = promptArea.getText();
+  logger("userMessage prompt="+prompt);
   ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
   context.add(userMessage);
   startChat();
@@ -196,18 +201,27 @@ void processingChat() {
   initChat();
   context.clear();
   // clear prompt areas in GUI and Chatbot
-  clearAll();
+  clearResponse();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   String path = sketchPath("systemprompts") + File.separator + "Sketch Chat.txt";
   logger("processingChat: " + path);
   setTitle(TITLE + " - Sketch Chat Mode");
   systemPrompt = loadStrings(path);
-  logger("systemMessage="+systemPrompt);
+  logger("systemMessage "+"systemPrompt= ");
+  for (String line : systemPrompt) {
+    println(line);
+  }
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  //context.add(userMessage);
+  prompt = promptArea.getText();
+  logger("userMessage prompt="+prompt);
+  if (prompt != null) {
+    if (prompt.length()> 1) {
+      ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+      context.add(userMessage);
+    }
+  }
   startChat();
 }
 
@@ -221,7 +235,10 @@ void processingAltChat() {
   String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(path);
-  logger("systemMessage="+systemPrompt);
+  logger("systemMessage "+"systemPrompt= ");
+  for (String line : systemPrompt) {
+    println(line);
+  }
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
@@ -234,8 +251,8 @@ void processingAltChat() {
 void processCustomChat() {
   initChat();
   context.clear();
-  // clear prompt areas in GUI and Chatbot
-  clearAll();
+  // do not clear prompt areas in GUI and Chatbot since prompt is added to the initial query
+  clearResponse();
   if (prompt.equals(INITIAL_PROMPT)) prompt = "";
   //String path = sketchPath("customSystemPrompts") + File.separator + "systemPrompt.txt";
   logger("customChat: " + customChatFilePath);
@@ -246,12 +263,17 @@ void processCustomChat() {
   }
   setTitle(TITLE + " - "+ chatName);
   systemPrompt = loadStrings(customChatFilePath);
-  logger("systemMessage="+systemPrompt);
+  logger("systemMessage "+"systemPrompt= ");
+  for (String line : systemPrompt) {
+    println(line);
+  }
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);
-  //ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
-  //context.add(userMessage);
+  prompt = promptArea.getText();
+  logger("userMessage prompt="+prompt);
+  ChatMessage userMessage = new ChatMessage(ChatMessageRole.USER.value(), prompt);
+  context.add(userMessage);
   startChat();
 }
 
@@ -266,7 +288,10 @@ void processing3DChat() {
   String path = sketchPath("customSystemPrompts") + File.separator + "processing3DPrompt.txt";
   logger("customChat: " + path);
   systemPrompt = loadStrings(path);
-  logger("systemMessage="+systemPrompt);
+  logger("systemMessage "+"systemPrompt= ");
+  for (String line : systemPrompt) {
+    println(line);
+  }
   String msg = combineStrings(systemPrompt);
   ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
   context.add(systemMessage);

@@ -1,11 +1,12 @@
 // Text Entry and control key input handling
 // Key codes serve dual purpose for commands and text entry
+// Keycodes common to both Windows and Android
 
 static final int KEYCODE_NOP = 0;
 static final int KEYCODE_BACK = 4;
 static final int KEYCODE_BACKSPACE = 8;
 static final int KEYCODE_TAB = 9;
-static final int KEYCODE_ENTER = 66; // Android
+static final int KEYCODE_ENTER = 66; // Android only
 static final int KEYCODE_LF = 10;
 static final int KEY_CTRL_C = 3;
 static final int KEY_CTRL_D = 4;

@@ -124,7 +124,8 @@ int animation = NO_ANIMATION;  // flag to control animation while waiting for a 
 
 /**
  * Perform animation while waiting for a thread to complete
- * selectAnimation variable defines the type of animation seen
+ * selectAnimation variable defines the type of animation to show
+ * NO_ANIMATION, SHOW_SECONDS, or SHOW_SPINNER.
  */
 void doAnimation(int selectAnimation) {
   fill(blue);
@@ -462,5 +463,9 @@ public void clearPrompt() {
 public void clearAll() {
   promptArea.setText("");
   prompt = "";
+  responseArea.setText("");
+}
+
+public void clearResponse() {
   responseArea.setText("");
 }

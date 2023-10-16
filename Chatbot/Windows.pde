@@ -1,6 +1,10 @@
 // Uncomment this file to build Windows application, and comment out Android.pde file
 // Build for windows with Java mode
 // Accounts for code differences between Android and Java chatbot sketch builds
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 private final static int buildMode = JAVA_BUILD_MODE; 
 
@@ -142,6 +146,36 @@ void setEXIF(String filename) {
 public void logger(String str) {
   //logger(str);
   if (DEBUG) System.out.println(str);
+}
+
+/**
+ * This function renames a directory.
+ *
+ * @param path The path to the folder containing the directory.
+ * @param oldName The current name of the directory.
+ * @param newName The new name for the directory.
+ * @return 0 if the operation was successful, -1 if the directory does not exist, -2 if the operation failed for another reason.
+ */
+public int renameDirectory(String path, String oldName, String newName) {
+    // Create a Path object representing the existing directory
+    Path oldDir = Paths.get(path, oldName);
+    // Check if the directory exists
+    if (!Files.exists(oldDir) || !Files.isDirectory(oldDir)) {
+        // The directory does not exist
+        return -1;
+    }
+    // Create a Path object representing the new directory
+    Path newDir = Paths.get(path, newName);
+    // Attempt to rename the directory
+    try {
+        Files.move(oldDir, newDir);
+        // The operation was successful
+        return 0;
+    } catch (IOException e) {
+        // The operation failed
+        e.printStackTrace();
+        return -2;
+    }
 }
 
 //-------------------------------------------------------------------------------------
