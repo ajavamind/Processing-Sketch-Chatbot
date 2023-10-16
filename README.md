@@ -1,19 +1,19 @@
 # Processing-Sketch-Chatbot
-Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant for learning and generating sketch code.
+Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant for learning and generating Processing sketch code.
 
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
-It's primarily used for creating graphics, animations, and interactive experiences, 
-and is also capable of building small sized applications on several platforms: Windows, Linux, iOS; and coding environments: Java, Javascript-P5.js, Android, and Python.
+It's primarily used for creating graphics, animations, and interactive experiences.
+It iss also capable of building small sized applications on several platforms: Windows, Linux, iOS; using the coding environments: Java, Javascript-P5.js, Android, and Python.
 Processing Development Environment (PDE) is a Processing sketch application. 
-The Processing IDE, Integrated Development Environment, is a Processing sketchbook with code editor, debugger, and run execution capabilities for sketches. 
+The Processing IDE, Integrated Development Environment, is a Processing sketchbook for PDE sketches with code editor, debugger, and run execution capabilities. 
 
 ## Background
-I'm a retired software engineer using Processing (since 2010) for many personal camera, photography, and photo art projects.
+I'm a retired software engineer using Processing (since 2010) for my personal camera, photography, photo and generative art projects.
 
-To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org. 
-My chatbot application can be modified for other chatbot application uses besides programming code.
-Only a small number of the API features and calls are actually used in the application.
+To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org Large Language Model (LLM). 
+My chatbot application can be modified for other chatbot application uses besides programming code. Custom instruction prompts can be used and added to tailor the chatbot for particular needs and design areas.
+It turns out that only a small number of the API features and calls were needed to build the application.
 
 ## Introduction
 The Processing Sketch Chatbot is an application tool to assist users of the Processing.org IDE (Integrated Development Environment) 
@@ -26,17 +26,18 @@ The application is written in the Processing Java language and currently only ru
 (due to the library used for GUI is only available for Windows).
 It requires an OpenAI API key subscription from OpenAI.org.
 
-Chat responses cause an instance of the sketch to be run with the IDE when a "Run" key is pressed.
+Chat responses cause an instance of the sketch to be run with the IDE when a "Run IDE Sketch" key is pressed.
 
 ![Chatbot Application Screenshot](Chatbot/screenshots/promptScreen.png)
 
 ## Usage
-A code assistant is helpful writing sketches quickly, and avoids some tedium and mistakes during the program development process.
+A code assistant is helpful writing small simple sketches quickly, and avoids some tedium and mistakes made during the program development process.
+The hard part is expressing your coding requirements in the prompt you give the chatbot.
 You cannot trust the output response from the chatbot and have to read and understand the generated code. (Although it is often correct)
 
 I find specific prompts are best to get good generated sketch code. And after a few prompts for requesting changes, I find it easier
-to just make code changes myself. Or start a new chat to assist with another section of the code I am trying to build and
-then integrate it into the final sketch I seek to write.
+to just make code changes myself. I found that starting a new chat to assist with various sections of the code project works best because it gives better responses.
+I then integrate code generated into the final sketch I seek to write. The LLM cannot handle extensive coding requests.
 
 One time the Chatbot could not figure out how to generate code for a specific request and told me. I solved this by
 instructing the Chatbot to use a specific class or technique and it worked.
@@ -48,8 +49,7 @@ The OpenAI model used in the application by default is "gpt-4" and
 randomness in responses is limited by the temperature variable set to 0.
 
 You can build your own custom chat by creating a system prompt text file and loading it with the custom chat soft key.
-This is similar to custom instructions available in online OpenAI ChatGPT. Use it for specific tasks you want to have your chatbot perform.
-
+This is similar to custom instructions available in online OpenAI ChatGPT. Use it for specific knowledge domains you would like assistance.
 
 ## Setup
 The Processing Sketch Chatbot application runs on Windows 11 and requires Processing 4.2 or later versions.
