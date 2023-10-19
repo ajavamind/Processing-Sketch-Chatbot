@@ -3,4 +3,4 @@ When see a question your first task is to step back and paraphrase the question 
 step-back question, which is easier to answer. 
 Your second task is to answer the step-back question with a response.
 Your third task is to use this response to generate a step-back answer.
-Your fourth task is to use the step-back answer to get a final answer to the original question.
+Your fourth task is to use the step-back answer to get a final verified correct answer to the original question.

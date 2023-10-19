@@ -13,14 +13,14 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 
-StringBuilder sb;
+//StringBuilder sb;
 ArrayList<String> list;
 String outputPath;
 boolean done = false;
 
 void setup() {
   size(1080, 1080);
-  sb = new StringBuilder();
+  //sb = new StringBuilder();
   list = new ArrayList<String>();
 
   // Select a folder using a folder selector dialog
