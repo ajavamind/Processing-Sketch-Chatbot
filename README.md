@@ -5,8 +5,9 @@ It is my personal AI assistant that I can customize for programming and any spec
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
 It's primarily used for creating graphics, animations, and interactive experiences.
-It iss also capable of building small sized applications on several platforms: Windows, Linux, iOS; using the coding environments: Java, Javascript-P5.js, Android, and Python.
-Processing Development Environment (PDE) is a Processing sketch application. 
+Processing is capable of building small sized applications on several platforms, including Windows, Raspberry Pi, Linux, and Apple iOS.
+It accepts sketches written in Java, P5.js a JavaScript library, Android, and Python.
+Processing Development Environment (PDE) is name for a Processing sketch application. 
 The Processing IDE, Integrated Development Environment, is a Processing sketchbook for PDE sketches with code editor, debugger, and run execution capabilities. 
 
 ## Background
@@ -60,6 +61,10 @@ You can build your own custom chat by creating a system prompt text file and loa
 This is similar to custom instructions available in online OpenAI ChatGPT. Use it for specific knowledge domains you would like assistance.
 A number of custom chat files can be dound in the customSystemPrompts folder.
 
+It is possible to user other AI chat servers than OpenAI if the server accepts the OpenAI API protocol.
+This is done by changing the BASEURL of the server used in a chat.
+This feature is experimental and is not fully tested.
+
 ## Setup
 The Processing Sketch Chatbot application runs on Windows 11 and requires Processing 4.2 or later versions.
 Install the Processing IDE, Windows 64 bit, from [www.processing.org/download](https://processing.org/download)
@@ -70,10 +75,11 @@ Add the folder location to the environment variable "PROCESSING_HOME" and add %P
 This is required for seamless starts of the IDE from the chatbot when you make a run request on code generated using the chatbot.
 
 ### OpenAI Api Key
-You will need OPENAI API payment account to use this chatbot application. 
-See [OpenAI](https://openai.com/) for information about setting up an API account. 
+You will need an OPENAI API developer payment account to use this chatbot application. 
+See [OpenAI](https://openai.com/) for information about setting up an API developer account. 
 The Chat API documentation used by this application is described at https://openai.com/product#made-for-developers.
-Note that the API developer accounts are relatively inexpensive (for an infrequent user like me) with the trade-off of slow response times, depending on the model chosen.
+Note that the API developer accounts are relatively inexpensive (for an infrequent user like me, compared to ChatGPT Pro),
+but with the trade-off of slow response times, depending on the AI model chosen.
 
 The application makes API calls into the OpenAI endpoint servers and requires an identifying token with API requests.
 The application reads a Windows environment variable, OPENAI_API_KEY, for your OpenAI API account token.
