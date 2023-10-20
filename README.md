@@ -1,20 +1,21 @@
 # Processing-Sketch-Chatbot
-Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant for learning and generating Processing sketch code.
-It is my personal AI assistant that I can customize for programming and any specific need where I can use AI help. 
+Processing Sketch Chatbot is an OpenAI artificial intelligence API based assistant for learning and generating Processing sketch code.
+It is my personal AI assistant that I can customize for programming tasks, and change it to help with any specific need where I can use AI.
+I use it as a workbench for experimenting with OpenAI API and Large Language Models (LLM).
 
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
 It's primarily used for creating graphics, animations, and interactive experiences.
-Processing is capable of building small sized applications on several platforms, including Windows, Raspberry Pi, Linux, and Apple iOS.
+Processing is capable of building small sized application sketches on several platforms: Windows, Raspberry Pi, Linux, and Apple iOS.
 It accepts sketches written in Java, P5.js a JavaScript library, Android, and Python.
-Processing Development Environment (PDE) is name for a Processing sketch application. 
+Processing Development Environment (PDE) is the file type name for a Processing sketch application. 
 The Processing IDE, Integrated Development Environment, is a Processing sketchbook for PDE sketches with code editor, debugger, and run execution capabilities. 
 
 ## Background
 I'm a retired software engineer who has been using Processing since 2010 for my personal camera, photography, photo and generative art projects.
 Typically I write small sketches, but some of my projects require a lot of code.
 
-To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org Large Language Model (LLM). 
+To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org LLM servers. 
 My chatbot application can be modified for other chatbot application uses besides programming code. Custom instruction prompts can be used and added to tailor the chatbot for particular needs and design areas.
 It turns out that only a small number of the API features and calls were needed to build the application.
 
