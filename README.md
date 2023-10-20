@@ -1,5 +1,6 @@
 # Processing-Sketch-Chatbot
 Processing Sketch Chatbot is an OpenAI artificial intelligence based assistant for learning and generating Processing sketch code.
+It is my personal AI assistant that I can customize for programming and any specific need where I can use AI help. 
 
 Processing is a programming language and development environment built for the electronic arts, new media art, and visual design communities 
 with the purpose of teaching non-programmers the fundamentals of computer programming in a visual context. 
