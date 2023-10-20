@@ -9,7 +9,8 @@ Processing Development Environment (PDE) is a Processing sketch application.
 The Processing IDE, Integrated Development Environment, is a Processing sketchbook for PDE sketches with code editor, debugger, and run execution capabilities. 
 
 ## Background
-I'm a retired software engineer using Processing (since 2010) for my personal camera, photography, photo and generative art projects.
+I'm a retired software engineer who has been using Processing since 2010 for my personal camera, photography, photo and generative art projects.
+Typically I write small sketches, but some of my projects require a lot of code.
 
 To learn more about the AI and machine learning revolution going on now, I wrote this Processing sketch code assistant Chatbot using Java API calls to OpenAI.org Large Language Model (LLM). 
 My chatbot application can be modified for other chatbot application uses besides programming code. Custom instruction prompts can be used and added to tailor the chatbot for particular needs and design areas.
@@ -47,9 +48,16 @@ You can run the generated code directly with the IDE, rather than copying and pa
 
 The OpenAI model used in the application by default is "gpt-4" and 
 randomness in responses is limited by the temperature variable set to 0.
+The application model can be changed if you build the chat application yourself.
+I found the GPT4 model gives the best generated code.
+
+You can change the model using a JSON config file "chatConfig.json" found in the config folder.
+Simply update this file to change the model and temperature you would like for your chats.
+A second config file "envConfig.json" defines the saved output folder for storing chat prompt/responses, chat log files, and generated code.
 
 You can build your own custom chat by creating a system prompt text file and loading it with the custom chat soft key.
 This is similar to custom instructions available in online OpenAI ChatGPT. Use it for specific knowledge domains you would like assistance.
+A number of custom chat files can be dound in the customSystemPrompts folder.
 
 ## Setup
 The Processing Sketch Chatbot application runs on Windows 11 and requires Processing 4.2 or later versions.
@@ -63,9 +71,8 @@ This is required for seamless starts of the IDE from the chatbot when you make a
 ### OpenAI Api Key
 You will need OPENAI API payment account to use this chatbot application. 
 See [OpenAI](https://openai.com/) for information about setting up an API account. 
-The API by this application used is currently described at https://openai.com/product#made-for-developers
-The application defaults to "gpt-4" model, but can be changed if you build the chat application yourself.
-I found the GPT4 model gives the best generated code.
+The Chat API documentation used by this application is described at https://openai.com/product#made-for-developers.
+Note that the API developer accounts are relatively inexpensive (for an infrequent user like me) with the trade-off of slow response times, depending on the model chosen.
 
 The application makes API calls into the OpenAI endpoint servers and requires an identifying token with API requests.
 The application reads a Windows environment variable, OPENAI_API_KEY, for your OpenAI API account token.
