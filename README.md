@@ -75,6 +75,8 @@ After installing the Processing IDE, note the folder location of the IDE process
 Add the folder location to the environment variable "PROCESSING_HOME" and add %PROCESSING_HOME% to the path in the Windows system environment settings.
 This is required for seamless starts of the IDE from the chatbot when you make a run request on code generated using the chatbot.
 
+Note: The application only runs on Windows for now because it uses some libraries that are only available with Windows.
+
 ### OpenAI Api Key
 You will need an OPENAI API developer payment account to use this chatbot application. 
 See [OpenAI](https://openai.com/) for information about setting up an API developer account. 
