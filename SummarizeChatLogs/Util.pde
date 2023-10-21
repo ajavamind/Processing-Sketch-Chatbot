@@ -23,12 +23,12 @@ import java.lang.Process;
 import java.lang.Exception;
 import java.util.concurrent.TimeUnit;
 
-static final String fileLogType = ".log";
+static final String loggerFileType = ".log";
 String fileType = ".txt";
 
 void newLogFile(String name, String[] lines, String fname ) {
   File file;
-  String fileName = fname + fileLogType;
+  String fileName = fname + loggerFileType;
   try {
     logger(fileName);
     file = new File(fileName);
@@ -54,7 +54,7 @@ void newLogFile(String name, String[] lines, String fname ) {
 
 void appendLog(String fname, String[] lines) {
   File file;
-  String fileName = fname + fileLogType;
+  String fileName = fname + loggerFileType;
   try {
     logger(fileName);
     file = new File(fileName);
@@ -90,7 +90,7 @@ void appendToFile(String fileName, String[] lines) throws IOException {
   }
 }
 
-// split string into separate text lines using line feed 0x0A
+// split string into separate text lines delimited by line feed 0x0A
 public static String[] parseString(String input) {
   //  String[] lines = input.split("\n");
   // keep end of line character

@@ -28,16 +28,36 @@ boolean working = false;
 boolean done = false;
 ArrayList<String> logFiles = new ArrayList<>();
 ArrayList<String> logFilePaths = new ArrayList<>();
-HtmlFileCreator htmlCreate;
+Output output;
+//HtmlFileCreator htmlCreate;
 OpenAI chatbot;
+
+// file types to scan
+//String[] scanFileType = { ".log" };  // default scan log files only
+String[] scanFileType = { ".java", ".pde", ".js", ".py", ".pyde" };  // scan both java, javascript, python and pde files
+private static final int TEXT = 0;
+private static final int HTML = 1;
+int outputType = HTML;
+//int outputType = TEXT;
 
 void setup() {
   size(1080, 1080);
   textSize(18);
   list = new ArrayList<String>();
-  htmlCreate = new HtmlFileCreator();
+  switch (outputType) {
+  case HTML:
+    output = new HtmlFileCreator();
+    break;
+  case TEXT:
+    output = new TextFileCreator();
+    break;
+  default:
+    println("Exit error internal output file generation");
+    exit();
+    break;
+  }
   chatbot = new OpenAI();
-  
+
   // Select a folder using a folder selector dialog
   selectFolder("Select starting folders:", "folderSelected");
 }
@@ -46,16 +66,16 @@ void draw() {
   background(255);
   fill(0);
 
-  if (input) {
+  if (input && logFiles.size() > 0) {
     text("Processing file " + (currentFile) + " of " + fileCount, 10, 100);
     text("File name: " + logFiles.get(currentFile), 10, 120);
   }
-  text("Summarize Log files", 20, 20);
+  text("Summarize Files", 20, 20);
   if (folderPath != null) {
     text(folderPath, 20, 40);
   }
-  if (summarizeNextFile()) {
-    text("Summarizing log file completed " + (currentFile) + " of " + fileCount, 10, 140);
+  if (processNextFile(outputType)) {
+    text("Summarize log file completed " + (currentFile) + " of " + fileCount, 10, 140);
   }
 }
 
@@ -74,14 +94,12 @@ void folderSelected(File selection) {
   if (folder != null) {
     outputText("User selected " + folderPath);
     folderPath = selection.getAbsolutePath();
-    htmlCreate.initializeHtmlFile(folderPath);
-
     scanFolder(folder);
     System.out.println("Log Files: " + logFiles);
     System.out.println("Log File Paths: " + logFilePaths);
     currentFile = 0;
     fileCount = logFiles.size();
-    fileCount = 3; // limit for debug
+    //fileCount = 1; // limit for debug only
     input = true;
   }
 }
@@ -93,9 +111,15 @@ public void scanFolder(File folder) {
       if (file.isDirectory()) {
         scanFolder(file);
       } else {
-        if (file.getName().toLowerCase().endsWith(".log")) {
-          logFiles.add(file.getName());
-          logFilePaths.add(file.getAbsolutePath());
+        for (String s : scanFileType) {
+          String name = file.getName().toLowerCase();
+          if (!(name.equals("p5.js") || name.equals("p5.sound.min.js") || name.equals("p5.sound.js") || name.equals("p5.min.js"))) {
+            if (name.endsWith(s)) {
+              logFiles.add(file.getName());
+              logFilePaths.add(file.getAbsolutePath());
+              break;
+            }
+          }
         }
       }
     }
@@ -107,24 +131,29 @@ void outputText(String s) {
   println(s);
 }
 
-boolean summarizeNextFile() {
-  boolean done = false;
+/**
+ * Process next file in list
+ * return false if no file was processed or there are more to process
+ * return true if all files processed
+ */
+boolean processNextFile(int outputType) {
   if (currentFile == fileCount) {
-    return true;  // done
+    return true;  // all files processed
   }
   if (input && currentFile < fileCount) {
     String fileName = logFiles.get(currentFile);
     String filePath = logFilePaths.get(currentFile);
     String[] lines = loadStrings(filePath);
-    String[] logSummary = chatbot.summarizeLog(lines);
-    if (logSummary != null) {
-      htmlCreate.addLink(fileName, filePath, logSummary);
+    String[] summary = chatbot.summarizeLog(lines);
+    if (summary != null) {
+      output.open(folderPath); // once even if called again
+      output.add(fileName, filePath, summary);
       currentFile++;
     }
     if (currentFile == fileCount) {
-      input = false;
-      htmlCreate.finishHtmlFile();
+      input = false;  // no more input
+      output.close();
     }
   }
-  return done;
+  return false;
 }

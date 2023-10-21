@@ -14,7 +14,7 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.service.OpenAiService;
 import com.theokanning.openai.completion.CompletionRequest;
 
-class OpenAI {
+public class OpenAI {
   OpenAiService service;
 
   String model = "gpt-3.5-turbo";
@@ -36,6 +36,7 @@ class OpenAI {
   final List<ChatMessage> context = new ArrayList<ChatMessage>();
   ChatMessage systemMessage;
   String customChatFilePath = "Summary Prompt.txt";
+  String instructChatFilePath = "Instruct Prompt.txt";
   String chatName;
 
   String errorText;
@@ -91,20 +92,12 @@ class OpenAI {
     return result;
   }
 
-  void requestSummaryDebug() {
-    String[]summary = new String[10];  // for debug
-    int size = 10;
-    for (int i=0; i<size; i++) {
-      summary[i] = "";
+  public class OpenAiRunnable implements Runnable { // Define a class that implements the Runnable interface
+    public void run() { // Override the run method to specify the task
+      requestSummary();
+      threadDone = true;
+      //println("Task is running...");
     }
-    if (aiLines.length < size)
-      size = aiLines.length;
-    println("summarizeLog ");
-    for (int i=0; i<size; i++) {
-      println(aiLines[i]);
-      summary[i] = aiLines[i];
-    }
-    aiSummary = summary;
   }
 
   void requestSummary() {
@@ -116,6 +109,22 @@ class OpenAI {
       println("Completed..........");
     }
   }
+
+  //void requestSummaryDebug() {
+  //  String[]summary = new String[10];  // for debug
+  //  int size = 10;
+  //  for (int i=0; i<size; i++) {
+  //    summary[i] = "";
+  //  }
+  //  if (aiLines.length < size)
+  //    size = aiLines.length;
+  //  println("summarizeLog ");
+  //  for (int i=0; i<size; i++) {
+  //    println(aiLines[i]);
+  //    summary[i] = aiLines[i];
+  //  }
+  //  aiSummary = summary;
+  //}
 
   // Load Custom chat system message
   void processCustomChat() {
@@ -134,7 +143,15 @@ class OpenAI {
     ChatMessage systemMessage = new ChatMessage(ChatMessageRole.SYSTEM.value(), msg);
     context.add(systemMessage);
 
-    aiLines[0] = "Summarize the following user text with a short descriptive title and a descriptive summary paragraph:\n" + aiLines[0];
+    println("instructChat: " + instructChatFilePath);
+    if (instructChatFilePath == null) {
+      errorText = "No Instruct Chat Selected or invalid.";
+      return;
+    }
+
+    String[] userPrompt = loadStrings(instructChatFilePath);
+    prompt = combineStrings(userPrompt);
+    aiLines[0] =  prompt + aiLines[0];
     prompt = combineStrings(aiLines);
     logger("\n");
     logger("userMessage prompt= "+prompt);
@@ -247,11 +264,4 @@ class OpenAI {
     return content;
   }
 
-  public class OpenAiRunnable implements Runnable { // Define a class that implements the Runnable interface
-    public void run() { // Override the run method to specify the task
-      requestSummary();
-      threadDone = true;
-      //println("Task is running...");
-    }
-  }
 } // class OpenAI
