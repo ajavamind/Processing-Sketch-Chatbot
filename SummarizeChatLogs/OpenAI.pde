@@ -17,10 +17,10 @@ import com.theokanning.openai.completion.CompletionRequest;
 public class OpenAI {
   OpenAiService service;
 
-  String model = "gpt-3.5-turbo";
+  //String model = "gpt-3.5-turbo";
   //String model = "gpt-3.5-turbo-16k";  // allows larger context prompt/response
   //String model = "gpt-3.5-turbo-0613"; // function calling, system message steering better
-  //String model = "gpt-4";
+  String model = "gpt-4";
   double topP = 1.0;
   int timeout = 120; // LLM server reponse timeout in seconds
 

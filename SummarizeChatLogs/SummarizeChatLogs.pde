@@ -33,8 +33,8 @@ Output output;
 OpenAI chatbot;
 
 // file types to scan
-//String[] scanFileType = { ".log" };  // default scan log files only
-String[] scanFileType = { ".java", ".pde", ".js", ".py", ".pyde" };  // scan both java, javascript, python and pde files
+String[] scanFileType = { ".log" };  // default scan log files only
+//String[] scanFileType = { ".java", ".pde", ".js", ".py", ".pyde" };  // scan both java, javascript, python and pde files
 private static final int TEXT = 0;
 private static final int HTML = 1;
 int outputType = HTML;
