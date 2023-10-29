@@ -158,7 +158,7 @@ void showIntroduction() {
   int delta = int(textAscent() + textDescent());
   int offsetX = 20;
   int offsetY = height/2 - delta;
-  drawText("Processing Sketch Chat", offsetX, offsetY, black, hintblue );
+  drawText("Processing Sketch Chatbot", offsetX, offsetY, black, hintblue );
   drawText("Version: " + VERSION, offsetX, offsetY+delta, black, hintblue );
   drawText("Copyright 2023 Andy Modla, All Rights Reserved", offsetX, offsetY+2*delta, black, hintblue );
 }

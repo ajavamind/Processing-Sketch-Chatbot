@@ -48,10 +48,10 @@ int readEnvConfig(String filenamePath) {
   catch (Exception e) {
     return -2;
   }
-
   String temp = configParameters.getString("outputPath");
-  if (!temp.equals("")) {
-    saveFolderPath = configParameters.getString("outputPath");
+  //println("temp="+temp);
+  if (temp != null && !temp.equals("")) {
+    saveFolderPath = temp;
   }
   logger("envConfig outputPath: " + saveFolderPath);
   return 0;

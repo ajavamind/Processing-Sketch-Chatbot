@@ -1,6 +1,5 @@
 {
   "description": "Processing Sketch Chat Configuration",
-  "parameters": {"parameters": {
-	    "outputPath": "",
-	},
+  "parameters": {
+	  "outputPath": "" }
 }
