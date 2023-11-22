@@ -1,8 +1,4 @@
-{	"description": "OpenAI API Client Configuration",
-	"parameters": {
-		"model": "gpt-4",
-		"temperature": 0.0,
-		"topP": 1.0,
-		"timeout": 120,
-	},
+{
+  "description": "Processing Sketch Chat Configuration",
+  "parameters": {"outputPath": ""}
 }

@@ -8,8 +8,8 @@ import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 
 String configFolderName = "config";
-String defaultConfigFileName = "envConfig.json";  // working parameters read and write
-String chatConfigFileName = "chatConfig.json"; // AI client parameters read only
+String chatConfigFileName = "chatConfig.json";  // working parameters read and write
+String aiConfigFileName = "aiConfig.json"; // AI client parameters read only
 static final String saveFolder = "output"; // default output folder location relative to sketch path until changed by "Save Folder" menu button
 String saveFolderPath; // full path to save folder
 
@@ -24,7 +24,7 @@ JSONObject chatParameters;
 int initConfig(int num) {
   int result;
   if (num == 0)
-    result = readEnvConfig(sketchPath() + File.separator + configFolderName+ File.separator + defaultConfigFileName);
+    result = readAiConfig(sketchPath() + File.separator + configFolderName+ File.separator + aiConfigFileName);
   else
     result = readChatConfig(sketchPath() + File.separator + configFolderName+ File.separator + chatConfigFileName);
   return result;
@@ -36,8 +36,8 @@ int initConfig(int num) {
  * return -1 if config file read error
  * return 0 if read config file successful
  */
-int readEnvConfig(String filenamePath) {
-  logger("readEnvConfig "+ filenamePath);
+int readChatConfig(String filenamePath) {
+  logger("readChatConfig "+ filenamePath);
   if (!fileExists(filenamePath)) {
     return -1;
   }
@@ -53,17 +53,17 @@ int readEnvConfig(String filenamePath) {
   if (temp != null && !temp.equals("")) {
     saveFolderPath = temp;
   }
-  logger("envConfig outputPath: " + saveFolderPath);
+  logger("chatConfig outputPath: " + saveFolderPath);
   return 0;
 }
 
 void updateSaveFolderPath() {
   configParameters.setString("outputPath", saveFolderPath);
-  writeEnvConfig();
+  writeChatConfig();
 }
 
-void writeEnvConfig() {
-  saveJSONObject(configFile, configFolderName+ File.separator + defaultConfigFileName, "indent=2");
+void writeChatConfig() {
+  saveJSONObject(configFile, configFolderName+ File.separator + chatConfigFileName, "indent=2");
 }
 
 /**
@@ -72,7 +72,7 @@ void writeEnvConfig() {
  * return -1 if config file read error
  * return 0 if read config file successful
  */
-int readChatConfig(String filenamePath) {
+int readAiConfig(String filenamePath) {
   logger("readChatConfig "+ filenamePath);
   if (!fileExists(filenamePath)) {
     return -1;

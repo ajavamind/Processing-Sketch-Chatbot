@@ -15,6 +15,7 @@ GButton settingsButton;  // TODO
 GButton runButton;
 GButton runJButton;
 GButton loadChatLogButton;
+GButton enterTextPromptButton;
 GButton reviewChatButton;
 GButton saveFolderButton;
 GButton chat1Button;
@@ -52,10 +53,16 @@ int RUNJ_BUTTON_X;
 int RUNJ_BUTTON_Y;
 int RUNJ_BUTTON_WIDTH;
 int RUNJ_BUTTON_HEIGHT;
+
 int LOAD_CHATLOG_BUTTON_X;
 int LOAD_CHATLOG_BUTTON_Y;
 int LOAD_CHATLOG_BUTTON_WIDTH;
 int LOAD_CHATLOG_BUTTON_HEIGHT;
+int ENTER_TEXT_PROMPT_BUTTON_X;
+int ENTER_TEXT_PROMPT_BUTTON_Y;
+int ENTER_TEXT_PROMPT_BUTTON_WIDTH;
+int ENTER_TEXT_PROMPT_BUTTON_HEIGHT;
+
 int REVIEW_CHAT_BUTTON_X;
 int REVIEW_CHAT_BUTTON_Y;
 int REVIEW_CHAT_BUTTON_WIDTH;
@@ -244,6 +251,11 @@ void initGUI() {
   LOAD_CHATLOG_BUTTON_X = PROMPT_WIDTH + 1 ;
   LOAD_CHATLOG_BUTTON_Y = height - 3*PROMPT_HEIGHT;
 
+  ENTER_TEXT_PROMPT_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
+  ENTER_TEXT_PROMPT_BUTTON_HEIGHT = 5 * fontHeight;
+  ENTER_TEXT_PROMPT_BUTTON_X = PROMPT_WIDTH + 1 + LOAD_CHATLOG_BUTTON_WIDTH;
+  ENTER_TEXT_PROMPT_BUTTON_Y = height - 3*PROMPT_HEIGHT;
+
   REVIEW_CHAT_BUTTON_WIDTH = (width - PROMPT_WIDTH)/2;
   REVIEW_CHAT_BUTTON_HEIGHT = 5 * fontHeight;
   REVIEW_CHAT_BUTTON_X = PROMPT_WIDTH + 1 ;
@@ -321,12 +333,17 @@ void initGUI() {
   runJButton.setOpaque(true);
   runJButton.setFont(buttonFont);
 
-  loadChatLogButton = new GButton(this, LOAD_CHATLOG_BUTTON_X, LOAD_CHATLOG_BUTTON_Y, LOAD_CHATLOG_BUTTON_WIDTH, LOAD_CHATLOG_BUTTON_HEIGHT, "Load\nChat Log");
+  loadChatLogButton = new GButton(this, LOAD_CHATLOG_BUTTON_X, LOAD_CHATLOG_BUTTON_Y, LOAD_CHATLOG_BUTTON_WIDTH, LOAD_CHATLOG_BUTTON_HEIGHT, "Resume\nChat Log");
   loadChatLogButton.tag = "Button:  Load Chat Log";
   loadChatLogButton.setOpaque(true);
   loadChatLogButton.setFont(buttonFont);
 
-  reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Show\nChat Log");
+  enterTextPromptButton = new GButton(this, ENTER_TEXT_PROMPT_BUTTON_X, ENTER_TEXT_PROMPT_BUTTON_Y, ENTER_TEXT_PROMPT_BUTTON_WIDTH, ENTER_TEXT_PROMPT_BUTTON_HEIGHT, "Enter\nPrompt");
+  enterTextPromptButton.tag = "Button:  Enter Text Prompt";
+  enterTextPromptButton.setOpaque(true);
+  enterTextPromptButton.setFont(buttonFont);
+
+  reviewChatButton = new GButton(this, REVIEW_CHAT_BUTTON_X, REVIEW_CHAT_BUTTON_Y, REVIEW_CHAT_BUTTON_WIDTH, REVIEW_CHAT_BUTTON_HEIGHT, "Review\nChat Log");
   reviewChatButton.tag = "Button:  Review Chat";
   reviewChatButton.setOpaque(true);
   reviewChatButton.setFont(buttonFont);
@@ -451,6 +468,10 @@ public void handleButtonEvents(GButton button, GEvent event) {
       logger("Load chat log Button");
       lastKey = 0;
       lastKeyCode = KEYCODE_LOAD_CHAT_LOG_FILE;
+    } else if (button == enterTextPromptButton && event == GEvent.CLICKED) {
+      logger("Enter Text Prompt Button");
+      lastKey = 0;
+      lastKeyCode = KEYCODE_ENTER_TEXT_PROMPT_FILE;
     }
   }
 }

@@ -102,6 +102,8 @@ static final int KEYCODE_ERROR = 10000;
 static final int KEYCODE_GET_CUSTOM_CHAT_FILE = 20000;
 static final int KEYCODE_LOAD_CHAT_LOG_FILE = 20001;
 static final int KEYCODE_READ_CHAT_LOG_FILE = 20002;
+static final int KEYCODE_ENTER_TEXT_PROMPT_FILE = 20003;
+static final int KEYCODE_READ_TEXT_PROMPT_FILE = 20004;
 static final int KEY_CONTROL = 65535;
 
 //-------------------------------------------------------------------------------------
@@ -294,6 +296,13 @@ boolean updateKey() {
     readChatLogFile(chatLogFilePath + ".log");
     initReviewText(chatLogFilePath + ".log");
     readLastSketchFile(chatLogFilePath + ".txt");
+    break;
+  case KEYCODE_ENTER_TEXT_PROMPT_FILE:
+    selectTextPromptFile();
+    break;
+  case KEYCODE_READ_TEXT_PROMPT_FILE:
+    logger("KEYCODE_READ_TEXT_PROMPT_FILE");
+    readTextPromptFile(textPromptFilePath);
     break;
   default:
     break;

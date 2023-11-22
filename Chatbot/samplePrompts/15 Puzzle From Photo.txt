@@ -1,5 +1,9 @@
-add code a 15 slide puzzle from the photo. 
-split the photo into 4x4 squares with the last square of the photo not used and is blank. 
-place the 15 squares randomly in the 4x4 puzzle
+code a java sketch to make a 15 piece slide puzzle from a square photo. 
+use a screen of 1024 by 1024.
+split the photo into 4x4 squares with the last square of the photo blank. 
+place the 15 squares randomly in the 4x4 puzzle.
+save the moves made for the initial puzzle setup so that the backspace key can be used to retrace move back to the original photo. 
+do not use a move that un does a tile positon when creating the initial puzzle.
 use mouse to select the square to move. 
 show text "Solved" when the position of the 15 squares matches the original photo. 
+show number of moves made.

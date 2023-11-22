@@ -77,6 +77,36 @@ void selectChatLogFile() {
     selectInput("Select Chat Log File", "chatLogFileSelected");
 }
 
+void selectTextPromptFile() {
+//  textPromptFilePath 
+    selectInput("Select Text Pompt File", "textPromptFileSelected");
+}
+
+String textPromptFilePath;
+String textPromptFileName;
+void textPromptFileSelected(File selection) {
+  if (selection == null) {
+    logger("Window was closed or the user hit cancel.");
+  } else {
+    textPromptFilePath = selection.getAbsolutePath(); //selection.getAbsoluteFile();
+    logger("Text Prompt File selected " + textPromptFilePath);
+    textPromptFileName = textPromptFilePath.substring(0, textPromptFilePath.lastIndexOf("."));
+    lastKeyCode = KEYCODE_READ_TEXT_PROMPT_FILE;
+    logger("textPromptFileName="+textPromptFileName);
+  }
+}
+
+void readTextPromptFile(String textPromptFile) {
+  logger("readTextPromptFile="+textPromptFile);
+  if (textPromptFile == null) return;
+  String[] textPrompt = loadStrings(textPromptFile);
+  printArray(textPrompt);
+  promptArea.appendText("\n");
+  for (String s: textPrompt) {
+    promptArea.appendText(s);
+  }
+}
+
 void customChatFileSelected(File selection) {
   if (selection == null) {
     logger("Window was closed or the user hit cancel.");

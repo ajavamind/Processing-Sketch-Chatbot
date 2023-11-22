@@ -1,0 +1,6 @@
+code a java sketch to draw the following:
+set screen to 1080 by 1080.
+set text color to black
+plot the graph for the equation  x**2+4x+3
+using computed values with the range x >= 0 and x < 5
+include x-axis and y-axis labels and tick marks with range values.
