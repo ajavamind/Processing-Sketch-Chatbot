@@ -84,13 +84,17 @@ int readAiConfig(String filenamePath) {
   catch (Exception e) {
     return -2;
   }
-
+  String temps = chatParameters.getString("url");
+  if (temps != null) {
+    BASE_URL = temps;
+  }
   model = chatParameters.getString("model");
   float temp = chatParameters.getFloat("temperature");
   temperature = (double) temp;
   temp = chatParameters.getFloat("topP");
   topP = (double) temp;
   timeout = chatParameters.getInt("timeout");
+  logger("url="+BASE_URL);
   logger("model="+model);
   logger("temperature="+temperature);
   logger("topP="+topP);

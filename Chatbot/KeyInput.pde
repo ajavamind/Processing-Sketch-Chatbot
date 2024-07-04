@@ -258,8 +258,10 @@ boolean updateKey() {
     // check if response text was modified and TODO
     logger("saveSketch folder="+chatLogFilePath);
     execFn = saveSketch(chatLogFilePath);
-    for (int i=0; i<execFn.length; i++) {
-      logger("using file: "+execFn[i]);
+    if (execFn != null) {
+      for (int i=0; i<execFn.length; i++) {
+        logger("using file: "+execFn[i]);
+      }
     }
     if (execFn != null) {
       if (forceExecJFn) {
