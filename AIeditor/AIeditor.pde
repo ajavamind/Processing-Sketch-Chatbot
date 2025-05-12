@@ -15,6 +15,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.*;
 import java.time.Duration;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import io.github.stefanbratanov.jvm.openai.*;
@@ -22,27 +26,34 @@ import io.github.stefanbratanov.jvm.openai.OpenAI;
 
 String[] args;
 boolean test = true;
-static String model = "gpt-4.1";
-static double temperature = 0.0; // expect no randomness from the model
+static String baseUrl = "http://192.168.1.96:8080/v1/";  // local LLM
+//static String CODE_BLOCK = "###";
+static String CODE_BLOCK = "```";
+
+//static String model = "gpt-4.1";
+static String model = "granite3.3";
+static double temperature = 0.1; // expect no randomness from the model
 static double topP = 1.0;
-long timeout = 120; // seconds
-final Duration CHAT_TIMEOUT = Duration.ofSeconds(timeout);
+long timeout = 3600; // seconds
 int elapsedTime = 0;
 int FRAME_RATE = 30;
 String promptFilePath;
 String inputPathStr;
 String outputFolderPath;
+int exitError = 0;
 
 void setup() {
+  size(1024, 400);
   // main paramteres setup - not using command line app feature
   args = new String[3];
   args[0] = sketchPath() + File.separator + "data" + File.separator +"okhttpEditPrompt.txt";
   //args[1] = sketchPath() + File.separator + "in";  // all files in the folder will be processed
-  //args[1] = sketchPath() + File.separator + "in" + File.separator + "OpenAI.java";  // only process one file
-  args[1] = sketchPath() + File.separator + "in" + File.separator + "OpenAIClient.java";  // only process one file
-  args[2] = sketchPath() + File.separator + "out" ; // where to save files
-  //args[1] = "F:\\data\\projects\\processing4\\Repositories\\jvm-openai\\src\\main\\java\\io\\github\\stefanbratanov\\jvm\\openai";
-  //args[2] = "F:\\data\\projects\\processing4\\Repositories\\jvm-openai\\src\\dev\\java\\io\\github\\stefanbratanov\\jvm\\openai";
+  //args[1] = sketchPath() + File.separator + "in" + File.separator + "OpenAI.java";  // only process one file 3 min 37 sec RTX3060
+  //args[1] = sketchPath() + File.separator + "in" + File.separator + "OpenAIException.java";  // only process one file
+  //args[1] = sketchPath() + File.separator + "in" + File.separator + "OpenAIClient.java";  // only process one file
+  //args[2] = sketchPath() + File.separator + "output" ; // where to save files
+  args[1] = "F:\\data\\projects\\processing4\\Repositories\\jvm-openai\\src\\main\\java\\io\\github\\stefanbratanov\\jvm\\openai";
+  args[2] = "F:\\data\\projects\\processing4\\Repositories\\jvm-openai\\src\\dev\\java\\io\\github\\stefanbratanov\\jvm\\openai";
 
   // Check for correct number of arguments
   if (args.length != 3) {
@@ -60,13 +71,15 @@ void setup() {
 
     // Prepare OpenAI API
     Duration TIMEOUT = Duration.ofSeconds(timeout);
-    String token = System.getenv("OPENAI_API_KEY");
-    if (token == null || token.isEmpty()) {
-      System.err.println("OPENAI_API_KEY environment variable not set.");
-      System.exit(1);
-    }
+    //String token = System.getenv("OPENAI_API_KEY");
+    String token = "local";
+    //if (token == null || token.isEmpty()) {
+    //  System.err.println("OPENAI_API_KEY environment variable not set.");
+    //  System.exit(1);
+    //}
     OpenAI openAI = OpenAI.newBuilder(token)
       .requestTimeout(TIMEOUT)
+      .baseUrl(baseUrl) // local LLM
       .build();
 
     ChatClient chatClient = openAI.chatClient();
@@ -90,41 +103,49 @@ void setup() {
       processFile(prompt, inputPath, outputFolder, chatClient);
     } else {
       System.err.println("Input path is neither a file nor a directory: " + inputPathStr);
-      System.exit(2);
+      exitError = 2;
     }
   }
   catch (IOException e) {
     System.err.println("File error: " + e.getMessage());
-    System.exit(2);
+    exitError = 3;
   }
   catch (Exception e) {
-    System.err.println("Error: " + e.getMessage());
-    System.exit(3);
+    System.err.println("Error: " + e.getMessage() );
+    e.printStackTrace();
+    exitError = 4;
   }
-  System.out.println("Done");
-  noLoop();
+  if (exitError > 0) {
+    System.out.println("Exit Error "+str(exitError));
+  } else {
+    System.out.println("Done");
+  }
 }
 
 /**
- * Processes a single file: sends prompt+file to OpenAI, extracts code block, writes output.
+ * Processes a single file: sends prompt+input code file content to OpenAI, extracts code block, writes output.
  */
 private static void processFile(String prompt, Path inputFile, Path outputFolder, ChatClient chatClient) throws IOException {
-  System.out.println("Process File "+inputFile.getFileName());
-  
-  String inputContent = Files.readString(inputFile).trim();
-  String fullPrompt = prompt + "\n\n```\n" + inputContent + "\n```";
-  CreateChatCompletionRequest createChatCompletionRequest = CreateChatCompletionRequest.newBuilder()
-    .model(model)
-    .temperature(temperature)
-    .message(ChatMessage.userMessage(fullPrompt))
-    .build();
-  ChatCompletion chatCompletion = chatClient.createChatCompletion(createChatCompletionRequest);
-  String response = chatCompletion.choices().get(0).message().content();
-  String codeBlock = extractFirstCodeBlock(response);
-  // Write to output file with same name in output folder
+  System.out.println("Editing File: "+inputFile.getFileName() + " " + getDateTime());
   Path outputFile = outputFolder.resolve(inputFile.getFileName());
-  Files.writeString(outputFile, codeBlock);
-  System.out.println("Processed: " + inputFile.getFileName() + " -> " + outputFile.getFileName());
+  if (!Files.exists(outputFile)) {
+    String inputContent = Files.readString(inputFile).trim();
+    String fullPrompt = prompt + "\n\n"+CODE_BLOCK+"\n" + inputContent + "\n"+CODE_BLOCK;
+    //println(fullPrompt);
+    CreateChatCompletionRequest createChatCompletionRequest = CreateChatCompletionRequest.newBuilder()
+      .model(model)
+      .temperature(temperature)
+      .message(ChatMessage.userMessage(fullPrompt))
+      .build();
+    ChatCompletion chatCompletion = chatClient.createChatCompletion(createChatCompletionRequest);
+    String response = chatCompletion.choices().get(0).message().content();
+    String codeBlock = extractFirstCodeBlock(response);
+    // Write to output file with same name in output folder
+    Files.writeString(outputFile, codeBlock);
+    System.out.println("Processed: " + inputFile.getFileName() + " -> " + outputFile.getFileName()+ " " + getDateTime());
+  } else {
+    System.out.println("Skip existing file: " + inputFile.getFileName() + " == " + outputFile.getFileName()+ " " + getDateTime());
+  }
 }
 
 /**
@@ -133,7 +154,7 @@ private static void processFile(String prompt, Path inputFile, Path outputFolder
  */
 private static String extractFirstCodeBlock(String text) {
   // Regex to match ``` optionally with a language, then capture everything up to the next ```
-  Pattern pattern = Pattern.compile("```(?:[a-zA-Z0-9]*)?\\s*([\\s\\S]*?)\\s*```");
+  Pattern pattern = Pattern.compile(CODE_BLOCK+"(?:[a-zA-Z0-9]*)?\\s*([\\s\\S]*?)\\s*"+CODE_BLOCK);
   Matcher matcher = pattern.matcher(text);
   if (matcher.find()) {
     return matcher.group(1).trim();
@@ -141,75 +162,19 @@ private static String extractFirstCodeBlock(String text) {
   return "";
 }
 
-//try {
-//  // Read prompt from file
-//  String prompt = Files.readString(Paths.get(promptFilePath)).trim();
-//  println("Reading edit prompt file: "+promptFilePath);
+static String getDateTime() {
+  Date current_date = new Date();
+  String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(current_date);
+  return timeStamp;
+}
 
-//  // Read input file contents
-//  //String inputContent = Files.readString(Paths.get(inputFolderPath)).trim();
-//  // Combine prompt and input, with input in code block
-//  //String fullPrompt = prompt + "\n\n```\n" + inputContent + "\n```";
-//  //println(fullPrompt);
-//  println("Reading input folder: "+inputFolderPath);
-//  //if (test) return;
-//  // Ensure output folder exists
-//  Path outputFolder = Paths.get(outputFolderPath);
-//  if (!Files.exists(outputFolder)) {
-//    Files.createDirectories(outputFolder);
-//  }
-
-//  // Set up OpenAI API
-//  Duration TIMEOUT = Duration.ofSeconds(timeout);
-//  String token = System.getenv("OPENAI_API_KEY");
-//  if (token == null || token.isEmpty()) {
-//    System.err.println("OPENAI_API_KEY environment variable not set.");
-//    System.exit(1);
-//  }
-//  OpenAI openAI = OpenAI.newBuilder(token)
-//    .requestTimeout(TIMEOUT)
-//    .build();
-//  // Create chat client and request
-//  ChatClient chatClient = openAI.chatClient();
-
-//  // Process each file in the input folder
-//  try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(inputFolderPath))) {
-//    for (Path inputFile : stream) {
-//      if (Files.isRegularFile(inputFile)) {
-//        println(inputFile.getFileName());
-//        String inputContent = Files.readString(inputFile).trim();
-//        String fullPrompt = prompt + "\n\n```\n" + inputContent + "\n```";
-//        CreateChatCompletionRequest createChatCompletionRequest = CreateChatCompletionRequest.newBuilder()
-//          .model("gpt-4.1")
-//          .message(ChatMessage.userMessage(fullPrompt))
-//          .build();
-//        ChatCompletion chatCompletion = chatClient.createChatCompletion(createChatCompletionRequest);
-//        String response = chatCompletion.choices().get(0).message().content();
-//        String codeBlock = extractFirstCodeBlock(response);
-//        // Write to output file with same name in output folder
-//        Path outputFile = outputFolder.resolve(inputFile.getFileName());
-//        Files.writeString(outputFile, codeBlock);
-//        System.out.println("Processed: " + inputFile.getFileName() + " -> " + outputFile.getFileName());
-//      }
-//    }
-//  }
-//}
-//catch (IOException e) {
-//  System.err.println("File error: " + e.getMessage());
-//  System.exit(2);
-//}
-//catch (Exception e) {
-//  System.err.println("Error: " + e.getMessage());
-//  System.exit(3);
-//}
-
-//void draw() {
-//  size(1024, 400);
-//  background(128);
-//  background(255);
-//  fill(0);
-//  textSize(36);
-//  text("Done", 40, height/2);
-//  elapsedTime = int(frameCount/FRAME_RATE);
-//  text("Working Elapsed Time (seconds) "+ elapsedTime, 40, height/4);
-//}
+void draw() {
+  background(255);
+  fill(0);
+  textSize(36);
+  if (exitError > 0) {
+    text("Error "+str(exitError), 40, height/2);
+  } else {
+    text("Done", 40, height/2);
+  }
+}

@@ -1,4 +1,4 @@
-Modify the following Java file to change from `java.net.http` libraries to use the com.squareup.OkHttp3 package.
+Refactor the following Java file to use the com.squareup.OkHttp3 libraries instead of the java.net.http package.
 Replace imports, classes, and method calls as needed. 
 Keep code that does not use java.net.http.
 Add comments to explain the changes. 
