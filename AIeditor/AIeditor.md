@@ -1,6 +1,8 @@
 # AI Editor
+
 **AI Editor** is a multi-file editing tool that leverages OpenAI LLM API services to edit, modify, convert, or refactor code and text based on user-defined prompts.
 The tool is implemented as a Processing sketch in Java, and can be run as a standalone command-line application by including a `main()` method. It reads the contents of a text file, sends them along with a prompt to a large language model (LLM) via the OpenAI API, and saves the response as a new file with the same name in the specified output directory.
+
 ---
 ## OpenAI API Support
 AI Editor has been tested with:
@@ -11,6 +13,7 @@ The application is flexible and can be adapted to work with other models, input/
 
 All required JAR files for API calls are included in the `code` folder. These are sourced from [StefanBratanov/jvm-openai](https://github.com/StefanBratanov/jvm-openai).  
 A fork of this repository is maintained at [ajavamind/jvm-openai](https://github.com/ajavamind/jvm-openai), which includes updates for the latest OpenAI image API and additional `build.gradle` tasks to assist with examples and assembling the necessary JAR libraries for Processing.
+
 ---
 ## Parameters
 The AI Editor application requires **three** positional command-line parameters:
@@ -24,11 +27,13 @@ The AI Editor application requires **three** positional command-line parameters:
    Path to the output folder where the edited files will be saved.  
    - Output files retain the same name as the original input files.
    - If a file with the same name already exists in the output folder, it will be skipped to prevent overwriting.
+   - 
 ---
 ## Example Usage
 ```sh
 java -jar AIEditor.jar data/my_prompt.txt input_folder output_folder
 ```
+
 ---
 ## Notes
 - The application is designed for flexibility and can be easily modified to support additional models or workflows.
