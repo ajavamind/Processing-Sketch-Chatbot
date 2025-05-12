@@ -27,7 +27,7 @@ The AI Editor application requires **three** positional command-line parameters:
    Path to the output folder where the edited files will be saved.  
    - Output files retain the same name as the original input files.
    - If a file with the same name already exists in the output folder, it will be skipped to prevent overwriting.
-   - 
+
 ---
 ## Example Usage
 ```sh
