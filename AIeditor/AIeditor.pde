@@ -26,12 +26,12 @@ import io.github.stefanbratanov.jvm.openai.OpenAI;
 
 String[] args;
 boolean test = true;
-static String baseUrl = "http://192.168.1.96:8080/v1/";  // local LLM
+//static String baseUrl = "http://192.168.1.96:8080/v1/";  // local LLM
 //static String CODE_BLOCK = "###";
 static String CODE_BLOCK = "```";
 
-//static String model = "gpt-4.1";
-static String model = "granite3.3";
+static String model = "gpt-4.1";
+//static String model = "granite3.3";
 static double temperature = 0.1; // expect no randomness from the model
 static double topP = 1.0;
 long timeout = 3600; // seconds
@@ -71,15 +71,16 @@ void setup() {
 
     // Prepare OpenAI API
     Duration TIMEOUT = Duration.ofSeconds(timeout);
-    //String token = System.getenv("OPENAI_API_KEY");
     String token = "local";
+    token = System.getenv("OPENAI_API_KEY");
+
     //if (token == null || token.isEmpty()) {
     //  System.err.println("OPENAI_API_KEY environment variable not set.");
     //  System.exit(1);
     //}
     OpenAI openAI = OpenAI.newBuilder(token)
       .requestTimeout(TIMEOUT)
-      .baseUrl(baseUrl) // local LLM
+      //.baseUrl(baseUrl) // use for local LLM, comment out for default OpenAI LLM
       .build();
 
     ChatClient chatClient = openAI.chatClient();
@@ -123,7 +124,9 @@ void setup() {
 }
 
 /**
- * Processes a single file: sends prompt+input code file content to OpenAI, extracts code block, writes output.
+ * Processes a single file: sends prompt+input code file content to OpenAI, 
+ * from response it extracts code block, 
+ * writes content to output file.
  */
 private static void processFile(String prompt, Path inputFile, Path outputFolder, ChatClient chatClient) throws IOException {
   System.out.println("Editing File: "+inputFile.getFileName() + " " + getDateTime());

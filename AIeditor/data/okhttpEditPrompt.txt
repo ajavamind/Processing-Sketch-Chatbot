@@ -3,4 +3,5 @@ Replace imports, classes, and method calls as needed.
 Keep code that does not use java.net.http.
 Add comments to explain the changes. 
 If there are any parts that cannot be directly converted, just copy the file contents and explain what needs to be done. 
+Do not add new classes or interfaces, keep the same class definitions
 Here is the file:
